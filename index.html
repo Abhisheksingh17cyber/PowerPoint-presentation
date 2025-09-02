@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional PowerPoint Presentation Generator - Create stunning presentations instantly">
+    <meta name="keywords" content="powerpoint, presentation, generator, slides, professional">
+    <title>Professional PPT Maker - Generate Stunning Presentations</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Progressive Web App -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-presentation"></i>
+                    <h1>PPT Maker Pro</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#templates" class="nav-link">Templates</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Create Professional Presentations in Seconds</h2>
+                <p class="hero-subtitle">Generate stunning PowerPoint presentations from just a topic. AI-powered, beautifully designed, instantly downloadable.</p>
+                
+                <!-- Main Generator Form -->
+                <div class="generator-card">
+                    <div class="input-section">
+                        <div class="topic-input-group">
+                            <label for="topic-input" class="input-label">
+                                <i class="fas fa-lightbulb"></i>
+                                Enter your presentation topic
+                            </label>
+                            <input 
+                                type="text" 
+                                id="topic-input" 
+                                class="topic-input" 
+                                placeholder="e.g., Renewable Energy, Digital Marketing, AI in Healthcare..."
+                                maxlength="100"
+                            >
+                            <div class="input-counter">
+                                <span id="char-count">0</span>/100
+                            </div>
+                        </div>
+
+                        <!-- Template Selection -->
+                        <div class="template-section">
+                            <label class="section-label">
+                                <i class="fas fa-palette"></i>
+                                Choose Template Style
+                            </label>
+                            <div class="template-grid">
+                                <div class="template-card active" data-template="business">
+                                    <div class="template-preview business-preview"></div>
+                                    <span class="template-name">Business</span>
+                                </div>
+                                <div class="template-card" data-template="academic">
+                                    <div class="template-preview academic-preview"></div>
+                                    <span class="template-name">Academic</span>
+                                </div>
+                                <div class="template-card" data-template="creative">
+                                    <div class="template-preview creative-preview"></div>
+                                    <span class="template-name">Creative</span>
+                                </div>
+                                <div class="template-card" data-template="minimal">
+                                    <div class="template-preview minimal-preview"></div>
+                                    <span class="template-name">Minimal</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Color Scheme Selection -->
+                        <div class="color-section">
+                            <label class="section-label">
+                                <i class="fas fa-swatchbook"></i>
+                                Color Scheme
+                            </label>
+                            <div class="color-grid">
+                                <div class="color-scheme active" data-colors="blue">
+                                    <div class="color-preview">
+                                        <div class="color-dot" style="background: #2563eb;"></div>
+                                        <div class="color-dot" style="background: #1e40af;"></div>
+                                        <div class="color-dot" style="background: #3b82f6;"></div>
+                                    </div>
+                                    <span>Professional Blue</span>
+                                </div>
+                                <div class="color-scheme" data-colors="green">
+                                    <div class="color-preview">
+                                        <div class="color-dot" style="background: #059669;"></div>
+                                        <div class="color-dot" style="background: #047857;"></div>
+                                        <div class="color-dot" style="background: #10b981;"></div>
+                                    </div>
+                                    <span>Nature Green</span>
+                                </div>
+                                <div class="color-scheme" data-colors="purple">
+                                    <div class="color-preview">
+                                        <div class="color-dot" style="background: #7c3aed;"></div>
+                                        <div class="color-dot" style="background: #6d28d9;"></div>
+                                        <div class="color-dot" style="background: #8b5cf6;"></div>
+                                    </div>
+                                    <span>Creative Purple</span>
+                                </div>
+                                <div class="color-scheme" data-colors="orange">
+                                    <div class="color-preview">
+                                        <div class="color-dot" style="background: #ea580c;"></div>
+                                        <div class="color-dot" style="background: #c2410c;"></div>
+                                        <div class="color-dot" style="background: #f97316;"></div>
+                                    </div>
+                                    <span>Energy Orange</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button id="generate-btn" class="generate-btn">
+                            <i class="fas fa-magic"></i>
+                            <span class="btn-text">Generate Presentation</span>
+                            <div class="btn-loader">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview Section -->
+    <section id="preview-section" class="preview-section hidden">
+        <div class="container">
+            <div class="preview-header">
+                <h3 class="preview-title">Your Presentation Preview</h3>
+                <div class="preview-controls">
+                    <button id="prev-slide" class="control-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="slide-counter" class="slide-counter">1 / 8</span>
+                    <button id="next-slide" class="control-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="slide-container">
+                <div id="slide-viewer" class="slide-viewer">
+                    <!-- Slides will be dynamically generated here -->
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h4 class="download-title">Download Your Presentation</h4>
+                <div class="download-buttons">
+                    <button id="download-ppt" class="download-btn primary">
+                        <i class="fas fa-file-powerpoint"></i>
+                        Download PPT
+                    </button>
+                    <button id="download-pdf" class="download-btn secondary">
+                        <i class="fas fa-file-pdf"></i>
+                        Download PDF
+                    </button>
+                    <button id="download-images" class="download-btn secondary">
+                        <i class="fas fa-images"></i>
+                        Download Images
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Content</h3>
+                    <p class="feature-description">Intelligent content generation based on your topic with relevant insights and key points.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Professional Templates</h3>
+                    <p class="feature-description">Choose from business, academic, creative, and minimal templates designed by professionals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Imagery</h3>
+                    <p class="feature-description">Automatically sourced high-quality images that perfectly match your presentation topic.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="feature-title">Multiple Formats</h3>
+                    <p class="feature-description">Export your presentations as PowerPoint, PDF, or individual image files.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile Friendly</h3>
+                    <p class="feature-description">Create and preview presentations on any device with our responsive design.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">Generate professional presentations in under 10 seconds with our optimized engine.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-presentation"></i>
+                        <span>PPT Maker Pro</span>
+                    </div>
+                    <p class="footer-description">Create professional presentations instantly with AI-powered content generation.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Features</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">AI Content Generation</a></li>
+                        <li><a href="#" class="footer-link">Professional Templates</a></li>
+                        <li><a href="#" class="footer-link">Multiple Export Formats</a></li>
+                        <li><a href="#" class="footer-link">Mobile Responsive</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Documentation</a></li>
+                        <li><a href="#" class="footer-link">API Reference</a></li>
+                        <li><a href="#" class="footer-link">GitHub Repository</a></li>
+                        <li><a href="#" class="footer-link">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Connect</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PPT Maker Pro. Open source project for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3 class="loading-title">Generating Your Presentation</h3>
+            <p id="loading-status" class="loading-status">Analyzing your topic...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/app.js"></script>
+    <script src="js/content-generator.js"></script>
+    <script src="js/slide-builder.js"></script>
+    <script src="js/template-manager.js"></script>
+    <script src="js/export-handler.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
