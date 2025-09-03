@@ -3,8 +3,9 @@
 ## 🎯 Complete Presentation Generation from Just a Topic!
 
 **What You Get:**
+
 - **8-12 comprehensive slides** with detailed information and explanations
-- **Professional images** automatically placed on every slide  
+- **Professional images** automatically placed on every slide
 - **Charts and graphics** for data visualization where applicable
 - **Complete content flow** from introduction to conclusion
 - **Professional formatting** with consistent design throughout

@@ -7,8 +7,9 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
 > **🎯 JUST ENTER A TOPIC → GET A COMPLETE PRESENTATION!**
-> 
+>
 > Simply provide any topic and instantly receive:
+>
 > - **8-12 comprehensive slides** with detailed information and explanations
 > - **Professional photos** automatically selected for every slide
 > - **Charts and graphics** included where relevant (data visualization, infographics)
@@ -93,18 +94,18 @@
 
 ## 🆚 Web App vs Python Script
 
-| Feature           | Web App                                    | Python Script                         |
-| ----------------- | ------------------------------------------ | ------------------------------------- |
-| **Setup**         | Zero setup - just open in browser         | Requires Python + dependencies       |
-| **Usage**         | Just enter topic - get complete presentation | Command-line interface              |
-| **Content Generation** | **8-12 slides with detailed information** | **Complete slide deck with rich content** |
-| **Images**        | High-quality photos for every slide       | Real API integration (Unsplash)      |
-| **Visual Elements** | **Automatic charts and graphics**       | **Professional charts and infographics** |
-| **Content Depth** | **Comprehensive topic coverage**         | **In-depth research and analysis**   |
-| **Offline**       | Works offline (PWA)                        | Works completely offline             |
-| **Customization** | Template themes + colors                   | Full programmatic control            |
-| **File Output**   | Download PPT/PDF/Images                    | Local file generation                |
-| **Best For**      | **Complete presentations from just a topic** | **Advanced customization and batch processing** |
+| Feature                | Web App                                      | Python Script                                   |
+| ---------------------- | -------------------------------------------- | ----------------------------------------------- |
+| **Setup**              | Zero setup - just open in browser            | Requires Python + dependencies                  |
+| **Usage**              | Just enter topic - get complete presentation | Command-line interface                          |
+| **Content Generation** | **8-12 slides with detailed information**    | **Complete slide deck with rich content**       |
+| **Images**             | High-quality photos for every slide          | Real API integration (Unsplash)                 |
+| **Visual Elements**    | **Automatic charts and graphics**            | **Professional charts and infographics**        |
+| **Content Depth**      | **Comprehensive topic coverage**             | **In-depth research and analysis**              |
+| **Offline**            | Works offline (PWA)                          | Works completely offline                        |
+| **Customization**      | Template themes + colors                     | Full programmatic control                       |
+| **File Output**        | Download PPT/PDF/Images                      | Local file generation                           |
+| **Best For**           | **Complete presentations from just a topic** | **Advanced customization and batch processing** |
 
 Choose **Web App** for instant use and ease of access.  
 Choose **Python Script** for advanced features and API integration.
@@ -127,6 +128,7 @@ https://abhisheksingh17cyber.github.io/PowerPoint-presentation
 6. **Download in your preferred format** (PowerPoint, PDF, or Images)
 
 **✨ What You Get:**
+
 - **8-12 comprehensive slides** with detailed information
 - **Professional photos** on every slide
 - **Charts and graphics** where relevant
@@ -171,6 +173,7 @@ python python_generator.py
 ```
 
 **🎯 What Gets Generated:**
+
 - **Complete slide deck** with 8-12 professional slides
 - **Rich content** including definitions, examples, and explanations
 - **High-quality images** for every slide topic
