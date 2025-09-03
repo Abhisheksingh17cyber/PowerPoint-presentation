@@ -279,32 +279,72 @@ class PPTMakerApp {
     async searchImages(topic) {
         this.updateLoadingStatus('Finding relevant images...');
         
-        // Simulate image search
-        // In production, integrate with Unsplash API or similar
-        const imageCategories = {
-            'artificial intelligence': ['technology', 'robot', 'computer', 'futuristic'],
-            'renewable energy': ['solar-panel', 'wind-turbine', 'nature', 'green-energy'],
-            'digital marketing': ['social-media', 'marketing', 'analytics', 'online'],
-            'climate change': ['environment', 'earth', 'nature', 'sustainability'],
-            'business': ['office', 'team', 'growth', 'success'],
-            'education': ['learning', 'books', 'school', 'knowledge']
+        // Create topic-specific and slide-specific images
+        const lowerTopic = topic.toLowerCase();
+        const images = [];
+        
+        // Topic-specific image mappings
+        const topicImages = {
+            'artificial intelligence': [
+                'https://source.unsplash.com/800x600/?artificial-intelligence,technology',
+                'https://source.unsplash.com/800x600/?robot,machine-learning',
+                'https://source.unsplash.com/800x600/?neural-network,ai',
+                'https://source.unsplash.com/800x600/?computer-vision,automation',
+                'https://source.unsplash.com/800x600/?data-science,algorithm',
+                'https://source.unsplash.com/800x600/?futuristic,technology'
+            ],
+            'climate change': [
+                'https://source.unsplash.com/800x600/?climate-change,environment',
+                'https://source.unsplash.com/800x600/?global-warming,earth',
+                'https://source.unsplash.com/800x600/?greenhouse-gases,pollution',
+                'https://source.unsplash.com/800x600/?renewable-energy,solar',
+                'https://source.unsplash.com/800x600/?sustainability,green',
+                'https://source.unsplash.com/800x600/?nature,conservation'
+            ],
+            'renewable energy': [
+                'https://source.unsplash.com/800x600/?solar-panel,renewable',
+                'https://source.unsplash.com/800x600/?wind-turbine,energy',
+                'https://source.unsplash.com/800x600/?hydroelectric,power',
+                'https://source.unsplash.com/800x600/?geothermal,clean-energy',
+                'https://source.unsplash.com/800x600/?battery,energy-storage',
+                'https://source.unsplash.com/800x600/?sustainable,green-technology'
+            ],
+            'digital marketing': [
+                'https://source.unsplash.com/800x600/?digital-marketing,social-media',
+                'https://source.unsplash.com/800x600/?analytics,data',
+                'https://source.unsplash.com/800x600/?content-marketing,strategy',
+                'https://source.unsplash.com/800x600/?email-marketing,campaign',
+                'https://source.unsplash.com/800x600/?seo,search-engine',
+                'https://source.unsplash.com/800x600/?mobile-marketing,smartphone'
+            ]
         };
         
-        const lowercaseTopic = topic.toLowerCase();
-        let categories = ['business', 'presentation', 'professional'];
-        
-        for (const [key, cats] of Object.entries(imageCategories)) {
-            if (lowercaseTopic.includes(key) || key.includes(lowercaseTopic)) {
-                categories = cats;
+        // Find matching images or use generic professional ones
+        let selectedImages = null;
+        for (const [key, imgs] of Object.entries(topicImages)) {
+            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
+                selectedImages = imgs;
                 break;
             }
         }
         
-        // Return placeholder image URLs
-        return categories.map((category, index) => ({
-            url: `https://source.unsplash.com/800x600/?${category}`,
-            alt: `${category} related to ${topic}`,
-            caption: `High-quality ${category} imagery`
+        // Fallback to generic professional images
+        if (!selectedImages) {
+            selectedImages = [
+                'https://source.unsplash.com/800x600/?business,professional',
+                'https://source.unsplash.com/800x600/?technology,innovation',
+                'https://source.unsplash.com/800x600/?strategy,planning',
+                'https://source.unsplash.com/800x600/?growth,success',
+                'https://source.unsplash.com/800x600/?teamwork,collaboration',
+                'https://source.unsplash.com/800x600/?presentation,meeting'
+            ];
+        }
+        
+        // Add variety with random parameters to avoid duplicate images
+        return selectedImages.map((url, index) => ({
+            url: `${url}&t=${Date.now()}&i=${index}`,
+            alt: `Professional image related to ${topic}`,
+            caption: `Visual content for ${topic} presentation`
         }));
     }
     
@@ -361,7 +401,166 @@ class PPTMakerApp {
     }
     
     generateSlidePoints(title, keyPoints) {
-        // Generate 3-4 relevant points for each slide
+        // Generate specific content for each slide title
+        const specificContent = this.generateSpecificContent(title, this.state.topic);
+        return specificContent.length > 0 ? specificContent : this.fallbackSlidePoints(title, keyPoints);
+    }
+    
+    generateSpecificContent(title, topic) {
+        const lowerTitle = title.toLowerCase();
+        const lowerTopic = topic.toLowerCase();
+        
+        // AI-specific content
+        if (lowerTopic.includes('artificial intelligence') || lowerTopic.includes('ai')) {
+            if (lowerTitle.includes('introduction')) {
+                return [
+                    'AI enables machines to perform tasks requiring human intelligence',
+                    'Machine learning algorithms learn patterns from large datasets',
+                    'Neural networks simulate brain-like information processing',
+                    'AI applications span healthcare, finance, transport, and education'
+                ];
+            } else if (lowerTitle.includes('types')) {
+                return [
+                    'Narrow AI: Specialized systems for specific tasks (Siri, chess engines)',
+                    'General AI: Human-level intelligence across all domains (theoretical)',
+                    'Superintelligence: AI surpassing human cognitive abilities',
+                    'Machine Learning: Algorithms that improve through experience'
+                ];
+            } else if (lowerTitle.includes('applications')) {
+                return [
+                    'Healthcare: Medical diagnosis, drug discovery, surgical robots',
+                    'Finance: Algorithmic trading, fraud detection, risk assessment',
+                    'Transportation: Autonomous vehicles, traffic optimization',
+                    'Personal assistants: Voice recognition, natural language processing'
+                ];
+            } else if (lowerTitle.includes('benefits')) {
+                return [
+                    'Increased efficiency and productivity in repetitive tasks',
+                    'Enhanced decision-making through data analysis',
+                    'Improved accuracy in complex pattern recognition',
+                    '24/7 operation without fatigue or human error'
+                ];
+            } else if (lowerTitle.includes('future')) {
+                return [
+                    'Quantum computing will exponentially increase AI capabilities',
+                    'Brain-computer interfaces will merge human and artificial intelligence',
+                    'AI will enable personalized medicine and education',
+                    'Autonomous systems will transform manufacturing and logistics'
+                ];
+            } else if (lowerTitle.includes('ethical')) {
+                return [
+                    'AI bias can perpetuate discrimination in hiring and lending',
+                    'Privacy concerns with extensive data collection and analysis',
+                    'Job displacement requires retraining and social safety nets',
+                    'Transparency in AI decision-making is crucial for trust'
+                ];
+            }
+        }
+        
+        // Climate Change specific content
+        if (lowerTopic.includes('climate change')) {
+            if (lowerTitle.includes('understanding')) {
+                return [
+                    'Global average temperature has risen 1.1°C since pre-industrial times',
+                    'Greenhouse gases trap heat in Earth\'s atmosphere',
+                    'Carbon dioxide levels are highest in 3 million years',
+                    'Climate feedback loops accelerate warming processes'
+                ];
+            } else if (lowerTitle.includes('causes')) {
+                return [
+                    'Fossil fuel combustion releases 36 billion tons of CO2 annually',
+                    'Deforestation reduces Earth\'s carbon absorption capacity',
+                    'Industrial agriculture contributes 24% of greenhouse gas emissions',
+                    'Transportation accounts for 14% of global emissions'
+                ];
+            } else if (lowerTitle.includes('impact')) {
+                return [
+                    'Sea levels rising 3.3mm per year threatening coastal cities',
+                    'Extreme weather events becoming more frequent and severe',
+                    'Arctic ice loss accelerating at 13% per decade',
+                    'Ocean acidification threatening marine ecosystems'
+                ];
+            } else if (lowerTitle.includes('mitigation')) {
+                return [
+                    'Renewable energy transition can reduce emissions by 65%',
+                    'Carbon pricing mechanisms incentivize clean technologies',
+                    'Energy efficiency improvements in buildings and transport',
+                    'Forest restoration can sequester 1-5 billion tons CO2 annually'
+                ];
+            } else if (lowerTitle.includes('adaptation')) {
+                return [
+                    'Coastal defenses protecting against sea level rise',
+                    'Drought-resistant crops ensuring food security',
+                    'Early warning systems for extreme weather events',
+                    'Green infrastructure managing urban heat and flooding'
+                ];
+            } else if (lowerTitle.includes('individual')) {
+                return [
+                    'Reduce energy consumption with LED lights and efficient appliances',
+                    'Choose sustainable transportation: walking, cycling, public transit',
+                    'Adopt plant-based diet to reduce agricultural emissions',
+                    'Support renewable energy and sustainable businesses'
+                ];
+            }
+        }
+        
+        // Renewable Energy content
+        if (lowerTopic.includes('renewable energy')) {
+            if (lowerTitle.includes('renewable') || lowerTitle.includes('introduction')) {
+                return [
+                    'Renewable energy sources naturally replenish over human timescales',
+                    'Solar, wind, hydro, and geothermal provide clean electricity',
+                    'Global renewable capacity reached 2,799 GW in 2020',
+                    'Renewable energy costs have fallen 85% since 2010'
+                ];
+            } else if (lowerTitle.includes('solar')) {
+                return [
+                    'Solar photovoltaic cells convert sunlight directly to electricity',
+                    'Solar power capacity grew 127 GW globally in 2020',
+                    'Concentrated solar power stores energy for nighttime use',
+                    'Solar costs now competitive with fossil fuels in many markets'
+                ];
+            } else if (lowerTitle.includes('wind')) {
+                return [
+                    'Wind turbines generate electricity from kinetic energy',
+                    'Offshore wind farms access stronger, more consistent winds',
+                    'Wind power capacity exceeded 733 GW worldwide in 2020',
+                    'Modern turbines are 50x more powerful than 1980s models'
+                ];
+            }
+        }
+        
+        // Digital Marketing content
+        if (lowerTopic.includes('digital marketing')) {
+            if (lowerTitle.includes('overview') || lowerTitle.includes('introduction')) {
+                return [
+                    'Digital marketing reaches 4.66 billion internet users worldwide',
+                    'Data-driven targeting achieves 3x higher conversion rates',
+                    'Mobile devices account for 55% of digital media consumption',
+                    'Real-time analytics enable instant campaign optimization'
+                ];
+            } else if (lowerTitle.includes('social media')) {
+                return [
+                    'Facebook reaches 2.9 billion monthly active users globally',
+                    'Video content generates 1200% more shares than text and images',
+                    'Influencer marketing delivers $5.20 ROI for every dollar spent',
+                    'Social commerce sales expected to reach $1.2 trillion by 2025'
+                ];
+            } else if (lowerTitle.includes('seo')) {
+                return [
+                    'Google processes over 8.5 billion searches daily',
+                    'First page results receive 95% of all search traffic',
+                    'Voice search optimization crucial for 50% of adults using voice daily',
+                    'Local SEO drives 76% of mobile users to visit stores within 24 hours'
+                ];
+            }
+        }
+        
+        return []; // Return empty if no specific content found
+    }
+    
+    fallbackSlidePoints(title, keyPoints) {
+        // Fallback to original logic if no specific content
         const points = [];
         const numPoints = Math.min(4, keyPoints.length);
         
@@ -456,7 +655,7 @@ class PPTMakerApp {
                 
             case 'content':
                 const pointsList = slide.points.map(point => 
-                    `<li>${point}</li>`
+                    `<li>▶ ${point}</li>`
                 ).join('');
                 const hasImage = slide.image && this.state.template !== 'minimal';
                 
@@ -467,8 +666,12 @@ class PPTMakerApp {
                             <h2 class="slide-title">${slide.title}</h2>
                             <ul class="slide-list">${pointsList}</ul>
                         </div>
-                        <div class="slide-image-placeholder">
-                            📊 Visual Content
+                        <div class="slide-image-container">
+                            <img src="${slide.image}" alt="${slide.title}" class="slide-image" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <div class="slide-image-placeholder" style="display:none;">
+                                📊 Visual Content
+                            </div>
                         </div>
                     `;
                 } else {
