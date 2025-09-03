@@ -12,6 +12,22 @@
 
 **[Try PPT Maker Pro →](https://abhisheksingh17cyber.github.io/PowerPoint-presentation)**
 
+## 🔧 Two Ways to Create Presentations
+
+### 🌐 Web App (Instant)
+- **Browser-based**: No installation required
+- **Instant generation**: Create presentations in seconds
+- **Cross-platform**: Works on any device with a browser
+- **PWA support**: Install as an app on mobile/desktop
+
+### 🐍 Python Script (Advanced)
+- **Local generation**: Full .pptx files with advanced features
+- **API integration**: Real images from Unsplash, web content research
+- **Customizable**: Full control over templates and styling
+- **Batch processing**: Generate multiple presentations programmatically
+
+📋 **Setup**: See [Python Setup Guide](PYTHON_SETUP.md) for installation instructions
+
 ## ✨ Features
 
 ### 🎨 **Professional Templates**
@@ -59,6 +75,22 @@
 - Accessibility features (WCAG compliant)
 - Print-optimized layouts
 
+## 🆚 Web App vs Python Script
+
+| Feature | Web App | Python Script |
+|---------|---------|---------------|
+| **Setup** | Zero setup - just open in browser | Requires Python + dependencies |
+| **Usage** | Click and generate online | Command-line interface |
+| **Images** | Built-in placeholder system | Real API integration (Unsplash) |
+| **Content** | AI-generated templates | Wikipedia + web search |
+| **Offline** | Works offline (PWA) | Works completely offline |
+| **Customization** | Template themes + colors | Full programmatic control |
+| **File Output** | Download PPT/PDF/Images | Local file generation |
+| **Best For** | Quick presentations, beginners | Advanced users, custom workflows |
+
+Choose **Web App** for instant use and ease of access.  
+Choose **Python Script** for advanced features and API integration.
+
 ## 🛠️ Quick Start
 
 ### 1. **Visit the Website**
@@ -83,6 +115,42 @@ https://abhisheksingh17cyber.github.io/PowerPoint-presentation
 - "Digital Marketing Strategies"
 - "Climate Change Solutions"
 - "Project Management Best Practices"
+
+## 🐍 Python Script Quick Start
+
+### 1. **Install Dependencies**
+
+```bash
+# Install required packages
+pip install python-pptx requests Pillow
+
+# Or use requirements file
+pip install -r requirements.txt
+```
+
+### 2. **Run the Generator**
+
+```bash
+python python_generator.py
+```
+
+### 3. **Create Presentation**
+
+```
+📝 Enter the topic for your presentation: Machine Learning
+🔍 Searching for content about: Machine Learning
+🖼️  Searching for images: Machine Learning
+📊 Creating presentation: presentations/Machine_Learning_presentation.pptx
+✅ Presentation saved as: presentations/Machine_Learning_presentation.pptx
+```
+
+### 4. **Enhanced Features (Optional)**
+
+Add API keys for better content and images:
+- **Unsplash API**: High-quality professional images
+- **SerpAPI**: Real web content research
+
+See [Python Setup Guide](PYTHON_SETUP.md) for detailed instructions.
 
 ## 🏗️ Technical Architecture
 
