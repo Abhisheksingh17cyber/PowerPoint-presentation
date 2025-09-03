@@ -15,12 +15,14 @@
 ## 🔧 Two Ways to Create Presentations
 
 ### 🌐 Web App (Instant)
+
 - **Browser-based**: No installation required
 - **Instant generation**: Create presentations in seconds
 - **Cross-platform**: Works on any device with a browser
 - **PWA support**: Install as an app on mobile/desktop
 
 ### 🐍 Python Script (Advanced)
+
 - **Local generation**: Full .pptx files with advanced features
 - **API integration**: Real images from Unsplash, web content research
 - **Customizable**: Full control over templates and styling
@@ -77,16 +79,16 @@
 
 ## 🆚 Web App vs Python Script
 
-| Feature | Web App | Python Script |
-|---------|---------|---------------|
-| **Setup** | Zero setup - just open in browser | Requires Python + dependencies |
-| **Usage** | Click and generate online | Command-line interface |
-| **Images** | Built-in placeholder system | Real API integration (Unsplash) |
-| **Content** | AI-generated templates | Wikipedia + web search |
-| **Offline** | Works offline (PWA) | Works completely offline |
-| **Customization** | Template themes + colors | Full programmatic control |
-| **File Output** | Download PPT/PDF/Images | Local file generation |
-| **Best For** | Quick presentations, beginners | Advanced users, custom workflows |
+| Feature           | Web App                           | Python Script                    |
+| ----------------- | --------------------------------- | -------------------------------- |
+| **Setup**         | Zero setup - just open in browser | Requires Python + dependencies   |
+| **Usage**         | Click and generate online         | Command-line interface           |
+| **Images**        | Built-in placeholder system       | Real API integration (Unsplash)  |
+| **Content**       | AI-generated templates            | Wikipedia + web search           |
+| **Offline**       | Works offline (PWA)               | Works completely offline         |
+| **Customization** | Template themes + colors          | Full programmatic control        |
+| **File Output**   | Download PPT/PDF/Images           | Local file generation            |
+| **Best For**      | Quick presentations, beginners    | Advanced users, custom workflows |
 
 Choose **Web App** for instant use and ease of access.  
 Choose **Python Script** for advanced features and API integration.
@@ -147,6 +149,7 @@ python python_generator.py
 ### 4. **Enhanced Features (Optional)**
 
 Add API keys for better content and images:
+
 - **Unsplash API**: High-quality professional images
 - **SerpAPI**: Real web content research
 

@@ -25,6 +25,7 @@ pip install python-pptx requests Pillow
 ### Step 2: API Keys Setup (Optional but Recommended)
 
 #### Unsplash API (for high-quality images)
+
 1. Visit: https://unsplash.com/developers
 2. Create a free account
 3. Create a new application
@@ -35,6 +36,7 @@ pip install python-pptx requests Pillow
    ```
 
 #### SerpAPI (for web content search)
+
 1. Visit: https://serpapi.com/
 2. Sign up for a free account (100 searches/month)
 3. Get your API key from dashboard
@@ -52,6 +54,7 @@ python python_generator.py
 ```
 
 Then enter your topic when prompted:
+
 ```
 📝 Enter the topic for your presentation: Artificial Intelligence
 ```
@@ -59,7 +62,7 @@ Then enter your topic when prompted:
 ### Example Topics to Try
 
 - "Machine Learning Basics"
-- "Digital Marketing Strategies" 
+- "Digital Marketing Strategies"
 - "Climate Change Solutions"
 - "Cryptocurrency Overview"
 - "Space Exploration"
@@ -76,6 +79,7 @@ Then enter your topic when prompted:
 ### Modify Slide Templates
 
 Edit the `create_content_slide()` method to customize:
+
 - Font sizes and colors
 - Slide layouts
 - Image positioning
@@ -84,6 +88,7 @@ Edit the `create_content_slide()` method to customize:
 ### Change Color Scheme
 
 Update the `RGBColor` values:
+
 ```python
 # Current blue theme
 title_para.font.color.rgb = RGBColor(0, 102, 204)
@@ -97,6 +102,7 @@ title_para.font.color.rgb = RGBColor(0, 102, 204)
 ### Add More Slide Types
 
 Extend the `content_data['key_points']` list:
+
 ```python
 "key_points": [
     f"Introduction to {topic}",
@@ -117,29 +123,33 @@ Extend the `content_data['key_points']` list:
 ### Common Issues
 
 1. **ModuleNotFoundError**: Install required packages
+
    ```bash
    pip install python-pptx requests Pillow
    ```
 
 2. **Image Download Errors**: Check internet connection
+
    - Script will use placeholder images as fallback
 
 3. **Permission Errors**: Run with appropriate permissions
+
    ```bash
    # Windows
    python python_generator.py
-   
+
    # Linux/Mac
    python3 python_generator.py
    ```
 
-4. **API Rate Limits**: 
+4. **API Rate Limits**:
    - Unsplash: 50 requests/hour (free tier)
    - SerpAPI: 100 searches/month (free tier)
 
 ### Debug Mode
 
 Add debug prints to see what's happening:
+
 ```python
 print(f"DEBUG: Content data: {content_data}")
 print(f"DEBUG: Images found: {len(images)}")
@@ -160,14 +170,14 @@ This Python generator complements your web-based PowerPoint Maker:
 
 ## 📊 Features Comparison
 
-| Feature | Web App | Python Script |
-|---------|---------|---------------|
-| Speed | ⚡ Instant | 🔄 1-2 minutes |
-| Images | 🖼️ Unsplash API | 🖼️ Unsplash API + Placeholder |
-| Content | 🤖 AI Generated | 🔍 Web Search + Templates |
-| Customization | 🎨 4 Templates | 🛠️ Full Code Control |
-| Offline | ✅ After first load | ❌ Requires internet |
-| File Size | 📱 Lightweight | 💾 Full .pptx files |
+| Feature       | Web App             | Python Script                 |
+| ------------- | ------------------- | ----------------------------- |
+| Speed         | ⚡ Instant          | 🔄 1-2 minutes                |
+| Images        | 🖼️ Unsplash API     | 🖼️ Unsplash API + Placeholder |
+| Content       | 🤖 AI Generated     | 🔍 Web Search + Templates     |
+| Customization | 🎨 4 Templates      | 🛠️ Full Code Control          |
+| Offline       | ✅ After first load | ❌ Requires internet          |
+| File Size     | 📱 Lightweight      | 💾 Full .pptx files           |
 
 ## 🚀 Next Steps
 
@@ -191,6 +201,7 @@ presentations/
 ```
 
 Each presentation includes:
+
 - Title slide with background image
 - 5-7 content slides with text and images
 - Conclusion slide
