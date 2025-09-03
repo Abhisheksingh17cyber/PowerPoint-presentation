@@ -1,0 +1,62 @@
+title: Professional PPT Maker
+description: Create stunning PowerPoint presentations instantly with AI-powered content generation
+baseurl: ""
+url: "https://abhisheksingh17cyber.github.io"
+
+# GitHub Pages settings
+github:
+  repository_name: PowerPoint-presentation
+  repository_nwo: Abhisheksingh17cyber/PowerPoint-presentation
+
+# Theme settings
+theme: null
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO settings
+lang: en_US
+author:
+  name: Abhishek Singh
+  email: abhisheksingh17cyber@gmail.com
+
+# Social settings
+social:
+  name: PPT Maker Pro
+  links:
+    - https://github.com/Abhisheksingh17cyber/PowerPoint-presentation
+
+# Google Analytics (optional)
+# google_analytics: G-XXXXXXXXXX
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Exclude files from build
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+
+# Include files in build
+include:
+  - _redirects
+
+# Collections (if needed)
+collections:
+  templates:
+    output: false
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      author: Abhishek Singh
