@@ -655,7 +655,7 @@ class PPTMakerApp {
                 
             case 'content':
                 const pointsList = slide.points.map(point => 
-                    `<li>▶ ${point}</li>`
+                    `<li>${point}</li>`
                 ).join('');
                 const hasImage = slide.image && this.state.template !== 'minimal';
                 
