@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Outlook of Law in India</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-counter {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .slide-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .slide-item.active {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            border-color: #4299e1;
+        }
+
+        .slide-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .slide-item p {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-content {
+            display: none;
+        }
+
+        .slide-content.active {
+            display: block;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-points {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .slide-points li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        .slide-points li:before {
+            content: "▶";
+            color: #4299e1;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .visual-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .visual-content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .visual-content-header i {
+            color: #fbb040;
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .visual-content-header h4 {
+            font-size: 1.2rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-dot.active {
+            background: #4299e1;
+            transform: scale(1.2);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #4299e1, #3182ce, #2b77cb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #cbd5e0;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4299e1;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4299e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .timeline-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4299e1;
+            min-width: 80px;
+            margin-right: 2rem;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to PPT Maker
+    </a>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Slides</h2>
+                <div class="slide-counter" id="slideCounter">1 / 10</div>
+            </div>
+            
+            <div class="slide-item active" data-slide="0">
+                <h3>Introduction</h3>
+                <p>Welcome & Overview</p>
+            </div>
+            
+            <div class="slide-item" data-slide="1">
+                <h3>Current Legal Landscape</h3>
+                <p>Present state of Indian law</p>
+            </div>
+            
+            <div class="slide-item" data-slide="2">
+                <h3>Digital Transformation</h3>
+                <p>Technology in legal sector</p>
+            </div>
+            
+            <div class="slide-item" data-slide="3">
+                <h3>Emerging Trends</h3>
+                <p>AI, blockchain, and innovation</p>
+            </div>
+            
+            <div class="slide-item" data-slide="4">
+                <h3>Regulatory Reforms</h3>
+                <p>Policy changes and updates</p>
+            </div>
+            
+            <div class="slide-item" data-slide="5">
+                <h3>Opportunities</h3>
+                <p>Growth and innovation areas</p>
+            </div>
+            
+            <div class="slide-item" data-slide="6">
+                <h3>Future Outlook</h3>
+                <p>Evolution in coming years</p>
+            </div>
+            
+            <div class="slide-item" data-slide="7">
+                <h3>Key Components</h3>
+                <p>Essential elements</p>
+            </div>
+            
+            <div class="slide-item" data-slide="8">
+                <h3>Benefits & Advantages</h3>
+                <p>Positive impacts</p>
+            </div>
+            
+            <div class="slide-item" data-slide="9">
+                <h3>Strategic Recommendations</h3>
+                <p>Success strategies</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-area">
+                <!-- Slide 0 - Introduction -->
+                <div class="slide-content active" id="slide-0">
+                    <div class="hero-section">
+                        <h1 class="hero-title">Future Outlook of Law in India</h1>
+                        <p class="hero-subtitle">Transforming Legal Landscape Through Innovation & Technology</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">⚖️</div>
+                                <h3>Legal Evolution</h3>
+                                <p>Comprehensive analysis of India's changing legal framework</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🚀</div>
+                                <h3>Innovation</h3>
+                                <p>Emerging technologies reshaping legal practices</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">📊</div>
+                                <h3>Future Trends</h3>
+                                <p>Strategic insights for tomorrow's legal landscape</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 1 - Current Legal Landscape -->
+                <div class="slide-content" id="slide-1">
+                    <h2 class="slide-title">Current Legal Landscape</h2>
+                    <ul class="slide-points">
+                        <li>India's legal system based on common law principles</li>
+                        <li>Over 4.5 crore pending cases in Indian courts</li>
+                        <li>Traditional paper-based processes dominate</li>
+                        <li>Growing demand for legal reforms and modernization</li>
+                    </ul>
+                    
+                    <div class="stats-section">
+                        <div class="stat-card">
+                            <div class="stat-number">4.5Cr+</div>
+                            <p>Pending Cases</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">25,000+</div>
+                            <p>Courts in India</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">1.7M+</div>
+                            <p>Registered Lawyers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="visual-content">
+                        <div class="visual-content-header">
+                            <i class="fas fa-lightbulb"></i>
+                            <h4>Key Insights</h4>
+                        </div>
+                        <p>The Indian legal system is at a critical juncture, requiring modernization to address growing complexities and ensure efficient justice delivery.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 - Digital Transformation -->
+                <div class="slide-content" id="slide-2">
+                    <h2 class="slide-title">Digital Transformation</h2>
+                    <ul class="slide-points">
+                        <li>E-Courts Mission Mode Project implementation</li>
+                        <li>Online case filing and virtual hearings adoption</li>
+                        <li>Digital documentation and case management systems</li>
+                        <li>AI-powered legal research and analytics tools</li>
+                    </ul>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">💻</div>
+                            <h3>E-Courts</h3>
+                            <p>Digitization of court processes and records</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎥</div>
+                            <h3>Virtual Hearings</h3>
+                            <p>Remote court proceedings and consultations</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🤖</div>
+                            <h3>AI Integration</h3>
+                            <p>Automated research and case analysis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 - Emerging Trends -->
+                <div class="slide-content" id="slide-3">
+                    <h2 class="slide-title">Emerging Trends & Technologies</h2>
+                    <ul class="slide-points">
+                        <li>Artificial Intelligence in legal research and drafting</li>
+                        <li>Blockchain for secure document verification</li>
+                        <li>Legal tech startups and innovation hubs</li>
+                        <li>Alternative dispute resolution mechanisms</li>
+                    </ul>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2024</div>
+                            <div>
+                                <h4>AI Legal Assistants</h4>
+                                <p>Introduction of AI-powered legal research tools</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2025</div>
+                            <div>
+                                <h4>Blockchain Integration</h4>
+                                <p>Secure contract management and verification</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2026</div>
+                            <div>
+                                <h4>Smart Courts</h4>
+                                <p>Fully automated case management systems</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4 - Regulatory Reforms -->
+                <div class="slide-content" id="slide-4">
+                    <h2 class="slide-title">Regulatory Reforms</h2>
+                    <ul class="slide-points">
+                        <li>New criminal law codes implementation (BNS, BNSS, BSA)</li>
+                        <li>Data protection and privacy legislation updates</li>
+                        <li>Corporate law amendments for digital economy</li>
+                        <li>Environmental law strengthening for sustainable development</li>
+                    </ul>
+                    
+                    <div class="visual-content">
+                        <div class="visual-content-header">
+                            <i class="fas fa-gavel"></i>
+                            <h4>Recent Legislative Changes</h4>
+                        </div>
+                        <p>India is witnessing unprecedented legal reforms aimed at modernizing the justice system and adapting to contemporary challenges.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 5 - Opportunities -->
+                <div class="slide-content" id="slide-5">
+                    <h2 class="slide-title">Opportunities for Growth & Innovation</h2>
+                    <ul class="slide-points">
+                        <li>Legal technology startups and fintech integration</li>
+                        <li>International arbitration and mediation centers</li>
+                        <li>Specialized courts for emerging areas of law</li>
+                        <li>Cross-border legal services and collaborations</li>
+                    </ul>
+                    
+                    <div class="stats-section">
+                        <div class="stat-card">
+                            <div class="stat-number">$2.8B</div>
+                            <p>Legal Tech Market by 2027</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">45%</div>
+                            <p>Annual Growth Rate</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">500+</div>
+                            <p>Legal Startups</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6 - Future Outlook -->
+                <div class="slide-content" id="slide-6">
+                    <h2 class="slide-title">Future Outlook</h2>
+                    <ul class="slide-points">
+                        <li>The evolution of law in India in coming years</li>
+                        <li>Emerging trends and technologies</li>
+                        <li>Opportunities for growth and innovation</li>
+                        <li>Strategic recommendations for success</li>
+                    </ul>
+                    
+                    <div class="visual-content">
+                        <div class="visual-content-header">
+                            <i class="fas fa-lightbulb"></i>
+                            <h4>Visual Content</h4>
+                        </div>
+                        <p>The future of Indian law promises unprecedented transformation through technology integration, regulatory modernization, and innovative legal service delivery models.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 7 - Key Components -->
+                <div class="slide-content" id="slide-7">
+                    <h2 class="slide-title">Key Components</h2>
+                    <ul class="slide-points">
+                        <li>Judicial infrastructure modernization</li>
+                        <li>Legal education and professional development</li>
+                        <li>Technology adoption and integration</li>
+                        <li>Access to justice and legal aid programs</li>
+                    </ul>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🏛️</div>
+                            <h3>Infrastructure</h3>
+                            <p>Modern courts and digital facilities</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎓</div>
+                            <h3>Education</h3>
+                            <p>Enhanced legal training programs</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Technology</h3>
+                            <p>Cutting-edge legal solutions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 8 - Benefits & Advantages -->
+                <div class="slide-content" id="slide-8">
+                    <h2 class="slide-title">Benefits & Advantages</h2>
+                    <ul class="slide-points">
+                        <li>Faster case resolution and reduced pendency</li>
+                        <li>Enhanced transparency and accountability</li>
+                        <li>Cost-effective legal services delivery</li>
+                        <li>Improved access to justice for all citizens</li>
+                    </ul>
+                    
+                    <div class="stats-section">
+                        <div class="stat-card">
+                            <div class="stat-number">60%</div>
+                            <p>Faster Resolution</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">40%</div>
+                            <p>Cost Reduction</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">80%</div>
+                            <p>Better Access</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 9 - Strategic Recommendations -->
+                <div class="slide-content" id="slide-9">
+                    <h2 class="slide-title">Strategic Recommendations</h2>
+                    <ul class="slide-points">
+                        <li>Invest in comprehensive digital infrastructure</li>
+                        <li>Develop specialized legal technology expertise</li>
+                        <li>Foster public-private partnerships in legal innovation</li>
+                        <li>Create adaptive regulatory frameworks for emerging technologies</li>
+                    </ul>
+                    
+                    <div class="visual-content">
+                        <div class="visual-content-header">
+                            <i class="fas fa-rocket"></i>
+                            <h4>Success Strategy</h4>
+                        </div>
+                        <p>A collaborative approach combining technological innovation, regulatory adaptation, and stakeholder engagement will be key to transforming India's legal landscape.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="nav-button" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+                
+                <button class="nav-button" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 10;
+
+        // Initialize pagination dots
+        function initializePagination() {
+            const pagination = document.getElementById('pagination');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = `page-dot ${i === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToSlide(i));
+                pagination.appendChild(dot);
+            }
+        }
+
+        // Update slide counter
+        function updateSlideCounter() {
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        // Show specific slide
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide-content');
+            const sidebarItems = document.querySelectorAll('.slide-item');
+            const dots = document.querySelectorAll('.page-dot');
+
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            sidebarItems.forEach(item => item.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Show current slide
+            if (slides[n]) slides[n].classList.add('active');
+            if (sidebarItems[n]) sidebarItems[n].classList.add('active');
+            if (dots[n]) dots[n].classList.add('active');
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = n === 0;
+            document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+
+            updateSlideCounter();
+        }
+
+        // Go to specific slide
+        function goToSlide(n) {
+            if (n >= 0 && n < totalSlides) {
+                currentSlide = n;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Next slide
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Previous slide
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('nextBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+
+        // Sidebar navigation
+        document.querySelectorAll('.slide-item').forEach((item, index) => {
+            item.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        initializePagination();
+        showSlide(0);
+    </script>
+</body>
+</html>

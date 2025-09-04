@@ -929,6 +929,27 @@ class PPTMakerApp {
     }
 }
 
+// Helper function for example generation
+function generateExample(topic) {
+    if (window.pptMaker) {
+        const topicInput = document.getElementById('topic-input');
+        if (topicInput) {
+            topicInput.value = topic;
+            window.pptMaker.state.topic = topic;
+            window.pptMaker.validateForm();
+            window.pptMaker.generatePresentation();
+            
+            // Scroll to the presentation area
+            setTimeout(() => {
+                const presentationArea = document.getElementById('presentation-preview');
+                if (presentationArea) {
+                    presentationArea.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
+        }
+    }
+}
+
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.pptMaker = new PPTMakerApp();
