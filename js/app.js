@@ -21,21 +21,21 @@ class PowerPointGeneratorApp {
 
     initializeElements() {
         // Main form elements
-        this.topicInput = document.getElementById('topicInput');
-        this.generateBtn = document.getElementById('generateBtn');
-        this.advancedOptionsBtn = document.getElementById('advancedOptionsBtn');
+        this.topicInput = document.getElementById('topic-input');
+        this.generateBtn = document.getElementById('generate-btn');
+        this.advancedOptionsBtn = document.getElementById('advanced-toggle');
         
         // Progress and loading elements
-        this.loadingSection = document.getElementById('loadingSection');
-        this.progressBar = document.getElementById('progressBar');
-        this.progressText = document.getElementById('progressText');
-        this.loadingSteps = document.getElementById('loadingSteps');
+        this.loadingSection = document.getElementById('loading-section');
+        this.progressBar = document.getElementById('progress-fill');
+        this.progressText = document.getElementById('progress-text');
+        this.loadingSteps = document.getElementById('loading-progress');
         
         // Preview and results
-        this.previewSection = document.getElementById('previewSection');
-        this.slideContainer = document.getElementById('slideContainer');
-        this.slideNavigation = document.getElementById('slideNavigation');
-        this.exportOptions = document.getElementById('exportOptions');
+        this.previewSection = document.getElementById('preview-section');
+        this.slideContainer = document.getElementById('slide-container');
+        this.slideNavigation = null; // Will be created dynamically
+        this.exportOptions = null; // Will be created dynamically
         
         // Template and theme selectors
         this.templateSelector = document.getElementById('templateSelector');
