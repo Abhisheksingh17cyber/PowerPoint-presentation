@@ -303,8 +303,102 @@ class ExportHandler {
 
     async addSlideContentToPPTX(slide, slideElement, options) {
         try {
-            // Extract slide content
+            const layout = slideElement.classList.contains('layout-hero') ? 'hero' :
+                          slideElement.classList.contains('layout-professional-title') ? 'professional-title' :
+                          slideElement.classList.contains('layout-content-split') ? 'content-split' :
+                          slideElement.classList.contains('layout-comparison') ? 'comparison' :
+                          slideElement.classList.contains('layout-timeline') ? 'timeline' :
+                          slideElement.classList.contains('layout-image-showcase') ? 'image-showcase' :
+                          slideElement.classList.contains('layout-data-visualization') ? 'data-visualization' :
+                          slideElement.classList.contains('layout-quote') ? 'quote' : 'content-with-image';
+
+            // Set slide background
+            slide.background = { fill: 'FFFFFF' };
+
+            switch (layout) {
+                case 'hero':
+                    await this.addHeroSlideToPPTX(slide, slideElement);
+                    break;
+                case 'professional-title':
+                    await this.addProfessionalTitleSlideToPPTX(slide, slideElement);
+                    break;
+                case 'content-split':
+                    await this.addContentSplitSlideToPPTX(slide, slideElement);
+                    break;
+                case 'comparison':
+                    await this.addComparisonSlideToPPTX(slide, slideElement);
+                    break;
+                case 'timeline':
+                    await this.addTimelineSlideToPPTX(slide, slideElement);
+                    break;
+                case 'image-showcase':
+                    await this.addImageShowcaseSlideToPPTX(slide, slideElement);
+                    break;
+                case 'data-visualization':
+                    await this.addDataVisualizationSlideToPPTX(slide, slideElement);
+                    break;
+                case 'quote':
+                    await this.addQuoteSlideToPPTX(slide, slideElement);
+                    break;
+                default:
+                    await this.addContentSlideToPPTX(slide, slideElement);
+            }
+
+        } catch (error) {
+            console.warn('Error adding slide content to PPTX:', error);
+        }
+    }
+
+    async addHeroSlideToPPTX(slide, slideElement) {
             const title = slideElement.querySelector('.slide-title')?.textContent || '';
+        const subtitle = slideElement.querySelector('.slide-subtitle')?.textContent || '';
+        const backgroundImage = slideElement.querySelector('.slide-image')?.src;
+
+        // Add background image if present
+        if (backgroundImage) {
+            try {
+                const imgData = await this.imageToBase64(backgroundImage);
+                slide.background = { data: imgData };
+            } catch (e) {
+                console.warn('Failed to add background image:', e);
+            }
+        }
+
+        // Add title
+        if (title) {
+            slide.addText(title, {
+                x: 1,
+                y: 2,
+                w: 8,
+                h: 1.5,
+                fontSize: 36,
+                color: 'FFFFFF',
+                bold: true,
+                fontFace: 'Arial',
+                align: 'center',
+                valign: 'middle'
+            });
+        }
+
+        // Add subtitle
+        if (subtitle) {
+            slide.addText(subtitle, {
+                x: 1,
+                y: 3.8,
+                w: 8,
+                h: 1,
+                fontSize: 20,
+                color: 'FFFFFF',
+                fontFace: 'Arial',
+                align: 'center',
+                valign: 'middle'
+            });
+        }
+    }
+
+    async addProfessionalTitleSlideToPPTX(slide, slideElement) {
+        const title = slideElement.querySelector('.slide-title')?.textContent || '';
+        const subtitle = slideElement.querySelector('.slide-subtitle')?.textContent || '';
             const content = Array.from(slideElement.querySelectorAll('.content-item'))
                 .map(item => item.textContent);
             
@@ -315,46 +409,399 @@ class ExportHandler {
                     y: 0.5,
                     w: 9,
                     h: 1,
-                    fontSize: 24,
+                fontSize: 32,
                     color: '2563eb',
                     bold: true,
-                    fontFace: 'Arial'
+                fontFace: 'Arial',
+                align: 'center'
+            });
+        }
+
+        // Add subtitle
+        if (subtitle) {
+            slide.addText(subtitle, {
+                x: 0.5,
+                y: 1.8,
+                w: 9,
+                h: 0.8,
+                fontSize: 18,
+                color: '6b7280',
+                fontFace: 'Arial',
+                align: 'center'
                 });
             }
 
             // Add content
             if (content.length > 0) {
                 slide.addText(content, {
+                x: 1,
+                y: 3,
+                w: 8,
+                h: 2.5,
+                fontSize: 16,
+                color: '1f2937',
+                fontFace: 'Arial',
+                bullet: true
+            });
+        }
+    }
+
+    async addContentSplitSlideToPPTX(slide, slideElement) {
+        const leftContent = slideElement.querySelector('.left-content');
+        const rightContent = slideElement.querySelector('.right-content');
+        const image = slideElement.querySelector('.slide-image')?.src;
+
+        // Add left content
+        if (leftContent) {
+            const leftTitle = leftContent.querySelector('.content-title')?.textContent || '';
+            const leftItems = Array.from(leftContent.querySelectorAll('.content-item'))
+                .map(item => item.textContent);
+
+            if (leftTitle) {
+                slide.addText(leftTitle, {
                     x: 0.5,
-                    y: 2,
-                    w: 9,
-                    h: 3,
-                    fontSize: 16,
+                    y: 0.5,
+                    w: 4.5,
+                    h: 0.8,
+                    fontSize: 20,
+                    color: '2563eb',
+                    bold: true,
+                    fontFace: 'Arial'
+                });
+            }
+
+            if (leftItems.length > 0) {
+                slide.addText(leftItems, {
+                    x: 0.5,
+                    y: 1.5,
+                    w: 4.5,
+                    h: 4,
+                    fontSize: 14,
                     color: '1f2937',
                     fontFace: 'Arial',
                     bullet: true
                 });
             }
+        }
 
-            // Add images if present
-            const images = slideElement.querySelectorAll('.slide-image');
-            for (let img of images) {
-                try {
-                    const imgData = await this.imageToBase64(img.src);
-                    slide.addImage({
-                        data: imgData,
-                        x: 5.5,
-                        y: 2,
-                        w: 4,
-                        h: 3
-                    });
-                } catch (e) {
-                    console.warn('Failed to add image to slide:', e);
-                }
+        // Add right content or image
+        if (rightContent) {
+            const rightTitle = rightContent.querySelector('.content-title')?.textContent || '';
+            const rightItems = Array.from(rightContent.querySelectorAll('.content-item'))
+                .map(item => item.textContent);
+
+            if (rightTitle) {
+                slide.addText(rightTitle, {
+                    x: 5,
+                    y: 0.5,
+                    w: 4.5,
+                    h: 0.8,
+                    fontSize: 20,
+                    color: '2563eb',
+                    bold: true,
+                    fontFace: 'Arial'
+                });
             }
 
-        } catch (error) {
-            console.warn('Error adding slide content to PPTX:', error);
+            if (rightItems.length > 0) {
+                slide.addText(rightItems, {
+                    x: 5,
+                    y: 1.5,
+                    w: 4.5,
+                    h: 4,
+                    fontSize: 14,
+                    color: '1f2937',
+                    fontFace: 'Arial',
+                    bullet: true
+                });
+            }
+        } else if (image) {
+            try {
+                const imgData = await this.imageToBase64(image);
+                slide.addImage({
+                    data: imgData,
+                    x: 5,
+                    y: 1.5,
+                    w: 4.5,
+                    h: 4
+                });
+            } catch (e) {
+                console.warn('Failed to add image:', e);
+            }
+        }
+    }
+
+    async addComparisonSlideToPPTX(slide, slideElement) {
+        const leftSide = slideElement.querySelector('.comparison-left');
+        const rightSide = slideElement.querySelector('.comparison-right');
+
+        // Add left side
+        if (leftSide) {
+            const leftTitle = leftSide.querySelector('.comparison-title')?.textContent || '';
+            const leftItems = Array.from(leftSide.querySelectorAll('.comparison-item'))
+                .map(item => item.textContent);
+
+            if (leftTitle) {
+                slide.addText(leftTitle, {
+                    x: 0.5,
+                    y: 0.5,
+                    w: 4.5,
+                    h: 0.8,
+                    fontSize: 20,
+                    color: '2563eb',
+                    bold: true,
+                    fontFace: 'Arial',
+                    align: 'center'
+                });
+            }
+
+            if (leftItems.length > 0) {
+                slide.addText(leftItems, {
+                    x: 0.5,
+                    y: 1.5,
+                    w: 4.5,
+                    h: 4,
+                    fontSize: 14,
+                    color: '1f2937',
+                    fontFace: 'Arial',
+                    bullet: true
+                });
+            }
+        }
+
+        // Add right side
+        if (rightSide) {
+            const rightTitle = rightSide.querySelector('.comparison-title')?.textContent || '';
+            const rightItems = Array.from(rightSide.querySelectorAll('.comparison-item'))
+                .map(item => item.textContent);
+
+            if (rightTitle) {
+                slide.addText(rightTitle, {
+                    x: 5,
+                    y: 0.5,
+                    w: 4.5,
+                    h: 0.8,
+                    fontSize: 20,
+                    color: '2563eb',
+                    bold: true,
+                    fontFace: 'Arial',
+                    align: 'center'
+                });
+            }
+
+            if (rightItems.length > 0) {
+                slide.addText(rightItems, {
+                    x: 5,
+                    y: 1.5,
+                    w: 4.5,
+                    h: 4,
+                    fontSize: 14,
+                    color: '1f2937',
+                    fontFace: 'Arial',
+                    bullet: true
+                });
+            }
+        }
+    }
+
+    async addTimelineSlideToPPTX(slide, slideElement) {
+        const title = slideElement.querySelector('.slide-title')?.textContent || '';
+        const timelineItems = slideElement.querySelectorAll('.timeline-item');
+
+        // Add title
+        if (title) {
+            slide.addText(title, {
+                x: 0.5,
+                y: 0.5,
+                w: 9,
+                h: 0.8,
+                fontSize: 24,
+                color: '2563eb',
+                bold: true,
+                fontFace: 'Arial',
+                align: 'center'
+            });
+        }
+
+        // Add timeline items
+        timelineItems.forEach((item, index) => {
+            const year = item.querySelector('.timeline-year')?.textContent || '';
+            const content = item.querySelector('.timeline-content')?.textContent || '';
+
+            if (year && content) {
+                slide.addText(`${year}: ${content}`, {
+                    x: 1,
+                    y: 1.5 + (index * 0.8),
+                    w: 8,
+                    h: 0.6,
+                    fontSize: 14,
+                    color: '1f2937',
+                    fontFace: 'Arial',
+                    bullet: true
+                });
+            }
+                });
+            }
+
+    async addImageShowcaseSlideToPPTX(slide, slideElement) {
+        const title = slideElement.querySelector('.slide-title')?.textContent || '';
+            const images = slideElement.querySelectorAll('.slide-image');
+
+        // Add title
+        if (title) {
+            slide.addText(title, {
+                x: 0.5,
+                y: 0.5,
+                w: 9,
+                h: 0.8,
+                fontSize: 24,
+                color: '2563eb',
+                bold: true,
+                fontFace: 'Arial',
+                align: 'center'
+            });
+        }
+
+        // Add images in a grid
+        images.forEach((img, index) => {
+            const x = 1 + (index % 3) * 3;
+            const y = 1.5 + Math.floor(index / 3) * 2;
+            
+            try {
+                this.imageToBase64(img.src).then(imgData => {
+                    slide.addImage({
+                        data: imgData,
+                        x: x,
+                        y: y,
+                        w: 2.5,
+                        h: 1.8
+                    });
+                    });
+                } catch (e) {
+                console.warn('Failed to add image:', e);
+            }
+        });
+    }
+
+    async addDataVisualizationSlideToPPTX(slide, slideElement) {
+        const title = slideElement.querySelector('.slide-title')?.textContent || '';
+        const chart = slideElement.querySelector('canvas');
+
+        // Add title
+        if (title) {
+            slide.addText(title, {
+                x: 0.5,
+                y: 0.5,
+                w: 9,
+                h: 0.8,
+                fontSize: 24,
+                color: '2563eb',
+                bold: true,
+                fontFace: 'Arial',
+                align: 'center'
+            });
+        }
+
+        // Add chart if present
+        if (chart) {
+            try {
+                const chartData = chart.toDataURL();
+                slide.addImage({
+                    data: chartData,
+                    x: 1,
+                    y: 1.5,
+                    w: 8,
+                    h: 4
+                });
+            } catch (e) {
+                console.warn('Failed to add chart:', e);
+            }
+        }
+    }
+
+    async addQuoteSlideToPPTX(slide, slideElement) {
+        const quote = slideElement.querySelector('.quote-text')?.textContent || '';
+        const author = slideElement.querySelector('.quote-author')?.textContent || '';
+
+        // Add quote
+        if (quote) {
+            slide.addText(quote, {
+                x: 1,
+                y: 2,
+                w: 8,
+                h: 2,
+                fontSize: 20,
+                color: '1f2937',
+                fontFace: 'Arial',
+                align: 'center',
+                valign: 'middle',
+                italic: true
+            });
+        }
+
+        // Add author
+        if (author) {
+            slide.addText(`— ${author}`, {
+                x: 1,
+                y: 4.2,
+                w: 8,
+                h: 0.8,
+                fontSize: 16,
+                color: '6b7280',
+                fontFace: 'Arial',
+                align: 'center'
+            });
+        }
+    }
+
+    async addContentSlideToPPTX(slide, slideElement) {
+        const title = slideElement.querySelector('.slide-title')?.textContent || '';
+        const content = Array.from(slideElement.querySelectorAll('.content-item'))
+            .map(item => item.textContent);
+        const image = slideElement.querySelector('.slide-image')?.src;
+
+        // Add title
+        if (title) {
+            slide.addText(title, {
+                x: 0.5,
+                y: 0.5,
+                w: 9,
+                h: 1,
+                fontSize: 24,
+                color: '2563eb',
+                bold: true,
+                fontFace: 'Arial'
+            });
+        }
+
+        // Add content
+        if (content.length > 0) {
+            slide.addText(content, {
+                x: 0.5,
+                y: 1.8,
+                w: image ? 5.5 : 9,
+                h: 3.5,
+                fontSize: 16,
+                color: '1f2937',
+                fontFace: 'Arial',
+                bullet: true
+            });
+        }
+
+        // Add image if present
+        if (image) {
+            try {
+                const imgData = await this.imageToBase64(image);
+                slide.addImage({
+                    data: imgData,
+                    x: 6.5,
+                    y: 1.8,
+                    w: 3,
+                    h: 3.5
+                });
+            } catch (e) {
+                console.warn('Failed to add image:', e);
+            }
         }
     }
 

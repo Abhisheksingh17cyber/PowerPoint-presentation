@@ -816,27 +816,117 @@ class ContentGenerator {
     }
 
     generateContentSlide(sectionData, sectionKey, topicData, slideIndex) {
+        // Determine layout based on content type and slide index
+        let layout = 'content-with-image';
+        if (sectionKey === 'introduction' || sectionKey === 'overview') {
+            layout = 'professional-title';
+        } else if (sectionKey === 'applications' || sectionKey === 'benefits') {
+            layout = 'content-split';
+        } else if (sectionKey === 'challenges' || sectionKey === 'solutions') {
+            layout = 'comparison';
+        } else if (sectionKey === 'future' || sectionKey === 'trends') {
+            layout = 'timeline';
+        }
+
         const slide = {
             type: 'content',
-            layout: 'content-with-image',
+            layout: layout,
             title: sectionData.title,
             subtitle: sectionData.subtitle,
             content: sectionData.content,
             slideNumber: slideIndex,
-            animation: 'slideInLeft'
+            animation: this.getAnimationForLayout(layout)
         };
 
-        // Add image if available
+        // Add high-quality image with better selection
         if (topicData.images && topicData.images.length > 0) {
             const imageIndex = slideIndex % topicData.images.length;
-            slide.image = {
-                src: `https://source.unsplash.com/800x600/?${topicData.images[imageIndex]}`,
-                alt: `${sectionData.title} illustration`,
-                position: 'right'
-            };
+            const imageQuery = topicData.images[imageIndex];
+            
+            slide.image = await this.imageService.fetchHighQualityImage(imageQuery, sectionData.title);
+            slide.image.position = this.getImagePositionForLayout(layout);
+        }
+
+        // Add additional content based on layout
+        if (layout === 'content-split') {
+            slide.leftContent = this.generateLeftContent(sectionData, topicData);
+            slide.rightContent = this.generateRightContent(sectionData, topicData);
+        } else if (layout === 'comparison') {
+            slide.leftSide = this.generateComparisonSide(sectionData, 'pros');
+            slide.rightSide = this.generateComparisonSide(sectionData, 'cons');
+        } else if (layout === 'timeline') {
+            slide.timelineItems = this.generateTimelineItems(sectionData, topicData);
         }
 
         return slide;
+    }
+
+    getAnimationForLayout(layout) {
+        const animations = {
+            'hero': 'professionalFadeIn',
+            'content-with-image': 'slideInWithRotation',
+            'chart-focus': 'fadeInWithBlur',
+            'professional-title': 'slideInFromTop',
+            'content-split': 'slideInDiagonal',
+            'image-showcase': 'zoomIn',
+            'data-visualization': 'fadeInScale',
+            'timeline': 'slideInFromLeft',
+            'comparison': 'slideInFromRight',
+            'quote': 'bounceIn'
+        };
+        return animations[layout] || 'professionalFadeIn';
+    }
+
+    getImagePositionForLayout(layout) {
+        const positions = {
+            'professional-title': 'background',
+            'content-with-image': 'right',
+            'image-showcase': 'full',
+            'content-split': 'center'
+        };
+        return positions[layout] || 'right';
+    }
+
+    generateLeftContent(sectionData, topicData) {
+        return {
+            title: 'Key Points',
+            content: sectionData.content.slice(0, Math.ceil(sectionData.content.length / 2))
+        };
+    }
+
+    generateRightContent(sectionData, topicData) {
+        return {
+            title: 'Additional Details',
+            content: sectionData.content.slice(Math.ceil(sectionData.content.length / 2))
+        };
+    }
+
+    generateComparisonSide(sectionData, type) {
+        if (type === 'pros') {
+            return {
+                title: 'Advantages',
+                content: sectionData.content.filter((item, index) => index % 2 === 0)
+            };
+        } else {
+            return {
+                title: 'Considerations',
+                content: sectionData.content.filter((item, index) => index % 2 === 1)
+            };
+        }
+    }
+
+    generateTimelineItems(sectionData, topicData) {
+        return sectionData.content.map((item, index) => ({
+            title: `Step ${index + 1}`,
+            content: item,
+            date: `Phase ${index + 1}`,
+            icon: this.getTimelineIcon(index)
+        }));
+    }
+
+    getTimelineIcon(index) {
+        const icons = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        return icons[index] || '•';
     }
 
     generateStatisticsSlide(statistics, slideIndex) {
@@ -976,6 +1066,85 @@ class ImageService {
             };
         }
     }
+
+    async fetchHighQualityImage(query, title) {
+        try {
+            // Enhanced fallback images with better quality
+            const enhancedFallbacks = {
+                'ai-brain': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&q=80',
+                'machine-learning': 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&h=800&fit=crop&q=80',
+                'robot-automation': 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=800&fit=crop&q=80',
+                'data-analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&q=80',
+                'neural-network': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=800&fit=crop&q=80',
+                'melting-glaciers': 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=1200&h=800&fit=crop&q=80',
+                'renewable-energy': 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&h=800&fit=crop&q=80',
+                'solar-panels': 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&h=800&fit=crop&q=80',
+                'wind-turbines': 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1200&h=800&fit=crop&q=80',
+                'sustainable-city': 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?w=1200&h=800&fit=crop&q=80',
+                'cyber-security-shield': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=800&fit=crop&q=80',
+                'network-protection': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=800&fit=crop&q=80',
+                'data-encryption': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&q=80',
+                'security-team': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=800&fit=crop&q=80',
+                'firewall-protection': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=800&fit=crop&q=80',
+                'blockchain-network': 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=800&fit=crop&q=80',
+                'cryptocurrency-coins': 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200&h=800&fit=crop&q=80',
+                'smart-contracts': 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=800&fit=crop&q=80',
+                'digital-security': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=800&fit=crop&q=80',
+                'decentralized-network': 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=800&fit=crop&q=80',
+                'solar-farm': 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&h=800&fit=crop&q=80',
+                'hydroelectric-dam': 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&h=800&fit=crop&q=80',
+                'geothermal-plant': 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&h=800&fit=crop&q=80',
+                'renewable-grid': 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&h=800&fit=crop&q=80'
+            };
+
+            if (enhancedFallbacks[query]) {
+                return {
+                    src: enhancedFallbacks[query],
+                    alt: title || query.replace('-', ' '),
+                    width: 1200,
+                    height: 800,
+                    caption: this.generateImageCaption(query, title)
+                };
+            }
+            
+            // Use Unsplash Source API with higher quality
+            return {
+                src: `https://source.unsplash.com/1200x800/?${query}`,
+                alt: title || query.replace('-', ' '),
+                width: 1200,
+                height: 800,
+                caption: this.generateImageCaption(query, title)
+            };
+        } catch (error) {
+            console.error('High quality image fetch failed:', error);
+            return {
+                src: 'https://via.placeholder.com/1200x800/e2e8f0/64748b?text=Professional+Image',
+                alt: title || 'Professional image',
+                width: 1200,
+                height: 800,
+                caption: 'Professional presentation image'
+            };
+        }
+    }
+
+    generateImageCaption(query, title) {
+        const captions = {
+            'ai-brain': 'Artificial Intelligence and Machine Learning',
+            'machine-learning': 'Advanced Machine Learning Algorithms',
+            'robot-automation': 'Automation and Robotics Technology',
+            'data-analysis': 'Data Analytics and Business Intelligence',
+            'neural-network': 'Neural Networks and Deep Learning',
+            'melting-glaciers': 'Climate Change and Environmental Impact',
+            'renewable-energy': 'Clean and Renewable Energy Solutions',
+            'solar-panels': 'Solar Energy Technology',
+            'wind-turbines': 'Wind Power Generation',
+            'sustainable-city': 'Sustainable Urban Development',
+            'cyber-security-shield': 'Cybersecurity and Data Protection',
+            'blockchain-network': 'Blockchain and Distributed Ledger Technology'
+        };
+        
+        return captions[query] || title || 'Professional presentation image';
+    }
 }
 
 // Chart Service for generating data visualizations
@@ -989,15 +1158,37 @@ class ChartService {
                     position: 'bottom',
                     labels: {
                         padding: 20,
-                        usePointStyle: true
+                        usePointStyle: true,
+                        font: {
+                            family: 'Inter, sans-serif',
+                            size: 12,
+                            weight: '500'
+                        },
+                        color: '#374151'
                     }
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    backgroundColor: 'rgba(17, 24, 39, 0.95)',
                     titleColor: 'white',
                     bodyColor: 'white',
-                    cornerRadius: 8
+                    cornerRadius: 12,
+                    padding: 16,
+                    titleFont: {
+                        family: 'Inter, sans-serif',
+                        size: 14,
+                        weight: '600'
+                    },
+                    bodyFont: {
+                        family: 'Inter, sans-serif',
+                        size: 13
+                    },
+                    borderColor: 'rgba(59, 130, 246, 0.3)',
+                    borderWidth: 1
                 }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
             }
         };
 
@@ -1006,22 +1197,50 @@ class ChartService {
                 ...baseConfig,
                 scales: {
                     x: {
-                        grid: { display: false },
-                        ticks: { color: '#64748b' }
+                        grid: { 
+                            display: true,
+                            color: 'rgba(229, 231, 235, 0.5)',
+                            drawBorder: false
+                        },
+                        ticks: { 
+                            color: '#6b7280',
+                            font: {
+                                family: 'Inter, sans-serif',
+                                size: 11
+                            }
+                        },
+                        border: {
+                            display: false
+                        }
                     },
                     y: {
-                        grid: { color: '#e2e8f0' },
-                        ticks: { color: '#64748b' }
+                        grid: { 
+                            color: 'rgba(229, 231, 235, 0.5)',
+                            drawBorder: false
+                        },
+                        ticks: { 
+                            color: '#6b7280',
+                            font: {
+                                family: 'Inter, sans-serif',
+                                size: 11
+                            }
+                        },
+                        border: {
+                            display: false
+                        }
                     }
                 },
                 elements: {
                     line: {
-                        borderWidth: 3,
-                        tension: 0.4
+                        borderWidth: 4,
+                        tension: 0.4,
+                        capBezierPoints: false
                     },
                     point: {
-                        radius: 6,
-                        hoverRadius: 8
+                        radius: 8,
+                        hoverRadius: 12,
+                        borderWidth: 3,
+                        hoverBorderWidth: 4
                     }
                 }
             },
@@ -1029,22 +1248,80 @@ class ChartService {
                 ...baseConfig,
                 scales: {
                     x: {
-                        grid: { display: false },
-                        ticks: { color: '#64748b' }
+                        grid: { 
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: { 
+                            color: '#6b7280',
+                            font: {
+                                family: 'Inter, sans-serif',
+                                size: 11,
+                                weight: '500'
+                            }
+                        }
                     },
                     y: {
-                        grid: { color: '#e2e8f0' },
-                        ticks: { color: '#64748b' }
+                        grid: { 
+                            color: 'rgba(229, 231, 235, 0.5)',
+                            drawBorder: false
+                        },
+                        ticks: { 
+                            color: '#6b7280',
+                            font: {
+                                family: 'Inter, sans-serif',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    bar: {
+                        borderRadius: 6,
+                        borderSkipped: false
                     }
                 }
             },
             doughnut: {
                 ...baseConfig,
-                cutout: '60%',
+                cutout: '65%',
                 plugins: {
                     ...baseConfig.plugins,
                     legend: {
-                        position: 'right'
+                        position: 'right',
+                        labels: {
+                            ...baseConfig.plugins.legend.labels,
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                },
+                elements: {
+                    arc: {
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }
+                }
+            },
+            pie: {
+                ...baseConfig,
+                plugins: {
+                    ...baseConfig.plugins,
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            ...baseConfig.plugins.legend.labels,
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                },
+                elements: {
+                    arc: {
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
                     }
                 }
             }
@@ -1054,11 +1331,79 @@ class ChartService {
     }
 
     generateChartColors(count) {
-        const colors = [
-            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
-            '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#6366f1'
-        ];
+        // Professional color palettes
+        const professionalPalettes = {
+            primary: [
+                '#1e40af', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'
+            ],
+            success: [
+                '#059669', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0'
+            ],
+            warning: [
+                '#d97706', '#f59e0b', '#fbbf24', '#fcd34d', '#fef3c7'
+            ],
+            danger: [
+                '#dc2626', '#ef4444', '#f87171', '#fca5a5', '#fecaca'
+            ],
+            purple: [
+                '#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe'
+            ],
+            teal: [
+                '#0d9488', '#14b8a6', '#5eead4', '#99f6e4', '#ccfbf1'
+            ],
+            orange: [
+                '#ea580c', '#f97316', '#fb923c', '#fdba74', '#fed7aa'
+            ],
+            pink: [
+                '#be185d', '#ec4899', '#f472b6', '#f9a8d4', '#fce7f3'
+            ]
+        };
+
+        // Select palette based on count
+        const paletteKeys = Object.keys(professionalPalettes);
+        const selectedPalette = professionalPalettes[paletteKeys[count % paletteKeys.length]];
         
-        return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
+        // Generate gradient variations for better visual appeal
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+            const baseColor = selectedPalette[i % selectedPalette.length];
+            const variation = i % 3; // Create 3 variations of each color
+            
+            switch (variation) {
+                case 0:
+                    colors.push(baseColor);
+                    break;
+                case 1:
+                    colors.push(this.lightenColor(baseColor, 20));
+                    break;
+                case 2:
+                    colors.push(this.darkenColor(baseColor, 20));
+                    break;
+            }
+        }
+        
+        return colors;
+    }
+
+    lightenColor(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = (num >> 8 & 0x00FF) + amt;
+        const B = (num & 0x0000FF) + amt;
+        return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+            (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+            (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+    }
+
+    darkenColor(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) - amt;
+        const G = (num >> 8 & 0x00FF) - amt;
+        const B = (num & 0x0000FF) - amt;
+        return "#" + (0x1000000 + (R > 255 ? 255 : R < 0 ? 0 : R) * 0x10000 +
+            (G > 255 ? 255 : G < 0 ? 0 : G) * 0x100 +
+            (B > 255 ? 255 : B < 0 ? 0 : B)).toString(16).slice(1);
     }
 }

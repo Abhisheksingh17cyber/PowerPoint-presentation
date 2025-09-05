@@ -150,6 +150,206 @@ class TemplateManager {
                         animation: 'fadeInScale'
                     }
                 ]
+            },
+            'executive-summary': {
+                name: 'Executive Summary',
+                description: 'Professional template for executive presentations and board meetings',
+                theme: 'corporate-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'professional-title',
+                        animation: 'professionalFadeIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-split',
+                        animation: 'slideInDiagonal'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'data-visualization',
+                        animation: 'fadeInWithBlur'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'comparison',
+                        animation: 'slideInFromRight'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'zoomIn'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'quote',
+                        animation: 'bounceIn'
+                    }
+                ]
+            },
+            'creative-portfolio': {
+                name: 'Creative Portfolio',
+                description: 'Vibrant template for showcasing creative work and portfolios',
+                theme: 'purple-gradient',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'slideInFromTop'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'image-showcase',
+                        animation: 'zoomIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-split',
+                        animation: 'slideInWithRotation'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'data-visualization',
+                        animation: 'fadeInScale'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'timeline',
+                        animation: 'slideInFromLeft'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'quote',
+                        animation: 'bounceIn'
+                    }
+                ]
+            },
+            'data-analytics': {
+                name: 'Data Analytics',
+                description: 'Template optimized for data-heavy presentations and analytics reports',
+                theme: 'tech-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'professional-title',
+                        animation: 'slideInFromTop'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'data-visualization',
+                        animation: 'fadeInWithBlur'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'comparison',
+                        animation: 'slideInDiagonal'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'zoomIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'timeline',
+                        animation: 'slideInFromLeft'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'content-split',
+                        animation: 'slideInFromBottom'
+                    }
+                ]
+            },
+            'startup-pitch': {
+                name: 'Startup Pitch',
+                description: 'Dynamic template for startup pitches and investor presentations',
+                theme: 'orange-energy',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'professionalFadeIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-split',
+                        animation: 'slideInWithRotation'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'data-visualization',
+                        animation: 'fadeInScale'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'comparison',
+                        animation: 'slideInDiagonal'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'zoomIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'timeline',
+                        animation: 'slideInFromLeft'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'quote',
+                        animation: 'bounceIn'
+                    }
+                ]
+            },
+            'academic-research': {
+                name: 'Academic Research',
+                description: 'Formal template for academic presentations and research papers',
+                theme: 'modern-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'professional-title',
+                        animation: 'slideInFromTop'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInLeft'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'data-visualization',
+                        animation: 'fadeInWithBlur'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'comparison',
+                        animation: 'slideInFromRight'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'timeline',
+                        animation: 'slideInFromLeft'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'content-split',
+                        animation: 'slideInFromBottom'
+                    }
+                ]
             }
         };
     }
