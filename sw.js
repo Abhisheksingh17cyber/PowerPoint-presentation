@@ -1,5 +1,5 @@
-// Service Worker for PPT Maker Pro PWA
-const CACHE_NAME = 'ppt-maker-v1.0.0';
+// Service Worker for AI PowerPoint Generator PWA
+const CACHE_NAME = 'ai-ppt-generator-v2.0.0';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -12,8 +12,11 @@ const urlsToCache = [
     '/js/template-manager.js',
     '/js/export-handler.js',
     '/manifest.json',
-    'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+    'https://cdn.jsdelivr.net/npm/chart.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/PptxGenJS/3.12.0/pptxgen.bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
 ];
 
 // Install event - cache resources
