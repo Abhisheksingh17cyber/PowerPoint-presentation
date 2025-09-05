@@ -572,7 +572,7 @@ class ContentGenerator {
             }
         }
         
-        this.analyzedTopic = bestMatch || await this.generateTopicAnalysis(topic);
+        this.analyzedTopic = bestMatch || this.generateTopicAnalysis(topic);
         
         return this.analyzedTopic;
     }
@@ -595,22 +595,22 @@ class ContentGenerator {
         return score;
     }
 
-    async generateTopicAnalysis(topic) {
+    generateTopicAnalysis(topic) {
         // For topics not in database, generate generic structure
         return {
             key: 'generic',
             data: {
                 category: 'general',
                 keywords: topic.split(' '),
-                sections: await this.generateGenericSections(topic),
-                statistics: await this.generateGenericStats(topic),
-                charts: await this.generateGenericCharts(topic),
-                images: await this.generateGenericImages(topic)
+                sections: this.generateGenericSections(topic),
+                statistics: this.generateGenericStats(topic),
+                charts: this.generateGenericCharts(topic),
+                images: this.generateGenericImages(topic)
             }
         };
     }
 
-    async generateGenericSections(topic) {
+    generateGenericSections(topic) {
         const sections = {
             introduction: {
                 title: `Introduction to ${topic}`,
@@ -667,7 +667,7 @@ class ContentGenerator {
         return sections;
     }
 
-    async generateGenericStats(topic) {
+    generateGenericStats(topic) {
         return [
             { label: 'Market Growth', value: '15%', description: 'annual growth rate' },
             { label: 'Adoption Rate', value: '65%', description: 'organizations implementing' },
@@ -676,7 +676,7 @@ class ContentGenerator {
         ];
     }
 
-    async generateGenericCharts(topic) {
+    generateGenericCharts(topic) {
         return {
             growth: {
                 type: 'line',
@@ -697,14 +697,14 @@ class ContentGenerator {
         };
     }
 
-    async generateGenericImages(topic) {
+    generateGenericImages(topic) {
         const genericImages = ['business-team', 'technology-concept', 'data-analytics', 'innovation', 'growth-chart'];
         return genericImages;
     }
 
-    async generateContent(topic, options = {}) {
+    generateContent(topic, options = {}) {
         if (!this.analyzedTopic) {
-            await this.analyzeTopic(topic);
+            this.analyzeTopic(topic);
         }
 
         const { data } = this.analyzedTopic;
@@ -766,6 +766,11 @@ class ContentGenerator {
         presentationData.slides.push(this.generateConclusionSlide(topic, data, slideIndex));
         
         return presentationData;
+    }
+
+    // Main method called by the app
+    generatePresentation(topic, options = {}) {
+        return this.generateContent(topic, options);
     }
 
     generateTitle(topic) {
@@ -843,7 +848,7 @@ class ContentGenerator {
             const imageIndex = slideIndex % topicData.images.length;
             const imageQuery = topicData.images[imageIndex];
             
-            slide.image = await this.imageService.fetchHighQualityImage(imageQuery, sectionData.title);
+            slide.image = this.imageService.fetchHighQualityImage(imageQuery, sectionData.title);
             slide.image.position = this.getImagePositionForLayout(layout);
         }
 
@@ -975,7 +980,7 @@ class ContentGenerator {
         };
     }
 
-    async addImages(presentationData) {
+    addImages(presentationData) {
         if (!this.analyzedTopic) return;
 
         const { data } = this.analyzedTopic;
@@ -985,13 +990,13 @@ class ContentGenerator {
             if (slide.type === 'content' || slide.type === 'statistics') {
                 if (!slide.image && images.length > 0) {
                     const imageQuery = images[Math.floor(Math.random() * images.length)];
-                    slide.image = await this.imageService.fetchImage(imageQuery);
+                    slide.image = this.imageService.fetchImage(imageQuery);
                 }
             }
         }
     }
 
-    async addCharts(presentationData) {
+    addCharts(presentationData) {
         if (!this.analyzedTopic) return;
 
         const { data } = this.analyzedTopic;
