@@ -1,588 +1,721 @@
-// Advanced Content Generator for Professional PPT Maker
+// Ultimate Automated PPT Generator with Real Images, Charts & Complete Content
 class ContentGenerator {
     constructor() {
         this.apiEndpoints = {
-            wikipedia: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
             unsplash: 'https://api.unsplash.com/search/photos',
-            openAI: '/api/openai', // Proxy endpoint if using OpenAI
+            charts: 'https://quickchart.io/chart',
+            icons: 'https://api.iconify.design'
         };
         
         this.cache = new Map();
+        this.unsplashKey = 'YOUR_UNSPLASH_KEY_HERE'; // Users can add their key
         this.templates = this.initializeTemplates();
+        this.comprehensiveDatabase = this.initializeContentDatabase();
     }
     
     initializeTemplates() {
         return {
             business: {
-                slideCount: 8,
-                structure: ['title', 'agenda', 'overview', 'analysis', 'strategy', 'implementation', 'results', 'conclusion'],
+                slideCount: 10,
+                structure: ['title', 'overview', 'market-analysis', 'key-features', 'benefits', 'statistics', 'case-studies', 'implementation', 'future-trends', 'conclusion'],
                 style: 'professional',
-                colors: ['#2563eb', '#1e40af', '#3b82f6']
+                colors: ['#2563eb', '#1e40af', '#3b82f6'],
+                chartTypes: ['bar', 'line', 'pie', 'doughnut']
             },
             academic: {
-                slideCount: 10,
-                structure: ['title', 'abstract', 'introduction', 'methodology', 'findings', 'analysis', 'discussion', 'limitations', 'conclusion', 'references'],
+                slideCount: 12,
+                structure: ['title', 'abstract', 'introduction', 'literature-review', 'methodology', 'findings', 'analysis', 'discussion', 'implications', 'limitations', 'conclusion', 'references'],
                 style: 'scholarly',
-                colors: ['#374151', '#4b5563', '#6b7280']
+                colors: ['#374151', '#4b5563', '#6b7280'],
+                chartTypes: ['scatter', 'line', 'bar', 'radar']
             },
             creative: {
-                slideCount: 7,
-                structure: ['title', 'vision', 'concept', 'design', 'features', 'impact', 'future'],
+                slideCount: 8,
+                structure: ['title', 'vision', 'concept', 'design-elements', 'features', 'user-experience', 'impact', 'future'],
                 style: 'innovative',
-                colors: ['#7c3aed', '#6d28d9', '#8b5cf6']
-            },
-            minimal: {
-                slideCount: 6,
-                structure: ['title', 'problem', 'solution', 'benefits', 'implementation', 'summary'],
-                style: 'clean',
-                colors: ['#000000', '#404040', '#808080']
+                colors: ['#7c3aed', '#6d28d9', '#8b5cf6'],
+                chartTypes: ['doughnut', 'radar', 'bubble', 'polar']
             }
         };
     }
     
+    initializeContentDatabase() {
+        return {
+            "artificial intelligence": {
+                overview: "AI revolutionizes industries through machine learning, automation, and intelligent decision-making",
+                keyPoints: [
+                    "Machine learning algorithms process vast datasets to identify patterns",
+                    "Natural language processing enables human-computer communication",
+                    "Computer vision allows machines to interpret visual information",
+                    "AI automation increases efficiency and reduces human error",
+                    "Deep learning mimics neural networks for complex problem-solving"
+                ],
+                statistics: [
+                    { label: "AI Market Size 2024", value: "$184B", growth: "+35%" },
+                    { label: "Companies Using AI", value: "77%", growth: "+15%" },
+                    { label: "AI Job Growth", value: "97%", growth: "+25%" },
+                    { label: "Productivity Increase", value: "40%", growth: "+20%" }
+                ],
+                applications: [
+                    "Healthcare diagnostics and drug discovery",
+                    "Autonomous vehicles and transportation",
+                    "Financial fraud detection and trading",
+                    "Manufacturing quality control and robotics",
+                    "Customer service chatbots and personalization"
+                ],
+                trends: [
+                    "Generative AI transforming content creation",
+                    "Edge AI bringing intelligence to devices",
+                    "Ethical AI ensuring responsible development",
+                    "Quantum AI promising exponential computing power"
+                ],
+                challenges: [
+                    "Data privacy and security concerns",
+                    "Algorithm bias and fairness issues",
+                    "Job displacement and workforce adaptation",
+                    "Regulatory compliance and governance"
+                ],
+                futureOutlook: "AI will become ubiquitous, driving innovation across all sectors with human-AI collaboration becoming the norm"
+            },
+            
+            "climate change": {
+                overview: "Climate change represents the most pressing environmental challenge, requiring urgent global action and innovative solutions",
+                keyPoints: [
+                    "Global temperature has risen 1.1°C since pre-industrial times",
+                    "Greenhouse gas concentrations at highest levels in 3 million years",
+                    "Sea levels rising 3.3mm per year, threatening coastal communities",
+                    "Extreme weather events increasing in frequency and intensity",
+                    "Arctic ice declining at 13% per decade, accelerating warming"
+                ],
+                statistics: [
+                    { label: "CO2 Concentration", value: "421ppm", growth: "+2.4ppm/year" },
+                    { label: "Annual Emissions", value: "36.8Gt", growth: "+1.1%" },
+                    { label: "Renewable Energy Growth", value: "12%", growth: "+0.8%" },
+                    { label: "Climate Investment Needed", value: "$4.5T", growth: "+6%" }
+                ],
+                applications: [
+                    "Renewable energy transition and grid modernization",
+                    "Carbon capture and storage technologies",
+                    "Sustainable agriculture and food systems",
+                    "Green transportation and electric mobility",
+                    "Climate adaptation and resilient infrastructure"
+                ],
+                trends: [
+                    "Net-zero commitments from major corporations",
+                    "Green hydrogen emerging as clean fuel alternative",
+                    "Nature-based solutions gaining investment traction",
+                    "Climate tech startups attracting record funding"
+                ],
+                challenges: [
+                    "Political resistance to environmental policies",
+                    "High costs of green technology adoption",
+                    "Developing country capacity constraints",
+                    "Fossil fuel industry transition challenges"
+                ],
+                futureOutlook: "Achieving 1.5°C target requires immediate action, with clean technology costs falling and climate solutions scaling rapidly"
+            },
+
+            "renewable energy": {
+                overview: "Renewable energy sources are transforming the global energy landscape, offering sustainable alternatives to fossil fuels",
+                keyPoints: [
+                    "Solar and wind power costs dropped 85% and 70% respectively since 2010",
+                    "Renewable capacity additions reached record 295 GW globally in 2022",
+                    "Storage technology advances solving intermittency challenges",
+                    "Smart grid integration enabling efficient energy distribution",
+                    "Green jobs in renewable sector growing 5x faster than overall economy"
+                ],
+                statistics: [
+                    { label: "Global Renewable Capacity", value: "3,372 GW", growth: "+8.8%" },
+                    { label: "Solar PV Additions", value: "191 GW", growth: "+22%" },
+                    { label: "Wind Power Growth", value: "77 GW", growth: "+9%" },
+                    { label: "Investment Volume", value: "$1.8T", growth: "+8%" }
+                ],
+                applications: [
+                    "Utility-scale solar and wind farms",
+                    "Distributed rooftop solar systems",
+                    "Offshore wind energy platforms",
+                    "Hydroelectric and pumped storage",
+                    "Geothermal and biomass power generation"
+                ],
+                trends: [
+                    "Floating solar panels maximizing water surface usage",
+                    "Green hydrogen production from excess renewable energy",
+                    "Agrovoltaics combining solar panels with agriculture",
+                    "Microgrids enhancing energy security and resilience"
+                ],
+                challenges: [
+                    "Grid integration and stability management",
+                    "Energy storage cost and technology limitations",
+                    "Land use and environmental impact concerns",
+                    "Policy and regulatory framework inconsistencies"
+                ],
+                futureOutlook: "Renewables expected to provide 80% of global electricity by 2050, with continued cost reductions and efficiency improvements"
+            },
+
+            "digital marketing": {
+                overview: "Digital marketing leverages online channels and data analytics to reach target audiences with personalized, measurable campaigns",
+                keyPoints: [
+                    "Social media platforms reach 4.8 billion users globally",
+                    "Mobile devices account for 55% of web traffic",
+                    "Email marketing delivers $42 ROI for every $1 spent",
+                    "Video content generates 1200% more shares than text",
+                    "Personalization increases conversion rates by 10-15%"
+                ],
+                statistics: [
+                    { label: "Digital Ad Spending", value: "$701B", growth: "+8.2%" },
+                    { label: "Mobile Ad Share", value: "68%", growth: "+12%" },
+                    { label: "E-commerce Growth", value: "14.3%", growth: "+2.1%" },
+                    { label: "Video Marketing ROI", value: "87%", growth: "+5%" }
+                ],
+                applications: [
+                    "Search engine optimization and marketing",
+                    "Social media advertising and community building",
+                    "Content marketing and thought leadership",
+                    "Email automation and customer nurturing",
+                    "Influencer partnerships and brand collaborations"
+                ],
+                trends: [
+                    "AI-powered personalization and predictive analytics",
+                    "Voice search optimization for smart speakers",
+                    "Interactive content and immersive experiences",
+                    "Privacy-first marketing with cookieless solutions"
+                ],
+                challenges: [
+                    "Data privacy regulations and compliance",
+                    "Ad blocking and banner blindness",
+                    "Platform algorithm changes affecting reach",
+                    "Attribution modeling across multiple touchpoints"
+                ],
+                futureOutlook: "Digital marketing evolving toward hyper-personalization, omnichannel experiences, and AI-driven automation"
+            },
+
+            "blockchain technology": {
+                overview: "Blockchain creates immutable, decentralized ledgers that enable secure, transparent transactions without intermediaries",
+                keyPoints: [
+                    "Distributed ledger technology eliminates single points of failure",
+                    "Cryptographic security ensures data integrity and authenticity",
+                    "Smart contracts automate agreement execution and enforcement",
+                    "Consensus mechanisms validate transactions across network nodes",
+                    "Tokenization enables fractional ownership and new business models"
+                ],
+                statistics: [
+                    { label: "Blockchain Market Size", value: "$67.3B", growth: "+68.4%" },
+                    { label: "Enterprise Adoption", value: "81%", growth: "+23%" },
+                    { label: "DeFi Total Value", value: "$45B", growth: "+156%" },
+                    { label: "NFT Market Value", value: "$25B", growth: "+21,350%" }
+                ],
+                applications: [
+                    "Cryptocurrency and digital payment systems",
+                    "Supply chain transparency and traceability",
+                    "Identity verification and credential management",
+                    "Real estate tokenization and fractional ownership",
+                    "Healthcare data security and interoperability"
+                ],
+                trends: [
+                    "Central bank digital currencies (CBDCs) development",
+                    "Web3 and decentralized internet infrastructure",
+                    "Carbon credit trading on blockchain platforms",
+                    "Blockchain-as-a-Service (BaaS) platforms emerging"
+                ],
+                challenges: [
+                    "Energy consumption and environmental impact",
+                    "Scalability limitations and transaction speeds",
+                    "Regulatory uncertainty and compliance requirements",
+                    "Technical complexity and user adoption barriers"
+                ],
+                futureOutlook: "Blockchain technology maturing with enterprise adoption, regulatory clarity, and sustainable consensus mechanisms"
+            },
+
+            "cybersecurity": {
+                overview: "Cybersecurity protects digital systems, networks, and data from evolving threats through comprehensive defense strategies",
+                keyPoints: [
+                    "Cyberattacks increased 38% year-over-year affecting all industries",
+                    "Ransomware damages expected to reach $265 billion by 2031",
+                    "Zero-trust security models assuming no implicit trust",
+                    "AI and machine learning enhancing threat detection capabilities",
+                    "Human error remains the leading cause of security breaches"
+                ],
+                statistics: [
+                    { label: "Global Cybersecurity Spending", value: "$172B", growth: "+12.1%" },
+                    { label: "Data Breach Average Cost", value: "$4.45M", growth: "+15.3%" },
+                    { label: "Unfilled Security Jobs", value: "3.5M", growth: "+23%" },
+                    { label: "Remote Work Security Incidents", value: "+40%", growth: "+18%" }
+                ],
+                applications: [
+                    "Network security and intrusion detection systems",
+                    "Identity and access management solutions",
+                    "Endpoint protection and device security",
+                    "Cloud security and data encryption",
+                    "Security awareness training and education"
+                ],
+                trends: [
+                    "Extended detection and response (XDR) platforms",
+                    "Quantum-resistant cryptography development",
+                    "Security orchestration and automated response",
+                    "Privacy-enhancing technologies and frameworks"
+                ],
+                challenges: [
+                    "Sophisticated AI-powered cyberattacks",
+                    "IoT device security and vulnerability management",
+                    "Skills shortage and cybersecurity talent gap",
+                    "Balancing security with user experience"
+                ],
+                futureOutlook: "Cybersecurity becoming integral to business strategy with AI-driven defense and quantum-safe solutions"
+            }
+        };
+    }
+
     async generateContent(topic, template = 'business') {
         const cacheKey = `${topic}-${template}`;
         
         if (this.cache.has(cacheKey)) {
             return this.cache.get(cacheKey);
         }
-        
+
         try {
-            // Research the topic
-            const research = await this.researchTopic(topic);
+            // Get comprehensive content for the topic
+            const content = await this.getTopicContent(topic, template);
             
-            // Generate structured content
-            const content = await this.createStructuredContent(topic, research, template);
+            // Generate real images for each slide
+            const images = await this.generateImages(topic, content.slides.length);
             
-            // Cache the result
-            this.cache.set(cacheKey, content);
+            // Create charts and visual elements
+            const charts = this.generateCharts(topic, content.statistics);
             
-            return content;
+            // Combine all elements into complete presentation
+            const presentation = {
+                title: content.title,
+                subtitle: content.subtitle,
+                slides: content.slides.map((slide, index) => ({
+                    ...slide,
+                    image: images[index] || this.getFallbackImage(slide.title),
+                    chart: charts[index] || null,
+                    visualElements: this.generateVisualElements(slide, template)
+                })),
+                metadata: {
+                    topic,
+                    template,
+                    slideCount: content.slides.length,
+                    generatedAt: new Date().toISOString()
+                }
+            };
+
+            this.cache.set(cacheKey, presentation);
+            return presentation;
+
         } catch (error) {
-            console.error('Content generation failed:', error);
-            return this.generateFallbackContent(topic, template);
+            console.error('Content generation error:', error);
+            return this.generateFallbackPresentation(topic, template);
         }
     }
-    
-    async researchTopic(topic) {
-        const research = {
-            summary: '',
-            keyFacts: [],
-            relatedTerms: [],
-            statistics: [],
-            trends: [],
-            challenges: [],
-            opportunities: []
-        };
+
+    async getTopicContent(topic, template) {
+        const normalizedTopic = topic.toLowerCase();
+        const templateConfig = this.templates[template];
         
-        try {
-            // Try Wikipedia API for basic information
-            const wikipediaData = await this.fetchWikipediaData(topic);
-            if (wikipediaData) {
-                research.summary = wikipediaData.extract;
-                research.keyFacts = this.extractKeyFacts(wikipediaData.extract);
-            }
-        } catch (error) {
-            console.warn('Wikipedia fetch failed:', error);
+        // Check if we have comprehensive data for this topic
+        const topicData = this.findTopicData(normalizedTopic);
+        
+        if (topicData) {
+            return this.buildPresentationFromDatabase(topic, topicData, templateConfig);
+        } else {
+            return this.generateGenericContent(topic, templateConfig);
         }
-        
-        // Generate additional content based on topic analysis
-        research.relatedTerms = this.generateRelatedTerms(topic);
-        research.statistics = this.generateStatistics(topic);
-        research.trends = this.generateTrends(topic);
-        research.challenges = this.generateChallenges(topic);
-        research.opportunities = this.generateOpportunities(topic);
-        
-        return research;
     }
-    
-    async fetchWikipediaData(topic) {
-        try {
-            const response = await fetch(`${this.apiEndpoints.wikipedia}${encodeURIComponent(topic)}`);
-            if (response.ok) {
-                return await response.json();
+
+    findTopicData(topic) {
+        // Find exact or partial matches in our database
+        for (const [key, data] of Object.entries(this.comprehensiveDatabase)) {
+            if (topic.includes(key) || key.includes(topic)) {
+                return data;
             }
-        } catch (error) {
-            console.warn('Wikipedia API error:', error);
         }
         return null;
     }
-    
-    extractKeyFacts(text) {
-        if (!text) return [];
+
+    buildPresentationFromDatabase(topic, data, templateConfig) {
+        const slides = [];
         
-        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 20);
-        return sentences.slice(0, 5).map(s => s.trim());
-    }
-    
-    generateRelatedTerms(topic) {
-        const termMappings = {
-            'artificial intelligence': ['machine learning', 'neural networks', 'deep learning', 'automation', 'robotics'],
-            'renewable energy': ['solar power', 'wind energy', 'sustainability', 'clean energy', 'carbon neutral'],
-            'digital marketing': ['SEO', 'social media', 'content marketing', 'analytics', 'conversion optimization'],
-            'climate change': ['global warming', 'greenhouse gases', 'carbon emissions', 'sustainability', 'environmental impact'],
-            'blockchain': ['cryptocurrency', 'decentralization', 'smart contracts', 'digital ledger', 'consensus'],
-            'cybersecurity': ['data protection', 'network security', 'encryption', 'threat detection', 'risk management']
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        for (const [key, terms] of Object.entries(termMappings)) {
-            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
-                return terms;
-            }
-        }
-        
-        // Generate generic terms
-        return ['innovation', 'technology', 'development', 'implementation', 'best practices'];
-    }
-    
-    generateStatistics(topic) {
-        const statisticTemplates = {
-            'artificial intelligence': [
-                'AI market expected to reach $733.7 billion by 2027',
-                '37% of organizations have implemented AI in some form',
-                '85% of businesses plan to invest in AI by 2025',
-                'AI can improve productivity by up to 40%'
-            ],
-            'renewable energy': [
-                'Renewable energy accounts for 26% of global electricity generation',
-                'Solar power costs have decreased by 85% since 2010',
-                'Wind energy capacity increased by 53 GW in 2020',
-                '11 million people work in renewable energy worldwide'
-            ],
-            'digital marketing': [
-                'Digital advertising spending reached $378 billion in 2020',
-                '4.6 billion people use social media globally',
-                'Email marketing has an average ROI of $42 for every $1 spent',
-                '93% of online experiences begin with a search engine'
-            ]
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        for (const [key, stats] of Object.entries(statisticTemplates)) {
-            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
-                return stats;
-            }
-        }
-        
-        return [
-            'Industry showing strong growth potential',
-            'Significant investment opportunities available',
-            'Growing adoption across multiple sectors',
-            'Positive impact on operational efficiency'
-        ];
-    }
-    
-    generateTrends(topic) {
-        const trendTemplates = {
-            'artificial intelligence': [
-                'Increased adoption of AI in healthcare',
-                'Growth in conversational AI and chatbots',
-                'Edge AI becoming more prevalent',
-                'Focus on explainable AI systems'
-            ],
-            'renewable energy': [
-                'Declining costs of solar and wind power',
-                'Growth in energy storage solutions',
-                'Increased corporate renewable energy commitments',
-                'Development of green hydrogen technologies'
-            ],
-            'digital marketing': [
-                'Rise of video content marketing',
-                'Increased focus on personalization',
-                'Growth in influencer marketing',
-                'Privacy-first marketing strategies'
-            ]
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        for (const [key, trends] of Object.entries(trendTemplates)) {
-            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
-                return trends;
-            }
-        }
-        
-        return [
-            'Emerging technologies driving innovation',
-            'Increased focus on sustainability',
-            'Digital transformation accelerating',
-            'Data-driven decision making'
-        ];
-    }
-    
-    generateChallenges(topic) {
-        const challengeTemplates = {
-            'artificial intelligence': [
-                'Data privacy and security concerns',
-                'Need for skilled AI professionals',
-                'Ethical considerations and bias',
-                'Integration with existing systems'
-            ],
-            'renewable energy': [
-                'Grid integration and stability',
-                'Energy storage limitations',
-                'Initial investment costs',
-                'Policy and regulatory barriers'
-            ],
-            'digital marketing': [
-                'Increasing competition online',
-                'Privacy regulations and compliance',
-                'Ad fatigue and banner blindness',
-                'Measuring true ROI and attribution'
-            ]
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        for (const [key, challenges] of Object.entries(challengeTemplates)) {
-            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
-                return challenges;
-            }
-        }
-        
-        return [
-            'Implementation complexity',
-            'Cost considerations',
-            'Change management',
-            'Skill development requirements'
-        ];
-    }
-    
-    generateOpportunities(topic) {
-        const opportunityTemplates = {
-            'artificial intelligence': [
-                'Automation of repetitive tasks',
-                'Enhanced decision-making capabilities',
-                'New product and service innovations',
-                'Improved customer experiences'
-            ],
-            'renewable energy': [
-                'Job creation in clean energy sector',
-                'Energy independence and security',
-                'Environmental sustainability',
-                'Long-term cost savings'
-            ],
-            'digital marketing': [
-                'Precise audience targeting',
-                'Real-time campaign optimization',
-                'Global market reach',
-                'Cost-effective customer acquisition'
-            ]
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        for (const [key, opportunities] of Object.entries(opportunityTemplates)) {
-            if (lowerTopic.includes(key) || key.includes(lowerTopic)) {
-                return opportunities;
-            }
-        }
-        
-        return [
-            'Innovation and competitive advantage',
-            'Efficiency improvements',
-            'Market expansion opportunities',
-            'Strategic partnerships'
-        ];
-    }
-    
-    async createStructuredContent(topic, research, template) {
-        const templateConfig = this.templates[template];
-        const content = {
+        // Title slide
+        slides.push({
+            type: 'title',
             title: this.formatTitle(topic),
-            subtitle: this.generateSubtitle(topic, template),
-            slides: [],
-            template: template,
-            research: research
-        };
-        
-        // Generate slides based on template structure
-        for (let i = 0; i < templateConfig.structure.length; i++) {
-            const slideType = templateConfig.structure[i];
-            const slide = await this.generateSlide(slideType, topic, research, i, templateConfig);
-            content.slides.push(slide);
-        }
-        
-        return content;
-    }
-    
-    formatTitle(topic) {
-        return topic.split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-            .join(' ');
-    }
-    
-    generateSubtitle(topic, template) {
-        const subtitleTemplates = {
-            business: `Strategic Overview and Business Impact of ${this.formatTitle(topic)}`,
-            academic: `A Comprehensive Analysis of ${this.formatTitle(topic)}`,
-            creative: `Innovative Approaches to ${this.formatTitle(topic)}`,
-            minimal: `Essential Insights on ${this.formatTitle(topic)}`
-        };
-        
-        return subtitleTemplates[template] || `An Overview of ${this.formatTitle(topic)}`;
-    }
-    
-    async generateSlide(slideType, topic, research, index, templateConfig) {
-        const slide = {
-            type: slideType,
-            index: index,
-            title: '',
-            content: [],
-            notes: ''
-        };
-        
-        switch (slideType) {
-            case 'title':
-                slide.title = this.formatTitle(topic);
-                slide.subtitle = this.generateSubtitle(topic, templateConfig.style);
-                slide.image = await this.getRelevantImage(topic);
-                break;
-                
-            case 'agenda':
-            case 'abstract':
-                slide.title = slideType === 'agenda' ? 'Agenda' : 'Abstract';
-                slide.content = templateConfig.structure.slice(2, -1).map(item => 
-                    this.formatSlideTitle(item, topic)
-                );
-                break;
-                
-            case 'overview':
-            case 'introduction':
-                slide.title = slideType === 'overview' ? 'Overview' : 'Introduction';
-                slide.content = [
-                    research.summary || `${topic} represents a significant area of development and innovation.`,
-                    ...research.keyFacts.slice(0, 3)
-                ];
-                break;
-                
-            case 'analysis':
-            case 'methodology':
-                slide.title = slideType === 'analysis' ? 'Current Analysis' : 'Methodology';
-                slide.content = [
-                    'Key market trends and developments',
-                    ...research.trends.slice(0, 3)
-                ];
-                break;
-                
-            case 'strategy':
-            case 'findings':
-                slide.title = slideType === 'strategy' ? 'Strategic Approach' : 'Key Findings';
-                slide.content = research.opportunities.slice(0, 4);
-                break;
-                
-            case 'implementation':
-            case 'discussion':
-                slide.title = slideType === 'implementation' ? 'Implementation' : 'Discussion';
-                slide.content = [
-                    'Best practices for successful implementation',
-                    ...research.challenges.slice(0, 3).map(challenge => 
-                        `Addressing: ${challenge.toLowerCase()}`
-                    )
-                ];
-                break;
-                
-            case 'results':
-            case 'limitations':
-                slide.title = slideType === 'results' ? 'Expected Results' : 'Limitations';
-                slide.content = slideType === 'results' ? 
-                    research.statistics.slice(0, 4) : 
-                    research.challenges.slice(0, 4);
-                break;
-                
-            case 'conclusion':
-            case 'summary':
-                slide.title = slideType === 'conclusion' ? 'Conclusion' : 'Summary';
-                slide.content = [
-                    `${topic} offers significant opportunities for growth and innovation`,
-                    'Key success factors have been identified',
-                    'Implementation strategy provides clear roadmap',
-                    'Continued monitoring and adaptation will be essential'
-                ];
-                break;
-                
-            case 'references':
-                slide.title = 'References';
-                slide.content = [
-                    'Industry research and market analysis',
-                    'Academic publications and studies',
-                    'Expert interviews and insights',
-                    'Government and regulatory sources'
-                ];
-                break;
-                
-            case 'vision':
-                slide.title = 'Vision';
-                slide.content = [
-                    `Transforming how we approach ${topic.toLowerCase()}`,
-                    'Creating innovative solutions for complex challenges',
-                    'Building sustainable and scalable systems',
-                    'Empowering stakeholders through technology'
-                ];
-                break;
-                
-            case 'concept':
-                slide.title = 'Core Concept';
-                slide.content = [
-                    ...research.relatedTerms.slice(0, 4).map(term => 
-                        `${term}: Essential component of modern ${topic.toLowerCase()}`
-                    )
-                ];
-                break;
-                
-            case 'design':
-                slide.title = 'Design Principles';
-                slide.content = [
-                    'User-centered approach',
-                    'Scalable architecture',
-                    'Security and reliability',
-                    'Performance optimization'
-                ];
-                break;
-                
-            case 'features':
-                slide.title = 'Key Features';
-                slide.content = research.opportunities.slice(0, 4);
-                break;
-                
-            case 'impact':
-                slide.title = 'Expected Impact';
-                slide.content = research.statistics.slice(0, 4);
-                break;
-                
-            case 'future':
-                slide.title = 'Future Outlook';
-                slide.content = research.trends.slice(0, 4);
-                break;
-                
-            case 'problem':
-                slide.title = 'Problem Statement';
-                slide.content = research.challenges.slice(0, 4);
-                break;
-                
-            case 'solution':
-                slide.title = 'Proposed Solution';
-                slide.content = research.opportunities.slice(0, 4);
-                break;
-                
-            case 'benefits':
-                slide.title = 'Key Benefits';
-                slide.content = [
-                    'Improved efficiency and productivity',
-                    'Cost reduction and optimization',
-                    'Enhanced user experience',
-                    'Competitive advantage'
-                ];
-                break;
-                
-            default:
-                slide.title = this.formatSlideTitle(slideType, topic);
-                slide.content = [`Content for ${slideType} related to ${topic}`];
-        }
-        
-        // Add speaker notes
-        slide.notes = this.generateSpeakerNotes(slide, topic);
-        
-        return slide;
-    }
-    
-    formatSlideTitle(slideType, topic) {
-        const titleMappings = {
-            'overview': `${this.formatTitle(topic)} Overview`,
-            'analysis': `Market Analysis`,
-            'strategy': `Strategic Approach`,
-            'implementation': `Implementation Plan`,
-            'results': `Expected Outcomes`,
-            'conclusion': `Key Takeaways`,
-            'vision': `Future Vision`,
-            'concept': `Core Concepts`,
-            'design': `Design Framework`,
-            'features': `Key Features`,
-            'impact': `Impact Assessment`,
-            'future': `Future Roadmap`,
-            'problem': `Current Challenges`,
-            'solution': `Proposed Solutions`,
-            'benefits': `Value Proposition`
-        };
-        
-        return titleMappings[slideType] || slideType.charAt(0).toUpperCase() + slideType.slice(1);
-    }
-    
-    generateSpeakerNotes(slide, topic) {
-        const notes = [
-            `This slide covers ${slide.title.toLowerCase()} for ${topic}.`,
-            'Key points to emphasize:',
-            ...slide.content.slice(0, 2).map(point => `- ${point}`),
-            'Be prepared to answer questions about implementation and next steps.'
-        ];
-        
-        return notes.join('\n');
-    }
-    
-    async getRelevantImage(topic) {
-        // In production, this would use Unsplash API or similar
-        const imageKeywords = {
-            'artificial intelligence': 'technology',
-            'renewable energy': 'solar-panel',
-            'digital marketing': 'marketing',
-            'climate change': 'environment',
-            'blockchain': 'technology',
-            'cybersecurity': 'security'
-        };
-        
-        const lowerTopic = topic.toLowerCase();
-        let keyword = 'business'; // default
-        
-        for (const [key, value] of Object.entries(imageKeywords)) {
-            if (lowerTopic.includes(key)) {
-                keyword = value;
-                break;
-            }
-        }
-        
-        return `https://source.unsplash.com/1200x800/?${keyword}`;
-    }
-    
-    generateFallbackContent(topic, template) {
-        const templateConfig = this.templates[template];
-        
+            subtitle: data.overview,
+            layout: 'hero'
+        });
+
+        // Overview slide
+        slides.push({
+            type: 'overview',
+            title: `Understanding ${topic}`,
+            content: data.keyPoints.slice(0, 4),
+            layout: 'content-with-image'
+        });
+
+        // Statistics slide with chart
+        slides.push({
+            type: 'statistics',
+            title: 'Key Statistics & Market Data',
+            content: data.statistics.map(stat => 
+                `${stat.label}: ${stat.value} (${stat.growth} growth)`
+            ),
+            chartData: data.statistics,
+            layout: 'chart-focus'
+        });
+
+        // Applications slide
+        slides.push({
+            type: 'applications',
+            title: 'Real-World Applications',
+            content: data.applications,
+            layout: 'grid-layout'
+        });
+
+        // Trends slide
+        slides.push({
+            type: 'trends',
+            title: 'Future Trends & Developments',
+            content: data.trends,
+            layout: 'timeline'
+        });
+
+        // Challenges slide
+        slides.push({
+            type: 'challenges',
+            title: 'Challenges & Considerations',
+            content: data.challenges,
+            layout: 'problem-solution'
+        });
+
+        // Implementation slide
+        slides.push({
+            type: 'implementation',
+            title: 'Implementation Strategy',
+            content: [
+                "Assess current capabilities and infrastructure needs",
+                "Develop phased implementation roadmap",
+                "Invest in training and skill development",
+                "Monitor progress and adjust strategies"
+            ],
+            layout: 'process-flow'
+        });
+
+        // Future outlook slide
+        slides.push({
+            type: 'conclusion',
+            title: 'Future Outlook & Opportunities',
+            content: [data.futureOutlook],
+            layout: 'conclusion'
+        });
+
         return {
             title: this.formatTitle(topic),
-            subtitle: this.generateSubtitle(topic, template),
-            slides: templateConfig.structure.map((slideType, index) => ({
+            subtitle: `Comprehensive Analysis & Strategic Insights`,
+            slides,
+            statistics: data.statistics
+        };
+    }
+
+    generateGenericContent(topic, templateConfig) {
+        const slides = [];
+        
+        templateConfig.structure.forEach((slideType, index) => {
+            slides.push({
                 type: slideType,
-                index: index,
-                title: this.formatSlideTitle(slideType, topic),
-                content: [
-                    `Key information about ${topic}`,
-                    'Important points to consider',
-                    'Best practices and recommendations',
-                    'Next steps and action items'
-                ],
-                notes: `Speaker notes for ${slideType} slide about ${topic}`
-            })),
-            template: template,
-            research: {
-                summary: `${topic} is an important topic that requires careful consideration and strategic planning.`,
-                keyFacts: [],
-                relatedTerms: [],
-                statistics: [],
-                trends: [],
-                challenges: [],
-                opportunities: []
+                title: this.generateSlideTitle(slideType, topic),
+                content: this.generateSlideContent(slideType, topic),
+                layout: this.selectLayout(slideType, index)
+            });
+        });
+
+        return {
+            title: this.formatTitle(topic),
+            subtitle: 'Professional Analysis & Insights',
+            slides
+        };
+    }
+
+    generateSlideTitle(type, topic) {
+        const titleTemplates = {
+            'overview': `Understanding ${topic}`,
+            'market-analysis': `${topic} Market Analysis`,
+            'key-features': `Key Features of ${topic}`,
+            'benefits': `Benefits & Advantages of ${topic}`,
+            'statistics': `${topic} Statistics & Data`,
+            'case-studies': `${topic} Case Studies`,
+            'implementation': `Implementing ${topic} Solutions`,
+            'future-trends': `Future of ${topic}`,
+            'conclusion': `${topic}: Key Takeaways`
+        };
+        
+        return titleTemplates[type] || `${topic} - ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    }
+
+    generateSlideContent(type, topic) {
+        const contentTemplates = {
+            'overview': [
+                `${topic} represents a significant opportunity for innovation`,
+                `Key components include advanced technologies and methodologies`,
+                `Strategic implementation drives competitive advantages`,
+                `Market adoption continues to accelerate globally`
+            ],
+            'benefits': [
+                `Increased efficiency and productivity gains`,
+                `Cost reduction through optimized processes`,
+                `Enhanced user experience and satisfaction`,
+                `Improved decision-making through data insights`
+            ],
+            'implementation': [
+                `Assess current infrastructure and capabilities`,
+                `Develop comprehensive implementation strategy`,
+                `Train teams and build necessary expertise`,
+                `Monitor progress and optimize continuously`
+            ]
+        };
+        
+        return contentTemplates[type] || [
+            `${topic} offers significant value proposition`,
+            `Strategic approach ensures successful implementation`,
+            `Best practices drive optimal outcomes`,
+            `Continuous innovation maintains competitive edge`
+        ];
+    }
+
+    async generateImages(topic, slideCount) {
+        const images = [];
+        const searchTerms = this.generateImageSearchTerms(topic, slideCount);
+        
+        for (const term of searchTerms) {
+            try {
+                const image = await this.fetchUnsplashImage(term);
+                images.push(image);
+            } catch (error) {
+                images.push(this.getFallbackImage(term));
+            }
+        }
+        
+        return images;
+    }
+
+    generateImageSearchTerms(topic, count) {
+        const baseTerms = [topic, `${topic} technology`, `${topic} business`, `${topic} innovation`];
+        const additionalTerms = [
+            'data visualization', 'team collaboration', 'future technology',
+            'business strategy', 'innovation concept', 'digital transformation'
+        ];
+        
+        return [...baseTerms, ...additionalTerms].slice(0, count);
+    }
+
+    async fetchUnsplashImage(searchTerm) {
+        if (!this.unsplashKey || this.unsplashKey === 'YOUR_UNSPLASH_KEY_HERE') {
+            return this.getFallbackImage(searchTerm);
+        }
+
+        try {
+            const response = await fetch(`${this.apiEndpoints.unsplash}?query=${encodeURIComponent(searchTerm)}&per_page=1&orientation=landscape`, {
+                headers: {
+                    'Authorization': `Client-ID ${this.unsplashKey}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    const photo = data.results[0];
+                    return {
+                        url: photo.urls.regular,
+                        alt: photo.alt_description || searchTerm,
+                        photographer: photo.user.name,
+                        photographerUrl: photo.user.links.html
+                    };
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to fetch Unsplash image:', error);
+        }
+        
+        return this.getFallbackImage(searchTerm);
+    }
+
+    getFallbackImage(term) {
+        const colors = ['4299e1', '10b981', '8b5cf6', 'f59e0b', 'ef4444'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        return {
+            url: `https://via.placeholder.com/1200x675/${color}/ffffff?text=${encodeURIComponent(term)}`,
+            alt: `Visual representation of ${term}`,
+            photographer: 'Generated',
+            photographerUrl: '#'
+        };
+    }
+
+    generateCharts(topic, statistics) {
+        if (!statistics || statistics.length === 0) return [];
+        
+        const charts = [];
+        
+        // Bar chart for statistics
+        const barChart = this.createBarChart(statistics, 'Market Statistics');
+        charts.push(barChart);
+        
+        // Pie chart for distribution
+        const pieChart = this.createPieChart(statistics, 'Distribution Analysis');
+        charts.push(pieChart);
+        
+        return charts;
+    }
+
+    createBarChart(data, title) {
+        const chartConfig = {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.label),
+                datasets: [{
+                    label: 'Values',
+                    data: data.map(item => parseFloat(item.value.replace(/[^0-9.]/g, ''))),
+                    backgroundColor: ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: title
+                    }
+                }
+            }
+        };
+        
+        return {
+            type: 'chart',
+            config: chartConfig,
+            url: `${this.apiEndpoints.charts}?c=${encodeURIComponent(JSON.stringify(chartConfig))}`
+        };
+    }
+
+    createPieChart(data, title) {
+        const chartConfig = {
+            type: 'pie',
+            data: {
+                labels: data.map(item => item.label),
+                datasets: [{
+                    data: data.map(item => parseFloat(item.value.replace(/[^0-9.]/g, ''))),
+                    backgroundColor: ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: title
+                    }
+                }
+            }
+        };
+        
+        return {
+            type: 'chart',
+            config: chartConfig,
+            url: `${this.apiEndpoints.charts}?c=${encodeURIComponent(JSON.stringify(chartConfig))}`
+        };
+    }
+
+    generateVisualElements(slide, template) {
+        return {
+            icons: this.selectIcons(slide.type),
+            animations: this.selectAnimations(template),
+            colorScheme: this.templates[template].colors
+        };
+    }
+
+    selectIcons(slideType) {
+        const iconMap = {
+            'title': '🎯',
+            'overview': '📊',
+            'statistics': '📈',
+            'applications': '⚡',
+            'trends': '🚀',
+            'challenges': '⚠️',
+            'implementation': '🔧',
+            'conclusion': '✅'
+        };
+        
+        return iconMap[slideType] || '💡';
+    }
+
+    selectAnimations(template) {
+        const animationStyles = {
+            'business': ['fade', 'slideIn'],
+            'academic': ['fade', 'slideUp'],
+            'creative': ['bounce', 'slideIn', 'zoomIn']
+        };
+        
+        return animationStyles[template] || ['fade'];
+    }
+
+    selectLayout(slideType, index) {
+        const layouts = {
+            'title': 'hero',
+            'overview': 'content-with-image',
+            'statistics': 'chart-focus',
+            'applications': 'grid-layout',
+            'trends': 'timeline',
+            'challenges': 'problem-solution',
+            'implementation': 'process-flow',
+            'conclusion': 'conclusion'
+        };
+        
+        return layouts[slideType] || 'content-with-image';
+    }
+
+    formatTitle(topic) {
+        return topic.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
+    generateFallbackPresentation(topic, template) {
+        return {
+            title: this.formatTitle(topic),
+            subtitle: 'Professional Presentation',
+            slides: [
+                {
+                    type: 'title',
+                    title: this.formatTitle(topic),
+                    subtitle: 'Comprehensive Analysis',
+                    layout: 'hero',
+                    image: this.getFallbackImage(topic)
+                },
+                {
+                    type: 'overview',
+                    title: `Understanding ${topic}`,
+                    content: [
+                        `${topic} represents significant opportunities`,
+                        `Key components drive innovation`,
+                        `Strategic implementation ensures success`,
+                        `Future developments show promise`
+                    ],
+                    layout: 'content-with-image',
+                    image: this.getFallbackImage(`${topic} overview`)
+                }
+            ],
+            metadata: {
+                topic,
+                template,
+                slideCount: 2,
+                generatedAt: new Date().toISOString()
             }
         };
     }
-    
-    // Utility methods
+
     clearCache() {
         this.cache.clear();
     }
-    
+
     getCacheSize() {
         return this.cache.size;
-    }
-    
-    getCachedTopics() {
-        return Array.from(this.cache.keys());
     }
 }
 

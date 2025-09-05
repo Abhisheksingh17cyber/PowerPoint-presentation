@@ -114,27 +114,50 @@ class PPTMakerApp {
         this.showLoadingOverlay();
         
         try {
-            // Generate content using AI
-            const content = await this.generateContent(this.state.topic);
+            // Initialize enhanced generators
+            if (!this.contentGenerator) {
+                this.contentGenerator = new ContentGenerator();
+            }
+            if (!this.slideBuilder) {
+                this.slideBuilder = new SlideBuilder();
+            }
             
-            // Create slides
-            this.state.slides = await this.createSlides(content);
+            this.updateLoadingStatus('Generating comprehensive content...');
             
-            // Apply template and styling
-            this.applyTheme();
+            // Generate complete presentation data with images and charts
+            const presentationData = await this.contentGenerator.generateContent(
+                this.state.topic, 
+                this.state.template
+            );
             
-            // Show preview
-            this.showPreview();
+            this.updateLoadingStatus('Building professional slides...');
+            
+            // Build slides with enhanced layouts and visuals
+            const builtPresentation = await this.slideBuilder.buildPresentation(presentationData);
+            
+            // Store the presentation data
+            this.state.slides = builtPresentation.slides;
+            this.state.presentationData = presentationData;
+            
+            this.updateLoadingStatus('Applying styling and animations...');
+            
+            // Apply theme and color scheme
+            this.applyEnhancedTheme();
+            
+            // Show enhanced preview
+            this.showEnhancedPreview();
             
             // Save to cache
             this.saveToCache();
             
-            // Analytics (if implemented)
+            // Analytics tracking
             this.trackEvent('presentation_generated', {
                 topic: this.state.topic,
                 template: this.state.template,
                 colorScheme: this.state.colorScheme,
-                slideCount: this.state.slides.length
+                slideCount: this.state.slides.length,
+                hasCharts: presentationData.slides.some(slide => slide.chart),
+                hasImages: presentationData.slides.some(slide => slide.image)
             });
             
         } catch (error) {
@@ -713,6 +736,185 @@ class PPTMakerApp {
             previewSection.classList.remove('hidden');
             previewSection.scrollIntoView({ behavior: 'smooth' });
         }
+    }
+    
+    showEnhancedPreview() {
+        // Create enhanced preview with better layout and controls
+        const previewContainer = document.getElementById('presentation-preview') || this.createPreviewContainer();
+        
+        // Clear existing content
+        previewContainer.innerHTML = '';
+        
+        // Create slide viewer with enhanced controls
+        const slideViewer = this.createEnhancedSlideViewer();
+        previewContainer.appendChild(slideViewer);
+        
+        // Create navigation controls
+        const controls = this.createEnhancedControls();
+        previewContainer.appendChild(controls);
+        
+        // Create download section
+        const downloadSection = this.createDownloadSection();
+        previewContainer.appendChild(downloadSection);
+        
+        // Show first slide
+        if (this.state.slides.length > 0) {
+            this.showSlide(0);
+        }
+        
+        // Show the preview section
+        this.showPreview();
+    }
+    
+    createPreviewContainer() {
+        let container = document.getElementById('presentation-preview');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'presentation-preview';
+            container.className = 'presentation-preview-container';
+            
+            // Find the preview section and append
+            const previewSection = document.getElementById('preview-section') || document.createElement('div');
+            previewSection.appendChild(container);
+        }
+        return container;
+    }
+    
+    createEnhancedSlideViewer() {
+        const viewer = document.createElement('div');
+        viewer.className = 'enhanced-slide-viewer';
+        viewer.innerHTML = `
+            <div class="slide-viewer-header">
+                <h3>Your Presentation Preview</h3>
+                <div class="slide-counter" id="slide-counter">1 / ${this.state.slides.length}</div>
+            </div>
+            <div class="slide-container" id="slide-container">
+                ${this.state.slides.map((slide, index) => slide.outerHTML).join('')}
+            </div>
+        `;
+        return viewer;
+    }
+    
+    createEnhancedControls() {
+        const controls = document.createElement('div');
+        controls.className = 'enhanced-slide-controls';
+        controls.innerHTML = `
+            <div class="slide-navigation">
+                <button id="prev-slide" class="nav-btn prev-btn" ${this.state.currentSlide === 0 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="slide-dots" id="slide-dots">
+                    ${this.state.slides.map((_, index) => `
+                        <button class="slide-dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></button>
+                    `).join('')}
+                </div>
+                
+                <button id="next-slide" class="nav-btn next-btn" ${this.state.slides.length <= 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        `;
+        
+        // Add event listeners
+        const prevBtn = controls.querySelector('#prev-slide');
+        const nextBtn = controls.querySelector('#next-slide');
+        
+        prevBtn?.addEventListener('click', () => this.previousSlide());
+        nextBtn?.addEventListener('click', () => this.nextSlide());
+        
+        // Dot navigation
+        controls.querySelectorAll('.slide-dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => this.showSlide(index));
+        });
+        
+        return controls;
+    }
+    
+    createDownloadSection() {
+        const downloadSection = document.createElement('div');
+        downloadSection.className = 'enhanced-download-section';
+        downloadSection.innerHTML = `
+            <h4>Download Your Presentation</h4>
+            <div class="download-options">
+                <button id="download-ppt" class="download-btn ppt-btn">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <span>Download PPT</span>
+                </button>
+                <button id="download-pdf" class="download-btn pdf-btn">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Download PDF</span>
+                </button>
+                <button id="download-images" class="download-btn images-btn">
+                    <i class="fas fa-images"></i>
+                    <span>Download Images</span>
+                </button>
+            </div>
+            <p class="download-info">
+                <i class="fas fa-info-circle"></i>
+                Your presentation includes ${this.state.slides.length} slides with professional content, 
+                ${this.countImagesInSlides()} images, and ${this.countChartsInSlides()} charts.
+            </p>
+        `;
+        
+        // Add download event listeners
+        downloadSection.querySelector('#download-ppt')?.addEventListener('click', () => this.downloadPPT());
+        downloadSection.querySelector('#download-pdf')?.addEventListener('click', () => this.downloadPDF());
+        downloadSection.querySelector('#download-images')?.addEventListener('click', () => this.downloadImages());
+        
+        return downloadSection;
+    }
+    
+    applyEnhancedTheme() {
+        const colorSchemes = {
+            blue: {
+                primary: '#2563eb',
+                secondary: '#3b82f6',
+                accent: '#1e40af',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
+            },
+            green: {
+                primary: '#059669',
+                secondary: '#10b981',
+                accent: '#047857',
+                background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'
+            },
+            purple: {
+                primary: '#7c3aed',
+                secondary: '#8b5cf6',
+                accent: '#6d28d9',
+                background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)'
+            },
+            orange: {
+                primary: '#f59e0b',
+                secondary: '#fbbf24',
+                accent: '#d97706',
+                background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)'
+            }
+        };
+        
+        const scheme = colorSchemes[this.state.colorScheme] || colorSchemes.blue;
+        
+        // Apply CSS custom properties
+        const root = document.documentElement;
+        root.style.setProperty('--primary-color', scheme.primary);
+        root.style.setProperty('--secondary-color', scheme.secondary);
+        root.style.setProperty('--accent-color', scheme.accent);
+        root.style.setProperty('--theme-background', scheme.background);
+        
+        // Apply theme class to body
+        document.body.className = document.body.className.replace(/theme-\w+/g, '');
+        document.body.classList.add(`theme-${this.state.colorScheme}`);
+    }
+    
+    countImagesInSlides() {
+        if (!this.state.presentationData) return 0;
+        return this.state.presentationData.slides.filter(slide => slide.image).length;
+    }
+    
+    countChartsInSlides() {
+        if (!this.state.presentationData) return 0;
+        return this.state.presentationData.slides.filter(slide => slide.chart).length;
     }
     
     hidePreview() {
