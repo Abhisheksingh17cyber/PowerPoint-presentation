@@ -1,618 +1,533 @@
-// Export Handler for Professional PPT Maker
+// Advanced Export Handler for Multiple Formats
 class ExportHandler {
     constructor() {
-        this.supportedFormats = ['pptx', 'pdf', 'png', 'jpg', 'html'];
+        this.supportedFormats = ['pdf', 'pptx', 'html', 'images'];
         this.exportOptions = this.initializeExportOptions();
+        this.isExporting = false;
     }
-    
+
     initializeExportOptions() {
         return {
-            pptx: {
-                quality: 'high',
-                includeNotes: true,
-                includeAnimations: false,
-                slideSize: {
-                    width: 10,
-                    height: 5.625
+            pdf: {
+                name: 'PDF Document',
+                description: 'Export as a PDF file for easy sharing',
+                icon: '📄',
+                options: {
+                    pageSize: 'A4',
+                    orientation: 'landscape',
+                    quality: 'high',
+                    includeAnimations: false
                 }
             },
-            pdf: {
-                quality: 'high',
-                includeNotes: false,
-                format: 'A4',
-                orientation: 'landscape'
+            pptx: {
+                name: 'PowerPoint File',
+                description: 'Export as PPTX for editing in PowerPoint',
+                icon: '📊',
+                options: {
+                    includeAnimations: true,
+                    includeNotes: false,
+                    slideSize: 'standard'
+                }
+            },
+            html: {
+                name: 'HTML Presentation',
+                description: 'Export as interactive HTML presentation',
+                icon: '🌐',
+                options: {
+                    includeNavigation: true,
+                    includeAnimations: true,
+                    responsive: true,
+                    theme: 'default'
+                }
             },
             images: {
-                format: 'png',
-                quality: 0.9,
-                width: 1920,
-                height: 1080,
-                includeNotes: false
+                name: 'Image Set',
+                description: 'Export each slide as high-quality images',
+                icon: '🖼️',
+                options: {
+                    format: 'png',
+                    quality: 'high',
+                    width: 1920,
+                    height: 1080,
+                    includeBackground: true
+                }
             }
         };
     }
-    
-    async downloadPPT(slides, presentationData) {
+
+    async exportPresentation(format, slides, options = {}) {
+        if (!this.supportedFormats.includes(format)) {
+            throw new Error(`Unsupported export format: ${format}`);
+        }
+
+        if (this.isExporting) {
+            throw new Error('Export already in progress');
+        }
+
+        this.isExporting = true;
+        
         try {
-            // Check if PptxGenJS is available
-            if (typeof PptxGenJS === 'undefined') {
-                throw new Error('PptxGenJS library not loaded');
+            const exportOptions = { ...this.exportOptions[format].options, ...options };
+            
+            switch (format) {
+                case 'pdf':
+                    return await this.exportToPDF(slides, exportOptions);
+                case 'pptx':
+                    return await this.exportToPPTX(slides, exportOptions);
+                case 'html':
+                    return await this.exportToHTML(slides, exportOptions);
+                case 'images':
+                    return await this.exportToImages(slides, exportOptions);
+                default:
+                    throw new Error(`Export method not implemented for ${format}`);
             }
-            
-            const pptx = new PptxGenJS();
-            
-            // Set presentation properties
-            this.setPresentationProperties(pptx, presentationData);
-            
-            // Add slides
-            for (let i = 0; i < slides.length; i++) {
-                await this.addSlideToPPTX(pptx, slides[i], presentationData);
-            }
-            
-            // Generate and download
-            const fileName = `${this.sanitizeFileName(presentationData.topic || 'presentation')}.pptx`;
-            await pptx.writeFile({ fileName: fileName });
-            
-            return true;
-        } catch (error) {
-            console.error('PPT export failed:', error);
-            // Fallback to HTML download
-            return this.downloadHTML(slides, presentationData);
+        } finally {
+            this.isExporting = false;
         }
     }
-    
-    setPresentationProperties(pptx, presentationData) {
-        pptx.author = 'PPT Maker Pro';
-        pptx.company = 'PPT Maker Pro';
-        pptx.title = presentationData.topic || 'Generated Presentation';
-        pptx.subject = `Presentation about ${presentationData.topic}`;
-        pptx.category = presentationData.template || 'Business';
-    }
-    
-    async addSlideToPPTX(pptx, slideData, presentationData) {
-        const slide = pptx.addSlide();
-        const template = presentationData.template || 'business';
-        const colorScheme = presentationData.colorScheme || 'blue';
+
+    async exportToPDF(slides, options) {
+        // Show progress
+        this.showExportProgress('Generating PDF...', 0);
         
-        // Set slide background
-        this.setSlideBackground(slide, slideData, template, colorScheme);
-        
-        // Add content based on slide type
-        switch (slideData.type) {
-            case 'title':
-                this.addTitleSlideContent(slide, slideData, template, colorScheme);
-                break;
-            case 'toc':
-            case 'agenda':
-                this.addAgendaSlideContent(slide, slideData, template, colorScheme);
-                break;
-            case 'content':
-                this.addContentSlideContent(slide, slideData, template, colorScheme);
-                break;
-            case 'conclusion':
-                this.addConclusionSlideContent(slide, slideData, template, colorScheme);
-                break;
-            case 'thankyou':
-                this.addThankYouSlideContent(slide, slideData, template, colorScheme);
-                break;
-            default:
-                this.addDefaultSlideContent(slide, slideData, template, colorScheme);
-        }
-        
-        // Add speaker notes if available
-        if (slideData.notes) {
-            slide.addNotes(slideData.notes);
-        }
-    }
-    
-    setSlideBackground(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        if (slideData.type === 'title' && slideData.image) {
-            // Add background image for title slide
-            slide.background = { 
-                path: slideData.image,
-                transparency: 30
-            };
-        } else {
-            // Set gradient background
-            slide.background = {
-                fill: {
-                    type: 'gradient',
-                    colors: [colors.background, colors.backgroundAlt || colors.background],
-                    direction: 'toBottom'
-                }
-            };
-        }
-    }
-    
-    addTitleSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Main title
-        slide.addText(slideData.title, {
-            x: 1,
-            y: 2,
-            w: 8,
-            h: 1.5,
-            fontSize: 44,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true,
-            align: 'center'
-        });
-        
-        // Subtitle
-        if (slideData.subtitle) {
-            slide.addText(slideData.subtitle, {
-                x: 1,
-                y: 3.5,
-                w: 8,
-                h: 1,
-                fontSize: 24,
-                fontFace: 'Arial',
-                color: colors.text,
-                align: 'center'
-            });
-        }
-    }
-    
-    addAgendaSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Title
-        slide.addText(slideData.title, {
-            x: 1,
-            y: 0.5,
-            w: 8,
-            h: 1,
-            fontSize: 36,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true
-        });
-        
-        // Agenda items
-        if (slideData.items && Array.isArray(slideData.items)) {
-            slideData.items.forEach((item, index) => {
-                slide.addText(`${index + 1}. ${item}`, {
-                    x: 1.5,
-                    y: 1.8 + (index * 0.5),
-                    w: 7,
-                    h: 0.4,
-                    fontSize: 20,
-                    fontFace: 'Arial',
-                    color: colors.text
-                });
-            });
-        }
-    }
-    
-    addContentSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Title
-        slide.addText(slideData.title, {
-            x: 0.5,
-            y: 0.3,
-            w: 9,
-            h: 0.8,
-            fontSize: 32,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true
-        });
-        
-        // Content points
-        if (slideData.points && Array.isArray(slideData.points)) {
-            slideData.points.forEach((point, index) => {
-                slide.addText(`• ${point}`, {
-                    x: 1,
-                    y: 1.5 + (index * 0.6),
-                    w: 8,
-                    h: 0.5,
-                    fontSize: 18,
-                    fontFace: 'Arial',
-                    color: colors.text,
-                    lineSpacing: 24
-                });
-            });
-        }
-    }
-    
-    addConclusionSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Title
-        slide.addText(slideData.title, {
-            x: 1,
-            y: 1,
-            w: 8,
-            h: 1,
-            fontSize: 36,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true,
-            align: 'center'
-        });
-        
-        // Conclusion text
-        if (slideData.text) {
-            slide.addText(slideData.text, {
-                x: 1,
-                y: 2.5,
-                w: 8,
-                h: 2,
-                fontSize: 20,
-                fontFace: 'Arial',
-                color: colors.text,
-                align: 'center',
-                lineSpacing: 28
-            });
-        }
-    }
-    
-    addThankYouSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Thank you title
-        slide.addText(slideData.title, {
-            x: 1,
-            y: 2,
-            w: 8,
-            h: 1.5,
-            fontSize: 48,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true,
-            align: 'center'
-        });
-        
-        // Subtitle
-        if (slideData.subtitle) {
-            slide.addText(slideData.subtitle, {
-                x: 1,
-                y: 3.5,
-                w: 8,
-                h: 1,
-                fontSize: 24,
-                fontFace: 'Arial',
-                color: colors.text,
-                align: 'center'
-            });
-        }
-    }
-    
-    addDefaultSlideContent(slide, slideData, template, colorScheme) {
-        const colors = this.getTemplateColors(template, colorScheme);
-        
-        // Title
-        slide.addText(slideData.title, {
-            x: 0.5,
-            y: 0.3,
-            w: 9,
-            h: 0.8,
-            fontSize: 32,
-            fontFace: 'Arial',
-            color: colors.primary,
-            bold: true
-        });
-        
-        // Content
-        if (slideData.content) {
-            const content = Array.isArray(slideData.content) ? slideData.content.join('\n') : slideData.content;
-            slide.addText(content, {
-                x: 1,
-                y: 1.5,
-                w: 8,
-                h: 3,
-                fontSize: 18,
-                fontFace: 'Arial',
-                color: colors.text,
-                lineSpacing: 24
-            });
-        }
-    }
-    
-    async downloadPDF(slides, presentationData) {
         try {
-            // Check if jsPDF is available
-            if (typeof window.jsPDF === 'undefined') {
+            // Create a new jsPDF instance
+            const { jsPDF } = window.jspdf || {};
+            if (!jsPDF) {
                 throw new Error('jsPDF library not loaded');
             }
-            
-            const { jsPDF } = window.jsPDF;
+
             const pdf = new jsPDF({
-                orientation: 'landscape',
+                orientation: options.orientation || 'landscape',
                 unit: 'mm',
-                format: 'a4'
+                format: options.pageSize || 'a4'
             });
-            
-            // Set document properties
-            pdf.setProperties({
-                title: presentationData.topic || 'Generated Presentation',
-                subject: `Presentation about ${presentationData.topic}`,
-                author: 'PPT Maker Pro',
-                creator: 'PPT Maker Pro'
-            });
-            
-            // Generate PDF pages from slides
+
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 10;
+
             for (let i = 0; i < slides.length; i++) {
+                this.updateExportProgress(`Processing slide ${i + 1}/${slides.length}...`, 
+                    (i / slides.length) * 80);
+
                 if (i > 0) {
                     pdf.addPage();
                 }
-                await this.addSlideToPDF(pdf, slides[i], presentationData, i);
-            }
-            
-            // Download the PDF
-            const fileName = `${this.sanitizeFileName(presentationData.topic || 'presentation')}.pdf`;
-            pdf.save(fileName);
-            
-            return true;
-        } catch (error) {
-            console.error('PDF export failed:', error);
-            throw error;
-        }
-    }
-    
-    async addSlideToPDF(pdf, slideData, presentationData, slideIndex) {
-        const colors = this.getTemplateColors(presentationData.template, presentationData.colorScheme);
-        
-        // Add slide background
-        pdf.setFillColor(255, 255, 255);
-        pdf.rect(0, 0, 297, 210, 'F');
-        
-        // Add title
-        pdf.setFontSize(24);
-        pdf.setTextColor(colors.primaryRGB.r, colors.primaryRGB.g, colors.primaryRGB.b);
-        pdf.text(slideData.title || 'Slide Title', 20, 30);
-        
-        // Add content based on slide type
-        let yPosition = 50;
-        
-        if (slideData.points && Array.isArray(slideData.points)) {
-            pdf.setFontSize(14);
-            pdf.setTextColor(colors.textRGB.r, colors.textRGB.g, colors.textRGB.b);
-            
-            slideData.points.forEach((point, index) => {
-                const bulletPoint = `• ${point}`;
-                const lines = pdf.splitTextToSize(bulletPoint, 250);
-                pdf.text(lines, 30, yPosition);
-                yPosition += lines.length * 8;
-            });
-        } else if (slideData.content) {
-            pdf.setFontSize(14);
-            pdf.setTextColor(colors.textRGB.r, colors.textRGB.g, colors.textRGB.b);
-            
-            const content = Array.isArray(slideData.content) ? slideData.content.join('\n') : slideData.content;
-            const lines = pdf.splitTextToSize(content, 250);
-            pdf.text(lines, 30, yPosition);
-        }
-        
-        // Add page number
-        pdf.setFontSize(10);
-        pdf.setTextColor(150, 150, 150);
-        pdf.text(`${slideIndex + 1}`, 280, 200);
-    }
-    
-    async downloadImages(slides, presentationData) {
-        try {
-            if (typeof html2canvas === 'undefined') {
-                throw new Error('html2canvas library not loaded');
-            }
-            
-            const zip = new JSZip();
-            const images = zip.folder('presentation-images');
-            
-            // Get all slide elements
-            const slideElements = document.querySelectorAll('.slide');
-            
-            for (let i = 0; i < slideElements.length && i < slides.length; i++) {
-                const slideElement = slideElements[i];
-                const slideData = slides[i];
-                
-                // Capture slide as image
-                const canvas = await html2canvas(slideElement, {
-                    width: 1920,
-                    height: 1080,
-                    scale: 1,
-                    useCORS: true,
-                    allowTaint: true,
+
+                // Convert slide to canvas
+                const canvas = await this.slideToCanvas(slides[i], {
+                    width: (pageWidth - 2 * margin) * 3.78, // Convert mm to px
+                    height: (pageHeight - 2 * margin) * 3.78,
                     backgroundColor: '#ffffff'
                 });
-                
-                // Convert to blob
-                const blob = await new Promise(resolve => {
-                    canvas.toBlob(resolve, 'image/png', 0.9);
-                });
-                
-                // Add to zip
-                const fileName = `slide-${String(i + 1).padStart(2, '0')}-${this.sanitizeFileName(slideData.title || 'slide')}.png`;
-                images.file(fileName, blob);
+
+                // Add canvas to PDF
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', margin, margin, 
+                    pageWidth - 2 * margin, pageHeight - 2 * margin);
             }
+
+            this.updateExportProgress('Finalizing PDF...', 90);
+
+            // Generate filename
+            const filename = `presentation-${this.generateTimestamp()}.pdf`;
             
-            // Generate and download zip
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-            const fileName = `${this.sanitizeFileName(presentationData.topic || 'presentation')}-images.zip`;
-            this.downloadBlob(zipBlob, fileName);
+            // Save the PDF
+            pdf.save(filename);
+
+            this.hideExportProgress();
             
-            return true;
+            return {
+                success: true,
+                format: 'pdf',
+                filename: filename,
+                message: 'PDF exported successfully!'
+            };
+
         } catch (error) {
-            console.error('Image export failed:', error);
-            throw error;
+            this.hideExportProgress();
+            console.error('PDF export error:', error);
+            throw new Error(`PDF export failed: ${error.message}`);
         }
     }
-    
-    async downloadHTML(slides, presentationData) {
+
+    async exportToPPTX(slides, options) {
+        this.showExportProgress('Generating PowerPoint...', 0);
+        
         try {
-            const html = this.generateHTML(slides, presentationData);
-            const blob = new Blob([html], { type: 'text/html' });
-            const fileName = `${this.sanitizeFileName(presentationData.topic || 'presentation')}.html`;
-            this.downloadBlob(blob, fileName);
-            return true;
+            // Use PptxGenJS library
+            const pptx = new PptxGenJS();
+            
+            // Set slide size
+            pptx.defineLayout({ 
+                name: 'custom', 
+                width: 10, 
+                height: 5.625 
+            });
+            pptx.layout = 'custom';
+
+            for (let i = 0; i < slides.length; i++) {
+                this.updateExportProgress(`Processing slide ${i + 1}/${slides.length}...`, 
+                    (i / slides.length) * 80);
+
+                const slide = pptx.addSlide();
+                await this.addSlideContentToPPTX(slide, slides[i], options);
+            }
+
+            this.updateExportProgress('Finalizing PowerPoint...', 90);
+
+            const filename = `presentation-${this.generateTimestamp()}.pptx`;
+            await pptx.writeFile({ fileName: filename });
+
+            this.hideExportProgress();
+
+            return {
+                success: true,
+                format: 'pptx',
+                filename: filename,
+                message: 'PowerPoint file exported successfully!'
+            };
+
         } catch (error) {
-            console.error('HTML export failed:', error);
-            throw error;
+            this.hideExportProgress();
+            console.error('PPTX export error:', error);
+            
+            // Fallback to HTML export if PPTX fails
+            console.log('Falling back to HTML export...');
+            return await this.exportToHTML(slides, options);
         }
     }
-    
-    generateHTML(slides, presentationData) {
-        const template = presentationData.template || 'business';
-        const colorScheme = presentationData.colorScheme || 'blue';
+
+    async exportToHTML(slides, options) {
+        this.showExportProgress('Generating HTML presentation...', 0);
         
-        const slidesHTML = slides.map((slide, index) => {
-            return this.generateSlideHTML(slide, index, template, colorScheme);
-        }).join('\n');
+        try {
+            const htmlContent = await this.generateHTMLPresentation(slides, options);
+            
+            this.updateExportProgress('Finalizing HTML...', 90);
+            
+            const filename = `presentation-${this.generateTimestamp()}.html`;
+            this.downloadFile(htmlContent, filename, 'text/html');
+
+            this.hideExportProgress();
+
+            return {
+                success: true,
+                format: 'html',
+                filename: filename,
+                message: 'HTML presentation exported successfully!'
+            };
+
+        } catch (error) {
+            this.hideExportProgress();
+            console.error('HTML export error:', error);
+            throw new Error(`HTML export failed: ${error.message}`);
+        }
+    }
+
+    async exportToImages(slides, options) {
+        this.showExportProgress('Generating images...', 0);
         
-        return `
+        try {
+            const images = [];
+            const zip = new JSZip();
+
+            for (let i = 0; i < slides.length; i++) {
+                this.updateExportProgress(`Converting slide ${i + 1}/${slides.length}...`, 
+                    (i / slides.length) * 80);
+
+                const canvas = await this.slideToCanvas(slides[i], {
+                    width: options.width || 1920,
+                    height: options.height || 1080,
+                    backgroundColor: options.includeBackground ? '#ffffff' : 'transparent'
+                });
+
+                const imageData = canvas.toDataURL(`image/${options.format || 'png'}`);
+                const base64Data = imageData.split(',')[1];
+                
+                const filename = `slide-${String(i + 1).padStart(2, '0')}.${options.format || 'png'}`;
+                zip.file(filename, base64Data, { base64: true });
+                
+                images.push({
+                    filename: filename,
+                    data: imageData
+                });
+            }
+
+            this.updateExportProgress('Creating archive...', 90);
+
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const zipFilename = `presentation-slides-${this.generateTimestamp()}.zip`;
+            
+            this.downloadBlob(zipBlob, zipFilename);
+
+            this.hideExportProgress();
+
+            return {
+                success: true,
+                format: 'images',
+                filename: zipFilename,
+                count: images.length,
+                message: `${images.length} images exported successfully!`
+            };
+
+        } catch (error) {
+            this.hideExportProgress();
+            console.error('Images export error:', error);
+            throw new Error(`Images export failed: ${error.message}`);
+        }
+    }
+
+    async slideToCanvas(slideElement, options = {}) {
+        // Use html2canvas library
+        if (!window.html2canvas) {
+            throw new Error('html2canvas library not loaded');
+        }
+
+        const canvas = await html2canvas(slideElement, {
+            width: options.width || 1920,
+            height: options.height || 1080,
+            backgroundColor: options.backgroundColor || '#ffffff',
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: options.width || 1920,
+            windowHeight: options.height || 1080
+        });
+
+        return canvas;
+    }
+
+    async addSlideContentToPPTX(slide, slideElement, options) {
+        try {
+            // Extract slide content
+            const title = slideElement.querySelector('.slide-title')?.textContent || '';
+            const content = Array.from(slideElement.querySelectorAll('.content-item'))
+                .map(item => item.textContent);
+            
+            // Add title
+            if (title) {
+                slide.addText(title, {
+                    x: 0.5,
+                    y: 0.5,
+                    w: 9,
+                    h: 1,
+                    fontSize: 24,
+                    color: '2563eb',
+                    bold: true,
+                    fontFace: 'Arial'
+                });
+            }
+
+            // Add content
+            if (content.length > 0) {
+                slide.addText(content, {
+                    x: 0.5,
+                    y: 2,
+                    w: 9,
+                    h: 3,
+                    fontSize: 16,
+                    color: '1f2937',
+                    fontFace: 'Arial',
+                    bullet: true
+                });
+            }
+
+            // Add images if present
+            const images = slideElement.querySelectorAll('.slide-image');
+            for (let img of images) {
+                try {
+                    const imgData = await this.imageToBase64(img.src);
+                    slide.addImage({
+                        data: imgData,
+                        x: 5.5,
+                        y: 2,
+                        w: 4,
+                        h: 3
+                    });
+                } catch (e) {
+                    console.warn('Failed to add image to slide:', e);
+                }
+            }
+
+        } catch (error) {
+            console.warn('Error adding slide content to PPTX:', error);
+        }
+    }
+
+    async generateHTMLPresentation(slides, options) {
+        const slideHTML = slides.map((slide, index) => {
+            return `
+                <section class="slide" id="slide-${index + 1}">
+                    ${slide.innerHTML}
+                </section>
+            `;
+        }).join('');
+
+        const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${presentationData.topic || 'Presentation'}</title>
+    <title>Exported Presentation</title>
     <style>
-        ${this.generateEmbeddedCSS(template, colorScheme)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            width: 90vw;
+            max-width: 1200px;
+            height: 80vh;
+            max-height: 675px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1f2937;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+            width: 0;
+        }
     </style>
 </head>
 <body>
-    <div class="presentation-container">
-        <header class="presentation-header">
-            <h1>${presentationData.topic || 'Presentation'}</h1>
-            <p>Generated by PPT Maker Pro</p>
-        </header>
-        
-        <div class="slides-container">
-            ${slidesHTML}
-        </div>
-        
-        <nav class="presentation-nav">
-            <button onclick="previousSlide()">← Previous</button>
-            <span id="slide-counter">1 / ${slides.length}</span>
-            <button onclick="nextSlide()">Next →</button>
-        </nav>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
     </div>
     
+    <div class="slide-counter" id="slideCounter">
+        1 / ${slides.length}
+    </div>
+    
+    <div class="presentation-container">
+        ${slideHTML}
+    </div>
+    
+    ${options.includeNavigation ? `
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()">Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next</button>
+        <button class="nav-btn" onclick="toggleFullscreen()">Fullscreen</button>
+    </div>
+    ` : ''}
+    
     <script>
-        ${this.generateEmbeddedJS(slides.length)}
-    </script>
-</body>
-</html>`;
-    }
-    
-    generateSlideHTML(slide, index, template, colorScheme) {
-        const isActive = index === 0 ? 'active' : '';
-        
-        let content = `<h2 class="slide-title">${slide.title || 'Slide Title'}</h2>`;
-        
-        if (slide.points && Array.isArray(slide.points)) {
-            content += '<ul class="slide-list">';
-            slide.points.forEach(point => {
-                content += `<li>${point}</li>`;
-            });
-            content += '</ul>';
-        } else if (slide.content) {
-            const contentText = Array.isArray(slide.content) ? slide.content.join('</p><p>') : slide.content;
-            content += `<div class="slide-text"><p>${contentText}</p></div>`;
-        }
-        
-        return `
-        <div class="slide slide-${slide.type || 'content'} theme-${template} color-${colorScheme} ${isActive}" data-slide-index="${index}">
-            <div class="slide-content">
-                ${content}
-            </div>
-        </div>`;
-    }
-    
-    generateEmbeddedCSS(template, colorScheme) {
-        return `
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #f5f5f5; 
-        }
-        .presentation-container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 20px; 
-        }
-        .presentation-header { 
-            text-align: center; 
-            margin-bottom: 30px; 
-        }
-        .slides-container { 
-            position: relative; 
-            background: white; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-            overflow: hidden; 
-        }
-        .slide { 
-            display: none; 
-            padding: 40px; 
-            min-height: 500px; 
-        }
-        .slide.active { 
-            display: block; 
-        }
-        .slide-title { 
-            color: #2563eb; 
-            margin-bottom: 30px; 
-            font-size: 2rem; 
-        }
-        .slide-list { 
-            font-size: 1.1rem; 
-            line-height: 1.8; 
-        }
-        .slide-list li { 
-            margin-bottom: 10px; 
-        }
-        .slide-text { 
-            font-size: 1.1rem; 
-            line-height: 1.8; 
-        }
-        .presentation-nav { 
-            text-align: center; 
-            margin-top: 20px; 
-        }
-        .presentation-nav button { 
-            background: #2563eb; 
-            color: white; 
-            border: none; 
-            padding: 10px 20px; 
-            margin: 0 10px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-        }
-        .presentation-nav button:hover { 
-            background: #1e40af; 
-        }
-        .presentation-nav button:disabled { 
-            background: #ccc; 
-            cursor: not-allowed; 
-        }
-        #slide-counter { 
-            margin: 0 20px; 
-            font-weight: bold; 
-        }
-        @media print {
-            .slide { display: block !important; page-break-after: always; }
-            .presentation-nav { display: none; }
-        }`;
-    }
-    
-    generateEmbeddedJS(slideCount) {
-        return `
         let currentSlide = 0;
-        const totalSlides = ${slideCount};
+        const totalSlides = ${slides.length};
         
-        function showSlide(index) {
-            document.querySelectorAll('.slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            document.getElementById('slide-counter').textContent = \`\${index + 1} / \${totalSlides}\`;
-            updateNavButtons();
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const counter = document.getElementById('slideCounter');
+            const progressFill = document.getElementById('progressFill');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            
+            if (counter) {
+                counter.textContent = \`\${currentSlide + 1} / \${totalSlides}\`;
+            }
+            
+            if (progressFill) {
+                progressFill.style.width = \`\${((currentSlide + 1) / totalSlides) * 100}%\`;
+            }
+            
+            if (prevBtn) prevBtn.disabled = currentSlide === 0;
+            if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
         }
         
         function nextSlide() {
@@ -629,110 +544,363 @@ class ExportHandler {
             }
         }
         
-        function updateNavButtons() {
-            const prevBtn = document.querySelector('.presentation-nav button:first-child');
-            const nextBtn = document.querySelector('.presentation-nav button:last-child');
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === totalSlides - 1;
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
         }
         
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') previousSlide();
-            if (e.key === 'ArrowRight') nextSlide();
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    previousSlide();
+                    break;
+                case 'Escape':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+            }
         });
         
         // Initialize
-        updateNavButtons();`;
+        showSlide(0);
+    </script>
+</body>
+</html>`;
+
+        return html;
     }
-    
-    getTemplateColors(template, colorScheme) {
-        const colorMappings = {
-            blue: { 
-                primary: '#2563eb', 
-                text: '#1f2937', 
-                background: '#ffffff', 
-                backgroundAlt: '#f8fafc',
-                primaryRGB: { r: 37, g: 99, b: 235 },
-                textRGB: { r: 31, g: 41, b: 55 }
-            },
-            green: { 
-                primary: '#059669', 
-                text: '#1f2937', 
-                background: '#ffffff', 
-                backgroundAlt: '#f0fdf4',
-                primaryRGB: { r: 5, g: 150, b: 105 },
-                textRGB: { r: 31, g: 41, b: 55 }
-            },
-            purple: { 
-                primary: '#7c3aed', 
-                text: '#1f2937', 
-                background: '#ffffff', 
-                backgroundAlt: '#faf5ff',
-                primaryRGB: { r: 124, g: 58, b: 237 },
-                textRGB: { r: 31, g: 41, b: 55 }
-            },
-            orange: { 
-                primary: '#ea580c', 
-                text: '#1f2937', 
-                background: '#ffffff', 
-                backgroundAlt: '#fff7ed',
-                primaryRGB: { r: 234, g: 88, b: 12 },
-                textRGB: { r: 31, g: 41, b: 55 }
-            }
-        };
+
+    async imageToBase64(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                resolve(canvas.toDataURL());
+            };
+            img.onerror = reject;
+            img.src = url;
+        });
+    }
+
+    downloadFile(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        this.downloadBlob(blob, filename);
+    }
+
+    downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    generateTimestamp() {
+        const now = new Date();
+        return now.getFullYear() + 
+               String(now.getMonth() + 1).padStart(2, '0') + 
+               String(now.getDate()).padStart(2, '0') + '-' +
+               String(now.getHours()).padStart(2, '0') + 
+               String(now.getMinutes()).padStart(2, '0');
+    }
+
+    showExportProgress(message, progress) {
+        let progressModal = document.getElementById('exportProgressModal');
         
-        return colorMappings[colorScheme] || colorMappings.blue;
+        if (!progressModal) {
+            progressModal = document.createElement('div');
+            progressModal.id = 'exportProgressModal';
+            progressModal.className = 'export-progress-modal';
+            progressModal.innerHTML = `
+                <div class="progress-content">
+                    <div class="progress-icon">
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="progress-message" id="progressMessage">${message}</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progressBarFill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-percentage" id="progressPercentage">${Math.round(progress)}%</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(progressModal);
+        }
+
+        // Add styles if not present
+        if (!document.getElementById('exportProgressStyles')) {
+            const styles = document.createElement('style');
+            styles.id = 'exportProgressStyles';
+            styles.textContent = `
+                .export-progress-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    backdrop-filter: blur(4px);
+                }
+                
+                .progress-content {
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    min-width: 400px;
+                    text-align: center;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                }
+                
+                .spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 4px solid #f3f4f6;
+                    border-top: 4px solid #3b82f6;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 1rem;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                
+                .progress-message {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #1f2937;
+                    margin-bottom: 1.5rem;
+                }
+                
+                .progress-bar-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                }
+                
+                .progress-bar-bg {
+                    flex: 1;
+                    height: 8px;
+                    background: #f3f4f6;
+                    border-radius: 4px;
+                    overflow: hidden;
+                }
+                
+                .progress-bar-fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+                    transition: width 0.3s ease;
+                }
+                
+                .progress-percentage {
+                    font-weight: 600;
+                    color: #3b82f6;
+                    min-width: 40px;
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+
+        progressModal.style.display = 'flex';
     }
-    
-    sanitizeFileName(fileName) {
-        return fileName
-            .replace(/[^a-z0-9]/gi, '_')
-            .replace(/_+/g, '_')
-            .replace(/^_|_$/g, '')
-            .toLowerCase()
-            .substring(0, 50);
+
+    updateExportProgress(message, progress) {
+        const progressMessage = document.getElementById('progressMessage');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const progressPercentage = document.getElementById('progressPercentage');
+        
+        if (progressMessage) progressMessage.textContent = message;
+        if (progressBarFill) progressBarFill.style.width = `${progress}%`;
+        if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
     }
-    
-    downloadBlob(blob, fileName) {
-        if (typeof saveAs !== 'undefined') {
-            // Use FileSaver.js if available
-            saveAs(blob, fileName);
-        } else {
-            // Fallback method
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+
+    hideExportProgress() {
+        const progressModal = document.getElementById('exportProgressModal');
+        if (progressModal) {
+            progressModal.style.display = 'none';
         }
     }
-    
-    // Utility methods for format checking
-    isFormatSupported(format) {
-        return this.supportedFormats.includes(format.toLowerCase());
+
+    getExportFormats() {
+        return Object.entries(this.exportOptions).map(([key, option]) => ({
+            id: key,
+            ...option
+        }));
     }
-    
-    getExportOptions(format) {
-        return this.exportOptions[format] || {};
+
+    buildExportSelector() {
+        const formats = this.getExportFormats();
+        
+        return `
+            <div class="export-selector">
+                <h3 class="selector-title">Choose Export Format</h3>
+                <div class="export-formats">
+                    ${formats.map(format => `
+                        <div class="export-format-card" data-format="${format.id}">
+                            <div class="format-icon">${format.icon}</div>
+                            <div class="format-info">
+                                <h4 class="format-name">${format.name}</h4>
+                                <p class="format-description">${format.description}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="export-actions">
+                    <button class="export-btn" id="exportBtn" disabled>
+                        <span class="btn-icon">📥</span>
+                        Export Presentation
+                    </button>
+                </div>
+            </div>
+        `;
     }
-    
-    setExportOption(format, option, value) {
-        if (this.exportOptions[format]) {
-            this.exportOptions[format][option] = value;
+
+    initializeExportSelector() {
+        // Add event listeners for format selection
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.export-format-card')) {
+                const formatCard = e.target.closest('.export-format-card');
+                const formatId = formatCard.dataset.format;
+                
+                // Remove previous selection
+                document.querySelectorAll('.export-format-card').forEach(card => 
+                    card.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                formatCard.classList.add('selected');
+                
+                // Enable export button
+                const exportBtn = document.getElementById('exportBtn');
+                if (exportBtn) {
+                    exportBtn.disabled = false;
+                    exportBtn.onclick = () => this.handleExportClick(formatId);
+                }
+            }
+        });
+    }
+
+    async handleExportClick(format) {
+        try {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) {
+                throw new Error('No slides to export');
+            }
+
+            const result = await this.exportPresentation(format, Array.from(slides));
+            
+            // Show success message
+            this.showNotification(result.message, 'success');
+            
+        } catch (error) {
+            console.error('Export failed:', error);
+            this.showNotification(`Export failed: ${error.message}`, 'error');
         }
     }
-}
 
-// Initialize export handler when DOM is loaded
-if (typeof window !== 'undefined') {
-    window.exportHandler = new ExportHandler();
-}
-
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ExportHandler;
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">
+                    ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}
+                </span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+        
+        // Add styles
+        if (!document.getElementById('notificationStyles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notificationStyles';
+            styles.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 2rem;
+                    right: 2rem;
+                    background: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+                    z-index: 10001;
+                    animation: slideInFromRight 0.3s ease-out;
+                    max-width: 400px;
+                }
+                
+                .notification-success {
+                    border-left: 4px solid #10b981;
+                }
+                
+                .notification-error {
+                    border-left: 4px solid #ef4444;
+                }
+                
+                .notification-info {
+                    border-left: 4px solid #3b82f6;
+                }
+                
+                .notification-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                }
+                
+                .notification-message {
+                    font-weight: 500;
+                    color: #1f2937;
+                }
+                
+                @keyframes slideInFromRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideInFromRight 0.3s ease-out reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
 }

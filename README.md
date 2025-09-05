@@ -1,285 +1,55 @@
-# Professional PPT Maker 🎯
+# AI PowerPoint Generator 🚀
 
-[![GitHub Pages](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation/workflows/pages-build-deployment/badge.svg)](https://abhisheksingh17cyber.github.io/PowerPoint-presentation)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+**Professional AI-Powered PowerPoint Generator** - Create stunning presentations with comprehensive content, real images, and interactive charts in seconds!
 
-> **🎯 JUST ENTER A TOPIC → GET A COMPLETE PRESENTATION!**
->
-> Simply provide any topic and instantly receive:
->
-> - **8-12 comprehensive slides** with detailed information and explanations
-> - **Professional photos** automatically selected for every slide
-> - **Charts and graphics** included where relevant (data visualization, infographics)
-> - **Complete presentation flow** from introduction to conclusion
-> - **Ready-to-present format** with professional design and formatting
+![AI PowerPoint Generator](https://img.shields.io/badge/AI%20PowerPoint-Generator-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-green)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-## 🚀 Live Demo
-
-**[Try PPT Maker Pro →](https://abhisheksingh17cyber.github.io/PowerPoint-presentation)**
-
-## 🔧 Two Ways to Create Presentations
-
-### 🌐 Web App (Instant)
-
-- **Browser-based**: No installation required
-- **Instant generation**: Create presentations in seconds
-- **Cross-platform**: Works on any device with a browser
-- **PWA support**: Install as an app on mobile/desktop
-
-### 🐍 Python Script (Advanced)
-
-- **Local generation**: Full .pptx files with advanced features
-- **API integration**: Real images from Unsplash, web content research
-- **Customizable**: Full control over templates and styling
-- **Batch processing**: Generate multiple presentations programmatically
-
-📋 **Setup**: See [Python Setup Guide](PYTHON_SETUP.md) for installation instructions
+## 🌟 Live Demo
+🔗 **[Launch AI PowerPoint Generator](https://abhisheksingh17cyber.github.io/PowerPoint-presentation/)**
 
 ## ✨ Features
 
-### 🎨 **Professional Templates**
+### 🎯 Core Features
+- **AI-Powered Content Generation** - Comprehensive, ready-to-use content requiring no editing
+- **Real Image Integration** - Professional images automatically sourced and integrated
+- **Interactive Charts & Graphs** - Data visualizations with multiple chart types
+- **Multiple Professional Templates** - Business, Tech, Eco-friendly, and Modern designs
+- **Multiple Export Formats** - PDF, PowerPoint (.pptx), HTML, and high-quality images
 
-- **Business Professional**: Corporate-grade designs for business presentations
-- **Academic Research**: Scholarly layouts with formal structure and citations
-- **Creative Innovation**: Modern, vibrant designs for creative projects
-- **Minimal Clean**: Simple, content-focused layouts
+### 🎨 Design & UI
+- **Modern Gradient Interface** - Beautiful, professional design
+- **Responsive Design** - Works on all devices and screen sizes
+- **Real-time Preview** - See your presentation as you build it
+- **Professional Animations** - Smooth transitions and effects
+- **Multiple Themes** - Tech Blue, Corporate, Eco Green, Modern Blue, Purple, Orange
 
-### 🤖 **AI-Powered Content Generation**
+### 📊 Content Categories
+- **Artificial Intelligence** - Latest trends, applications, and insights
+- **Climate Change** - Environmental data, statistics, and solutions
+- **Digital Marketing** - Strategies, trends, and best practices
+- **Cybersecurity** - Threats, protection, and industry insights  
+- **Blockchain Technology** - Applications, benefits, and use cases
+- **Renewable Energy** - Clean energy solutions and statistics
 
-- **Just Enter a Topic**: Simply provide any topic and get a complete presentation
-- **Comprehensive Slide Creation**: Automatically generates 8-12 slides with detailed information
-- **Rich Content**: Each slide includes relevant bullet points, explanations, and insights
-- **Professional Images**: High-quality photos automatically matched to each slide topic
-- **Visual Charts & Graphics**: Data visualizations and infographics where applicable
-- **Complete Presentation Flow**: Title → Introduction → Key Points → Applications → Conclusion
+### 🔧 Technical Features
+- **Progressive Web App (PWA)** - Install on any device
+- **Offline Capability** - Works without internet connection
+- **Fast Loading** - Optimized performance
+- **Cross-platform** - Works on Windows, Mac, Linux, iOS, Android
+- **No Installation Required** - Run directly in web browser
 
-### 🎯 **Smart Slide Creation**
+## 🚀 Quick Start
 
-- **Complete Automation**: Just provide a topic - we handle everything else
-- **Title Slide**: Professional title with topic-relevant imagery and branding
-- **Introduction Slides**: Comprehensive overview and background information
-- **Content Slides**: 6-8 detailed slides covering all key aspects of your topic
-- **Visual Integration**: Each slide includes relevant photos, charts, and graphics
-- **Data Visualization**: Automatic charts and infographics for statistical topics
-- **Conclusion Slide**: Key takeaways, summary, and next steps
-- **Thank You Slide**: Professional closing with contact information
+### Option 1: Use Online (Recommended)
+1. Visit: [https://abhisheksingh17cyber.github.io/PowerPoint-presentation/](https://abhisheksingh17cyber.github.io/PowerPoint-presentation/)
+2. Choose your presentation topic
+3. Select a template and theme
+4. Generate your presentation
+5. Export in your preferred format
 
-### 📊 **Visual Excellence**
-
-- **Automatic Image Selection**: High-quality stock photos from Unsplash matched to each slide
-- **Professional Charts**: Data visualizations, graphs, and infographics automatically generated
-- **Visual Content Mapping**: Every slide gets relevant visuals based on content analysis
-- **Consistent Design**: Professional color schemes (Blue, Green, Purple, Orange, Red, Teal)
-- **Smart Typography**: Optimized fonts and spacing for maximum readability
-- **Responsive Layouts**: Perfect display on all devices and screen sizes
-
-### 📥 **Multiple Export Formats**
-
-- **PowerPoint (.pptx)**: Full-featured presentations
-- **PDF**: High-quality documents
-- **Images (PNG)**: Individual slide images
-- **HTML**: Web-based presentations
-
-### 🎪 **Advanced Features**
-
-- Real-time preview with slide navigation
-- Keyboard shortcuts for navigation
-- Progressive Web App (PWA) support
-- Offline functionality
-- Accessibility features (WCAG compliant)
-- Print-optimized layouts
-
-## 🆚 Web App vs Python Script
-
-| Feature                | Web App                                      | Python Script                                   |
-| ---------------------- | -------------------------------------------- | ----------------------------------------------- |
-| **Setup**              | Zero setup - just open in browser            | Requires Python + dependencies                  |
-| **Usage**              | Just enter topic - get complete presentation | Command-line interface                          |
-| **Content Generation** | **8-12 slides with detailed information**    | **Complete slide deck with rich content**       |
-| **Images**             | High-quality photos for every slide          | Real API integration (Unsplash)                 |
-| **Visual Elements**    | **Automatic charts and graphics**            | **Professional charts and infographics**        |
-| **Content Depth**      | **Comprehensive topic coverage**             | **In-depth research and analysis**              |
-| **Offline**            | Works offline (PWA)                          | Works completely offline                        |
-| **Customization**      | Template themes + colors                     | Full programmatic control                       |
-| **File Output**        | Download PPT/PDF/Images                      | Local file generation                           |
-| **Best For**           | **Complete presentations from just a topic** | **Advanced customization and batch processing** |
-
-Choose **Web App** for instant use and ease of access.  
-Choose **Python Script** for advanced features and API integration.
-
-## 🛠️ Quick Start
-
-### 1. **Visit the Website**
-
-```
-https://abhisheksingh17cyber.github.io/PowerPoint-presentation
-```
-
-### 2. **Create Your Presentation**
-
-1. **Enter your topic** (e.g., "Artificial Intelligence", "Renewable Energy", "Digital Marketing")
-2. **Choose a template style** (Business, Academic, Creative, Minimal)
-3. **Select a color scheme**
-4. **Click "Generate Presentation"**
-5. **Preview your complete presentation** with all slides, images, and content
-6. **Download in your preferred format** (PowerPoint, PDF, or Images)
-
-**✨ What You Get:**
-
-- **8-12 comprehensive slides** with detailed information
-- **Professional photos** on every slide
-- **Charts and graphics** where relevant
-- **Complete presentation flow** from introduction to conclusion
-
-### 3. **Example Topics to Try**
-
-- "Artificial Intelligence in Healthcare"
-- "Sustainable Business Practices"
-- "Digital Marketing Strategies"
-- "Climate Change Solutions"
-- "Project Management Best Practices"
-
-## 🐍 Python Script Quick Start
-
-### 1. **Install Dependencies**
-
-```bash
-# Install required packages
-pip install python-pptx requests Pillow
-
-# Or use requirements file
-pip install -r requirements.txt
-```
-
-### 2. **Run the Generator**
-
-```bash
-python python_generator.py
-```
-
-### 3. **Create Presentation**
-
-```
-📝 Enter the topic for your presentation: Machine Learning
-🔍 Searching for content about: Machine Learning
-🖼️  Searching for images: Machine Learning
-📊 Creating comprehensive slides with charts and visuals
-📊 Creating presentation: presentations/Machine_Learning_presentation.pptx
-✅ Complete presentation generated with 10 slides, images, and charts
-✅ Presentation saved as: presentations/Machine_Learning_presentation.pptx
-```
-
-**🎯 What Gets Generated:**
-
-- **Complete slide deck** with 8-12 professional slides
-- **Rich content** including definitions, examples, and explanations
-- **High-quality images** for every slide topic
-- **Charts and infographics** for data-heavy topics
-- **Professional formatting** with consistent design
-
-### 4. **Enhanced Features (Optional)**
-
-Add API keys for better content and images:
-
-- **Unsplash API**: High-quality professional images
-- **SerpAPI**: Real web content research
-
-See [Python Setup Guide](PYTHON_SETUP.md) for detailed instructions.
-
-## 🏗️ Technical Architecture
-
-### **Frontend Stack**
-
-```javascript
-// Core Technologies
-HTML5 + CSS3 + Vanilla JavaScript (ES6+)
-Progressive Web App (PWA)
-Responsive Design (CSS Grid + Flexbox)
-```
-
-### **Libraries & APIs**
-
-- **Presentation**: Custom slide builder engine
-- **PDF Export**: jsPDF
-- **Image Capture**: html2canvas
-- **File Downloads**: FileSaver.js
-- **Images**: Unsplash API integration
-- **Icons**: Font Awesome 6
-
-### **Project Structure**
-
-```
-ppt-maker/
-├── index.html                 # Main application
-├── css/
-│   ├── styles.css            # Core styles
-│   ├── themes.css            # Template themes
-│   └── responsive.css        # Mobile responsiveness
-├── js/
-│   ├── app.js               # Main application logic
-│   ├── content-generator.js  # AI content generation
-│   ├── slide-builder.js     # Slide creation engine
-│   ├── template-manager.js   # Template system
-│   └── export-handler.js     # Export functionality
-├── assets/
-│   ├── icons/               # PWA icons
-│   └── screenshots/         # App screenshots
-├── _config.yml              # GitHub Pages config
-├── manifest.json            # PWA manifest
-└── README.md               # Documentation
-```
-
-## 🎨 Customization
-
-### **Adding Custom Templates**
-
-```javascript
-// Example: Add a new template
-const customTemplate = {
-  name: "Tech Startup",
-  slideTypes: [
-    "title",
-    "problem",
-    "solution",
-    "market",
-    "product",
-    "traction",
-    "funding",
-  ],
-  colors: {
-    primary: "#ff6b6b",
-    secondary: "#ee5a24",
-    accent: "#feca57",
-  },
-  fonts: {
-    heading: "Montserrat",
-    body: "Open Sans",
-  },
-};
-```
-
-### **Custom Color Schemes**
-
-```css
-.color-custom {
-  --theme-primary: #your-color;
-  --theme-secondary: #your-secondary;
-  --theme-accent: #your-accent;
-}
-```
-
-## 🚀 Local Development
-
-### **Prerequisites**
-
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Local web server (optional, for development)
-
-### **Setup**
-
+### Option 2: Run Locally
 ```bash
 # Clone the repository
 git clone https://github.com/Abhisheksingh17cyber/PowerPoint-presentation.git
@@ -287,175 +57,159 @@ git clone https://github.com/Abhisheksingh17cyber/PowerPoint-presentation.git
 # Navigate to project directory
 cd PowerPoint-presentation
 
-# Serve locally (using Python)
-python -m http.server 8000
+# Install dependencies (optional, for development)
+npm install
 
-# Or using Node.js
-npx serve .
+# Start local server
+npm start
 
 # Open in browser
-http://localhost:8000
+# http://localhost:3000
 ```
 
-### **Development Features**
+## 📱 Installation as PWA
 
-- Hot reload for development
-- Browser console for debugging
-- Responsive design testing
-- PWA testing tools
+### Desktop (Chrome, Edge, Safari)
+1. Visit the web app
+2. Look for "Install" icon in address bar
+3. Click to install as desktop app
 
-## 📱 PWA Installation
+### Mobile (iOS/Android)
+1. Open in Safari (iOS) or Chrome (Android)
+2. Tap "Share" button
+3. Select "Add to Home Screen"
 
-### **Desktop**
+## 🎯 How to Use
 
-1. Visit the website in Chrome/Edge
-2. Click the install icon in the address bar
-3. Follow the installation prompts
+### Step 1: Choose Topic
+Select from 6 comprehensive topic categories:
+- Artificial Intelligence
+- Climate Change  
+- Digital Marketing
+- Cybersecurity
+- Blockchain Technology
+- Renewable Energy
 
-### **Mobile**
+### Step 2: Select Template
+Choose from 4 professional templates:
+- **Business Professional** - Corporate presentations
+- **Tech Innovation** - Technology and startup focused
+- **Eco-Friendly** - Environmental and sustainability topics
+- **Modern Minimal** - Clean, minimal design
 
-1. Open in mobile browser
-2. Tap "Add to Home Screen"
-3. Access like a native app
+### Step 3: Pick Theme
+Select color theme:
+- Tech Blue, Corporate Blue, Eco Green
+- Modern Blue, Purple Gradient, Orange Energy
 
-## 🔧 Browser Support
+### Step 4: Generate & Export
+- Click "Generate Presentation"
+- Preview your slides
+- Export as PDF, PowerPoint, HTML, or Images
 
-| Browser       | Version | Support |
-| ------------- | ------- | ------- |
-| Chrome        | 90+     | ✅ Full |
-| Firefox       | 88+     | ✅ Full |
-| Safari        | 14+     | ✅ Full |
-| Edge          | 90+     | ✅ Full |
-| Mobile Safari | iOS 14+ | ✅ Full |
-| Chrome Mobile | 90+     | ✅ Full |
+## 💼 Use Cases
 
-## 📊 Performance
+- **Business Presentations** - Pitch decks, reports, proposals
+- **Educational Content** - Lectures, training materials, workshops
+- **Marketing Materials** - Product launches, campaign presentations
+- **Research Presentations** - Academic, industry research findings
+- **Conference Talks** - Speaking engagements, keynotes
+- **Training Sessions** - Corporate training, skill development
 
-- **First Load**: < 3 seconds
-- **Generation Speed**: < 10 seconds
-- **Export Time**: < 5 seconds
-- **Mobile Optimized**: 100% responsive
-- **Accessibility Score**: 95+
+## 🔧 Technical Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Styling**: CSS Variables, Flexbox, Grid, Animations
+- **Charts**: Chart.js for data visualization
+- **Export**: jsPDF, html2canvas, JSZip
+- **PWA**: Service Worker, Web Manifest
+- **Icons**: Custom SVG icons and emoji
+
+## 🎨 Templates & Themes
+
+### Templates
+- **Business Professional**: Clean corporate design
+- **Tech Innovation**: Modern tech-focused layout
+- **Eco-Friendly**: Green environmental theme
+- **Modern Minimal**: Clean, content-focused design
+
+### Themes
+- **Tech Blue**: Professional blue gradient
+- **Corporate Blue**: Conservative business blue
+- **Eco Green**: Environmental green palette
+- **Modern Blue**: Fresh modern blue tones
+- **Purple Gradient**: Creative purple design
+- **Orange Energy**: Vibrant energy theme
+
+## 📊 Export Options
+
+### PDF Export
+- High-quality PDF generation
+- Landscape/Portrait orientation
+- Print-ready format
+
+### PowerPoint (.pptx)
+- Native PowerPoint compatibility
+- Editable slides
+- Preserves formatting
+
+### HTML Presentation
+- Interactive web presentation
+- Keyboard navigation
+- Fullscreen support
+- Progress tracking
+
+### Image Export
+- High-resolution PNG/JPEG
+- Individual slide images
+- Batch download as ZIP
+
+## 🔒 Privacy & Security
+
+- **No Data Collection** - Your content stays private
+- **Client-Side Processing** - Everything runs in your browser
+- **No Server Storage** - No data sent to external servers
+- **Secure HTTPS** - Encrypted connection
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### **Bug Reports**
-
-1. Check existing issues
-2. Create detailed bug report
-3. Include browser/device info
-4. Provide reproduction steps
-
-### **Feature Requests**
-
-1. Describe the feature
-2. Explain the use case
-3. Provide mockups if possible
-
-### **Code Contributions**
-
+### Development Setup
 ```bash
-# Fork the repository
-# Create feature branch
-git checkout -b feature/amazing-feature
-
-# Make changes and commit
-git commit -m 'Add amazing feature'
-
-# Push to branch
-git push origin feature/amazing-feature
-
-# Create Pull Request
+git clone https://github.com/Abhisheksingh17cyber/PowerPoint-presentation.git
+cd PowerPoint-presentation
+npm install
+npm run dev
 ```
-
-### **Development Guidelines**
-
-- Follow existing code style
-- Add comments for complex logic
-- Test on multiple browsers
-- Ensure mobile compatibility
-- Update documentation
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-```
-MIT License
+## 👨‍💻 Author
 
-Copyright (c) 2025 Abhishek Singh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
+**Abhishek Singh**
+- GitHub: [@Abhisheksingh17cyber](https://github.com/Abhisheksingh17cyber)
+- Email: abhisheksingh17cyber@gmail.com
 
 ## 🙏 Acknowledgments
 
-- **Unsplash** - High-quality stock photos
-- **Font Awesome** - Beautiful icons
-- **Google Fonts** - Professional typography
-- **GitHub Pages** - Free hosting platform
-- **Open Source Community** - JavaScript libraries
+- Chart.js for beautiful charts
+- Unsplash for high-quality images
+- All contributors and users
 
-## 📞 Support
+## 📈 Roadmap
 
-### **Getting Help**
-
-- 📧 Email: abhisheksingh17cyber@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation/issues)
-- 📖 Docs: [Wiki](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation/wiki)
-
-### **FAQ**
-
-**Q: Is this free to use?**
-A: Yes! Completely free and open source.
-
-**Q: Do I need an account?**
-A: No registration required. Use instantly.
-
-**Q: Can I use this offline?**
-A: Basic functionality works offline with PWA.
-
-**Q: What image sources are used?**
-A: Unsplash API for high-quality, license-free images.
-
-**Q: Can I customize templates?**
-A: Yes! Full customization support in the code.
-
-## 🔮 Roadmap
-
-### **Version 2.0 (Coming Soon)**
-
-- [ ] Advanced AI integration (GPT-4 API)
-- [ ] Real-time collaboration
-- [ ] Animation effects
-- [ ] Custom branding options
-- [ ] Cloud storage integration
-- [ ] Advanced chart generation
-
-### **Version 2.1**
-
-- [ ] Voice-over support
-- [ ] Video integration
-- [ ] Advanced templates
-- [ ] Analytics dashboard
-- [ ] Team workspace features
+- [ ] AI-powered speech-to-presentation
+- [ ] Collaborative editing features
+- [ ] Advanced animation options
+- [ ] Custom template builder
+- [ ] Integration with cloud storage
+- [ ] Voice narration support
 
 ---
 
-<div align="center">
+**⭐ Star this repository if you find it helpful!**
 
-**Made with ❤️ by [Abhishek Singh](https://github.com/Abhisheksingh17cyber)**
-
-[⭐ Star this repo](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation) | [🐛 Report Bug](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation/issues) | [💡 Request Feature](https://github.com/Abhisheksingh17cyber/PowerPoint-presentation/issues)
-
-</div>
+**🔗 [Launch AI PowerPoint Generator Now](https://abhisheksingh17cyber.github.io/PowerPoint-presentation/)**

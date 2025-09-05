@@ -1,7 +1,7 @@
 {
-  "name": "PPT Maker Pro",
-  "short_name": "PPTMaker",
-  "description": "Create professional PowerPoint presentations instantly with AI-powered content generation",
+  "name": "AI PowerPoint Generator",
+  "short_name": "AI PPT Gen",
+  "description": "Professional AI-Powered PowerPoint Generator - Create stunning presentations with comprehensive content, real images, and interactive charts in seconds",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -9,7 +9,7 @@
   "orientation": "any",
   "scope": "/",
   "lang": "en",
-  "categories": ["productivity", "business", "education"],
+  "categories": ["productivity", "business", "education", "tools"],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

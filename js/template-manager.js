@@ -1,613 +1,735 @@
-// Template Manager for Professional PPT Maker
+// Advanced Template Manager for Professional Presentations
 class TemplateManager {
     constructor() {
         this.templates = this.initializeTemplates();
+        this.currentTheme = 'tech-blue';
         this.themes = this.initializeThemes();
-        this.colorSchemes = this.initializeColorSchemes();
-        this.fonts = this.initializeFonts();
-        this.currentTemplate = 'business';
-        this.currentTheme = 'business';
-        this.currentColorScheme = 'blue';
     }
-    
+
     initializeTemplates() {
         return {
-            business: {
+            'business-professional': {
                 name: 'Business Professional',
                 description: 'Clean, corporate design perfect for business presentations',
-                slideTypes: ['title', 'agenda', 'overview', 'content', 'chart', 'conclusion'],
-                defaultSlideCount: 8,
-                features: ['charts', 'tables', 'professional-layouts'],
-                preview: 'business-preview.png',
-                colors: {
-                    primary: '#2563eb',
-                    secondary: '#1e40af',
-                    accent: '#3b82f6',
-                    text: '#1f2937',
-                    background: '#ffffff'
-                },
-                fonts: {
-                    heading: 'Inter',
-                    body: 'Inter'
-                },
-                spacing: {
-                    padding: '2rem',
-                    gap: '1.5rem'
-                }
+                theme: 'corporate-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'fadeInUp'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInLeft'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'slideInUp'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'two-column',
+                        animation: 'slideInRight'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'centered',
+                        animation: 'fadeInScale'
+                    }
+                ]
             },
-            
-            academic: {
-                name: 'Academic Research',
-                description: 'Scholarly design with citations and formal structure',
-                slideTypes: ['title', 'abstract', 'introduction', 'methodology', 'findings', 'discussion', 'conclusion', 'references'],
-                defaultSlideCount: 10,
-                features: ['references', 'citations', 'formal-layouts'],
-                preview: 'academic-preview.png',
-                colors: {
-                    primary: '#374151',
-                    secondary: '#4b5563',
-                    accent: '#6b7280',
-                    text: '#111827',
-                    background: '#ffffff'
-                },
-                fonts: {
-                    heading: 'Playfair Display',
-                    body: 'Inter'
-                },
-                spacing: {
-                    padding: '2.5rem',
-                    gap: '1.25rem'
-                }
+            'tech-innovation': {
+                name: 'Tech Innovation',
+                description: 'Modern, tech-focused design with gradient backgrounds',
+                theme: 'tech-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'fadeInScale'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInLeft'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'slideInUp'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInRight'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'centered',
+                        animation: 'fadeInUp'
+                    }
+                ]
             },
-            
-            creative: {
-                name: 'Creative Innovation',
-                description: 'Modern, vibrant design for creative presentations',
-                slideTypes: ['title', 'vision', 'concept', 'design', 'features', 'impact', 'future'],
-                defaultSlideCount: 7,
-                features: ['gradients', 'animations', 'creative-layouts'],
-                preview: 'creative-preview.png',
-                colors: {
-                    primary: '#7c3aed',
-                    secondary: '#6d28d9',
-                    accent: '#a855f7',
-                    text: '#1f2937',
-                    background: '#ffffff'
-                },
-                fonts: {
-                    heading: 'Playfair Display',
-                    body: 'Inter'
-                },
-                spacing: {
-                    padding: '2rem',
-                    gap: '2rem'
-                }
+            'eco-friendly': {
+                name: 'Eco-Friendly',
+                description: 'Green-themed design for environmental and sustainability topics',
+                theme: 'eco-green',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'fadeInUp'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInLeft'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'slideInUp'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'two-column',
+                        animation: 'slideInRight'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'centered',
+                        animation: 'fadeInScale'
+                    }
+                ]
             },
-            
-            minimal: {
-                name: 'Minimal Clean',
-                description: 'Simple, clean design focused on content',
-                slideTypes: ['title', 'problem', 'solution', 'benefits', 'implementation', 'summary'],
-                defaultSlideCount: 6,
-                features: ['clean-typography', 'white-space', 'minimal-elements'],
-                preview: 'minimal-preview.png',
-                colors: {
-                    primary: '#000000',
-                    secondary: '#404040',
-                    accent: '#808080',
-                    text: '#000000',
-                    background: '#ffffff'
-                },
-                fonts: {
-                    heading: 'Inter',
-                    body: 'Inter'
-                },
-                spacing: {
-                    padding: '3rem',
-                    gap: '2rem'
-                }
+            'modern-minimal': {
+                name: 'Modern Minimal',
+                description: 'Clean, minimal design with focus on content',
+                theme: 'modern-blue',
+                slides: [
+                    {
+                        type: 'title',
+                        layout: 'hero',
+                        animation: 'fadeInUp'
+                    },
+                    {
+                        type: 'content',
+                        layout: 'content-with-image',
+                        animation: 'slideInLeft'
+                    },
+                    {
+                        type: 'statistics',
+                        layout: 'stats-grid',
+                        animation: 'staggeredFadeIn'
+                    },
+                    {
+                        type: 'chart',
+                        layout: 'chart-focus',
+                        animation: 'slideInUp'
+                    },
+                    {
+                        type: 'conclusion',
+                        layout: 'centered',
+                        animation: 'fadeInScale'
+                    }
+                ]
             }
         };
     }
-    
+
     initializeThemes() {
         return {
-            light: {
-                name: 'Light Theme',
-                colors: {
-                    background: '#ffffff',
-                    surface: '#f8fafc',
-                    text: '#1f2937',
-                    textSecondary: '#4b5563'
-                }
+            'tech-blue': {
+                name: 'Tech Blue',
+                primary: '#2563eb',
+                secondary: '#1e40af',
+                accent: '#3b82f6',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                text: '#1f2937',
+                textSecondary: '#6b7280',
+                preview: 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)'
             },
-            dark: {
-                name: 'Dark Theme',
-                colors: {
-                    background: '#1f2937',
-                    surface: '#111827',
-                    text: '#f9fafb',
-                    textSecondary: '#d1d5db'
-                }
+            'corporate-blue': {
+                name: 'Corporate Blue',
+                primary: '#1d4ed8',
+                secondary: '#1e3a8a',
+                accent: '#3b82f6',
+                background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
+                text: '#111827',
+                textSecondary: '#4b5563',
+                preview: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)'
             },
-            auto: {
-                name: 'Auto (System)',
-                colors: null // Will use system preference
+            'eco-green': {
+                name: 'Eco Green',
+                primary: '#059669',
+                secondary: '#047857',
+                accent: '#10b981',
+                background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+                text: '#064e3b',
+                textSecondary: '#166534',
+                preview: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'
+            },
+            'modern-blue': {
+                name: 'Modern Blue',
+                primary: '#0ea5e9',
+                secondary: '#0284c7',
+                accent: '#38bdf8',
+                background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+                text: '#0c4a6e',
+                textSecondary: '#075985',
+                preview: 'linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%)'
+            },
+            'purple-gradient': {
+                name: 'Purple Gradient',
+                primary: '#7c3aed',
+                secondary: '#5b21b6',
+                accent: '#a855f7',
+                background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
+                text: '#581c87',
+                textSecondary: '#7c2d92',
+                preview: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)'
+            },
+            'orange-energy': {
+                name: 'Orange Energy',
+                primary: '#ea580c',
+                secondary: '#c2410c',
+                accent: '#fb923c',
+                background: 'linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%)',
+                text: '#9a3412',
+                textSecondary: '#c2410c',
+                preview: 'linear-gradient(135deg, #ea580c 0%, #fb923c 100%)'
             }
         };
     }
-    
-    initializeColorSchemes() {
-        return {
-            blue: {
-                name: 'Professional Blue',
-                colors: {
-                    primary: '#2563eb',
-                    secondary: '#1e40af',
-                    accent: '#3b82f6',
-                    light: '#dbeafe',
-                    dark: '#1e3a8a'
-                }
-            },
-            green: {
-                name: 'Nature Green',
-                colors: {
-                    primary: '#059669',
-                    secondary: '#047857',
-                    accent: '#10b981',
-                    light: '#d1fae5',
-                    dark: '#064e3b'
-                }
-            },
-            purple: {
-                name: 'Creative Purple',
-                colors: {
-                    primary: '#7c3aed',
-                    secondary: '#6d28d9',
-                    accent: '#8b5cf6',
-                    light: '#ede9fe',
-                    dark: '#581c87'
-                }
-            },
-            orange: {
-                name: 'Energy Orange',
-                colors: {
-                    primary: '#ea580c',
-                    secondary: '#c2410c',
-                    accent: '#f97316',
-                    light: '#fed7aa',
-                    dark: '#9a3412'
-                }
-            },
-            red: {
-                name: 'Bold Red',
-                colors: {
-                    primary: '#dc2626',
-                    secondary: '#b91c1c',
-                    accent: '#ef4444',
-                    light: '#fecaca',
-                    dark: '#7f1d1d'
-                }
-            },
-            teal: {
-                name: 'Modern Teal',
-                colors: {
-                    primary: '#0d9488',
-                    secondary: '#0f766e',
-                    accent: '#14b8a6',
-                    light: '#ccfbf1',
-                    dark: '#134e4a'
-                }
-            }
-        };
-    }
-    
-    initializeFonts() {
-        return {
-            inter: {
-                name: 'Inter',
-                url: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
-                fallback: 'system-ui, sans-serif'
-            },
-            playfair: {
-                name: 'Playfair Display',
-                url: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap',
-                fallback: 'serif'
-            },
-            roboto: {
-                name: 'Roboto',
-                url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
-                fallback: 'sans-serif'
-            },
-            opensans: {
-                name: 'Open Sans',
-                url: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap',
-                fallback: 'sans-serif'
-            }
-        };
-    }
-    
+
     getTemplate(templateName) {
-        return this.templates[templateName] || this.templates.business;
+        return this.templates[templateName] || this.templates['business-professional'];
     }
-    
+
     getAllTemplates() {
-        return Object.keys(this.templates).map(key => ({
+        return Object.entries(this.templates).map(([key, template]) => ({
             id: key,
-            ...this.templates[key]
+            ...template,
+            themePreview: this.themes[template.theme]?.preview || this.themes['tech-blue'].preview
         }));
     }
-    
-    getColorScheme(schemeName) {
-        return this.colorSchemes[schemeName] || this.colorSchemes.blue;
+
+    getTheme(themeName) {
+        return this.themes[themeName] || this.themes['tech-blue'];
     }
-    
-    getAllColorSchemes() {
-        return Object.keys(this.colorSchemes).map(key => ({
+
+    getAllThemes() {
+        return Object.entries(this.themes).map(([key, theme]) => ({
             id: key,
-            ...this.colorSchemes[key]
+            ...theme
         }));
     }
-    
-    applyTemplate(templateName, element) {
+
+    setCurrentTheme(themeName) {
+        if (this.themes[themeName]) {
+            this.currentTheme = themeName;
+            return true;
+        }
+        return false;
+    }
+
+    getCurrentTheme() {
+        return this.getTheme(this.currentTheme);
+    }
+
+    generateTemplatePreview(templateName) {
         const template = this.getTemplate(templateName);
-        if (!template || !element) return false;
+        const theme = this.getTheme(template.theme);
         
-        // Remove existing template classes
-        element.classList.remove(...Object.keys(this.templates).map(t => `template-${t}`));
-        
-        // Add new template class
-        element.classList.add(`template-${templateName}`);
-        
-        // Apply template-specific styles
-        this.applyTemplateStyles(element, template);
-        
-        this.currentTemplate = templateName;
-        return true;
-    }
-    
-    applyColorScheme(schemeName, element) {
-        const scheme = this.getColorScheme(schemeName);
-        if (!scheme || !element) return false;
-        
-        // Remove existing color scheme classes
-        element.classList.remove(...Object.keys(this.colorSchemes).map(s => `color-${s}`));
-        
-        // Add new color scheme class
-        element.classList.add(`color-${schemeName}`);
-        
-        // Apply color variables
-        this.applyColorVariables(element, scheme);
-        
-        this.currentColorScheme = schemeName;
-        return true;
-    }
-    
-    applyTemplateStyles(element, template) {
-        // Apply typography
-        if (template.fonts) {
-            element.style.setProperty('--font-heading', template.fonts.heading);
-            element.style.setProperty('--font-body', template.fonts.body);
-        }
-        
-        // Apply spacing
-        if (template.spacing) {
-            element.style.setProperty('--slide-padding', template.spacing.padding);
-            element.style.setProperty('--content-gap', template.spacing.gap);
-        }
-        
-        // Apply colors
-        if (template.colors) {
-            Object.entries(template.colors).forEach(([key, value]) => {
-                element.style.setProperty(`--template-${key}`, value);
-            });
-        }
-    }
-    
-    applyColorVariables(element, scheme) {
-        if (scheme.colors) {
-            Object.entries(scheme.colors).forEach(([key, value]) => {
-                element.style.setProperty(`--color-${key}`, value);
-            });
-        }
-    }
-    
-    generateSlideStructure(templateName, topic) {
-        const template = this.getTemplate(templateName);
-        if (!template) return [];
-        
-        return template.slideTypes.map((slideType, index) => ({
-            type: slideType,
-            index: index,
-            title: this.generateSlideTitle(slideType, topic, templateName),
-            template: templateName
-        }));
-    }
-    
-    generateSlideTitle(slideType, topic, templateName) {
-        const titleMappings = {
-            business: {
-                title: topic,
-                agenda: 'Agenda',
-                overview: 'Executive Summary',
-                content: 'Key Points',
-                chart: 'Market Analysis',
-                conclusion: 'Next Steps'
-            },
-            academic: {
-                title: topic,
-                abstract: 'Abstract',
-                introduction: 'Introduction',
-                methodology: 'Methodology',
-                findings: 'Findings',
-                discussion: 'Discussion',
-                conclusion: 'Conclusion',
-                references: 'References'
-            },
-            creative: {
-                title: topic,
-                vision: 'Our Vision',
-                concept: 'Core Concept',
-                design: 'Design Approach',
-                features: 'Key Features',
-                impact: 'Expected Impact',
-                future: 'Future Roadmap'
-            },
-            minimal: {
-                title: topic,
-                problem: 'The Problem',
-                solution: 'Our Solution',
-                benefits: 'Key Benefits',
-                implementation: 'Implementation',
-                summary: 'Summary'
-            }
+        return {
+            template: template,
+            theme: theme,
+            previewHTML: this.buildPreviewHTML(template, theme)
         };
-        
-        const template = titleMappings[templateName] || titleMappings.business;
-        return template[slideType] || slideType.charAt(0).toUpperCase() + slideType.slice(1);
     }
-    
-    customizeTemplate(templateName, customizations) {
+
+    buildPreviewHTML(template, theme) {
+        return `
+            <div class="template-preview" style="
+                background: ${theme.background};
+                border-radius: 8px;
+                padding: 1rem;
+                height: 200px;
+                position: relative;
+                overflow: hidden;
+                border: 2px solid ${theme.accent};
+            ">
+                <div class="preview-header" style="
+                    background: ${theme.primary};
+                    color: white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 4px;
+                    margin-bottom: 0.75rem;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                ">
+                    ${template.name}
+                </div>
+                <div class="preview-slides" style="
+                    display: flex;
+                    gap: 0.25rem;
+                    flex-wrap: wrap;
+                ">
+                    ${template.slides.map((slide, index) => `
+                        <div class="preview-slide" style="
+                            width: 30px;
+                            height: 20px;
+                            background: ${index % 2 === 0 ? theme.accent : theme.secondary};
+                            border-radius: 2px;
+                            opacity: 0.8;
+                            position: relative;
+                        ">
+                            <div style="
+                                width: 60%;
+                                height: 3px;
+                                background: white;
+                                border-radius: 1px;
+                                position: absolute;
+                                top: 3px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                opacity: 0.7;
+                            "></div>
+                            <div style="
+                                width: 80%;
+                                height: 2px;
+                                background: white;
+                                border-radius: 1px;
+                                position: absolute;
+                                top: 8px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                opacity: 0.5;
+                            "></div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="preview-description" style="
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 1rem;
+                    right: 1rem;
+                    font-size: 0.7rem;
+                    color: ${theme.textSecondary};
+                    font-weight: 500;
+                ">
+                    ${template.description}
+                </div>
+            </div>
+        `;
+    }
+
+    buildTemplateSelector() {
+        const templates = this.getAllTemplates();
+        
+        return `
+            <div class="template-selector">
+                <h3 class="selector-title">Choose a Template</h3>
+                <div class="template-grid">
+                    ${templates.map(template => `
+                        <div class="template-card" data-template="${template.id}">
+                            <div class="template-preview-container">
+                                ${this.buildPreviewHTML(template, this.getTheme(template.theme))}
+                            </div>
+                            <div class="template-info">
+                                <h4 class="template-name">${template.name}</h4>
+                                <p class="template-description">${template.description}</p>
+                                <div class="template-meta">
+                                    <span class="slide-count">${template.slides.length} slides</span>
+                                    <span class="template-theme">${this.getTheme(template.theme).name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    buildThemeSelector() {
+        const themes = this.getAllThemes();
+        
+        return `
+            <div class="theme-selector">
+                <h3 class="selector-title">Choose a Theme</h3>
+                <div class="theme-grid">
+                    ${themes.map(theme => `
+                        <div class="theme-card" data-theme="${theme.id}">
+                            <div class="theme-preview" style="
+                                background: ${theme.preview};
+                                height: 80px;
+                                border-radius: 8px;
+                                position: relative;
+                                overflow: hidden;
+                                border: 2px solid transparent;
+                                transition: all 0.3s ease;
+                            ">
+                                <div class="theme-preview-content" style="
+                                    position: absolute;
+                                    inset: 0;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    color: white;
+                                    font-weight: 600;
+                                    font-size: 0.9rem;
+                                ">
+                                    ${theme.name}
+                                </div>
+                            </div>
+                            <div class="theme-info" style="
+                                padding: 0.75rem 0;
+                                text-align: center;
+                            ">
+                                <h4 class="theme-name" style="
+                                    margin: 0;
+                                    font-size: 0.9rem;
+                                    font-weight: 600;
+                                    color: #374151;
+                                ">${theme.name}</h4>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    applyTemplate(templateName, slideContainer, presentationData) {
         const template = this.getTemplate(templateName);
-        if (!template) return null;
+        const theme = this.getTheme(template.theme);
         
-        // Create a deep copy of the template
-        const customTemplate = JSON.parse(JSON.stringify(template));
+        // Clear existing slides
+        slideContainer.innerHTML = '';
         
-        // Apply customizations
-        if (customizations.colors) {
-            customTemplate.colors = { ...customTemplate.colors, ...customizations.colors };
-        }
+        // Apply global theme styles
+        this.applyGlobalThemeStyles(theme);
         
-        if (customizations.fonts) {
-            customTemplate.fonts = { ...customTemplate.fonts, ...customizations.fonts };
-        }
-        
-        if (customizations.spacing) {
-            customTemplate.spacing = { ...customTemplate.spacing, ...customizations.spacing };
-        }
-        
-        if (customizations.slideTypes) {
-            customTemplate.slideTypes = customizations.slideTypes;
-        }
-        
-        return customTemplate;
+        // Generate slides based on template structure
+        return this.generateSlidesFromTemplate(template, theme, presentationData, slideContainer);
     }
-    
-    saveCustomTemplate(name, template) {
-        try {
-            const customTemplates = this.getCustomTemplates();
-            customTemplates[name] = template;
-            localStorage.setItem('ppt-custom-templates', JSON.stringify(customTemplates));
-            return true;
-        } catch (error) {
-            console.error('Failed to save custom template:', error);
-            return false;
-        }
-    }
-    
-    getCustomTemplates() {
-        try {
-            const stored = localStorage.getItem('ppt-custom-templates');
-            return stored ? JSON.parse(stored) : {};
-        } catch (error) {
-            console.error('Failed to load custom templates:', error);
-            return {};
-        }
-    }
-    
-    deleteCustomTemplate(name) {
-        try {
-            const customTemplates = this.getCustomTemplates();
-            delete customTemplates[name];
-            localStorage.setItem('ppt-custom-templates', JSON.stringify(customTemplates));
-            return true;
-        } catch (error) {
-            console.error('Failed to delete custom template:', error);
-            return false;
-        }
-    }
-    
-    loadFont(fontName) {
-        const font = this.fonts[fontName];
-        if (!font) return false;
+
+    applyGlobalThemeStyles(theme) {
+        // Remove existing theme stylesheets
+        const existingThemeStyles = document.querySelectorAll('style[data-theme]');
+        existingThemeStyles.forEach(style => style.remove());
         
-        // Check if font is already loaded
-        if (document.querySelector(`link[href="${font.url}"]`)) {
-            return true;
-        }
-        
-        // Create and append font link
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = font.url;
-        document.head.appendChild(link);
-        
-        return true;
-    }
-    
-    preloadTemplateAssets(templateName) {
-        const template = this.getTemplate(templateName);
-        if (!template) return Promise.resolve();
-        
-        const promises = [];
-        
-        // Preload fonts
-        if (template.fonts) {
-            Object.values(template.fonts).forEach(fontName => {
-                if (this.fonts[fontName]) {
-                    promises.push(this.loadFont(fontName));
-                }
-            });
-        }
-        
-        // Preload template preview if it exists
-        if (template.preview) {
-            const img = new Image();
-            img.src = `assets/templates/${template.preview}`;
-            promises.push(new Promise(resolve => {
-                img.onload = resolve;
-                img.onerror = resolve; // Don't fail if preview doesn't load
-            }));
-        }
-        
-        return Promise.all(promises);
-    }
-    
-    generateCSS(templateName, colorScheme) {
-        const template = this.getTemplate(templateName);
-        const colors = this.getColorScheme(colorScheme);
-        
-        if (!template || !colors) return '';
-        
-        const css = `
-            .template-${templateName} {
-                --template-primary: ${template.colors.primary};
-                --template-secondary: ${template.colors.secondary};
-                --template-accent: ${template.colors.accent};
-                --template-text: ${template.colors.text};
-                --template-background: ${template.colors.background};
-                
-                --color-primary: ${colors.colors.primary};
-                --color-secondary: ${colors.colors.secondary};
-                --color-accent: ${colors.colors.accent};
-                
-                --font-heading: ${template.fonts.heading}, ${this.fonts[template.fonts.heading]?.fallback || 'sans-serif'};
-                --font-body: ${template.fonts.body}, ${this.fonts[template.fonts.body]?.fallback || 'sans-serif'};
-                
-                --slide-padding: ${template.spacing.padding};
-                --content-gap: ${template.spacing.gap};
+        // Create new theme stylesheet
+        const themeStyle = document.createElement('style');
+        themeStyle.setAttribute('data-theme', 'current');
+        themeStyle.textContent = `
+            :root {
+                --theme-primary: ${theme.primary};
+                --theme-secondary: ${theme.secondary};
+                --theme-accent: ${theme.accent};
+                --theme-background: ${theme.background};
+                --theme-text: ${theme.text};
+                --theme-text-secondary: ${theme.textSecondary};
             }
             
-            .template-${templateName} .slide-title {
-                font-family: var(--font-heading);
-                color: var(--color-primary);
+            .template-selector, .theme-selector {
+                margin: 2rem 0;
             }
             
-            .template-${templateName} .slide-content {
-                font-family: var(--font-body);
-                padding: var(--slide-padding);
-                gap: var(--content-gap);
+            .selector-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: var(--theme-primary);
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            
+            .template-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1rem;
+            }
+            
+            .template-card {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                overflow: hidden;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+            
+            .template-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                border-color: var(--theme-accent);
+            }
+            
+            .template-card.selected {
+                border-color: var(--theme-primary);
+                box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+            }
+            
+            .template-info {
+                padding: 1.5rem;
+            }
+            
+            .template-name {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--theme-primary);
+                margin: 0 0 0.5rem 0;
+            }
+            
+            .template-description {
+                font-size: 0.9rem;
+                color: var(--theme-text-secondary);
+                margin: 0 0 1rem 0;
+                line-height: 1.4;
+            }
+            
+            .template-meta {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8rem;
+                color: var(--theme-text-secondary);
+                font-weight: 500;
+            }
+            
+            .theme-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+            
+            .theme-card {
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .theme-card:hover .theme-preview {
+                border-color: var(--theme-primary) !important;
+                transform: scale(1.05);
+            }
+            
+            .theme-card.selected .theme-preview {
+                border-color: var(--theme-primary) !important;
+                box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
             }
         `;
         
-        return css;
+        document.head.appendChild(themeStyle);
     }
-    
-    validateTemplate(template) {
-        const required = ['name', 'slideTypes', 'colors', 'fonts'];
-        const missing = required.filter(field => !template[field]);
+
+    async generateSlidesFromTemplate(template, theme, presentationData, slideContainer) {
+        const slideBuilder = new SlideBuilder();
+        const slides = [];
         
-        if (missing.length > 0) {
-            throw new Error(`Template validation failed. Missing: ${missing.join(', ')}`);
+        try {
+            for (let i = 0; i < template.slides.length; i++) {
+                const slideTemplate = template.slides[i];
+                const slideData = this.mapPresentationDataToSlide(presentationData, slideTemplate, i);
+                
+                // Build the slide
+                const slideElement = await slideBuilder.buildSlide(slideData, template.theme);
+                slideContainer.appendChild(slideElement);
+                slides.push(slideElement);
+                
+                // Add slight delay between slides for animation effect
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            return {
+                success: true,
+                slides: slides,
+                template: template,
+                theme: theme
+            };
+        } catch (error) {
+            console.error('Error generating slides from template:', error);
+            return {
+                success: false,
+                error: error.message
+            };
         }
-        
-        // Validate colors
-        if (!template.colors.primary || !template.colors.background) {
-            throw new Error('Template must have primary and background colors');
-        }
-        
-        // Validate slide types
-        if (!Array.isArray(template.slideTypes) || template.slideTypes.length === 0) {
-            throw new Error('Template must have at least one slide type');
-        }
-        
-        return true;
     }
-    
+
+    mapPresentationDataToSlide(presentationData, slideTemplate, slideIndex) {
+        const slideData = {
+            type: slideTemplate.type,
+            layout: slideTemplate.layout,
+            animation: slideTemplate.animation
+        };
+        
+        switch (slideTemplate.type) {
+            case 'title':
+                slideData.title = presentationData.title || 'Presentation Title';
+                slideData.subtitle = presentationData.subtitle || 'A comprehensive overview';
+                slideData.author = presentationData.author || 'AI Generated';
+                slideData.date = new Date().toLocaleDateString();
+                break;
+                
+            case 'content':
+                const contentSlides = presentationData.slides?.filter(s => s.type === 'content') || [];
+                const contentIndex = contentSlides.findIndex((_, i) => i === slideIndex - 1) || 0;
+                const content = contentSlides[contentIndex] || contentSlides[0];
+                
+                slideData.title = content?.title || `Content Slide ${slideIndex}`;
+                slideData.subtitle = content?.subtitle;
+                slideData.content = content?.content || ['Key point 1', 'Key point 2', 'Key point 3'];
+                slideData.image = content?.image;
+                break;
+                
+            case 'chart':
+                const chartSlides = presentationData.slides?.filter(s => s.type === 'chart') || [];
+                const chart = chartSlides[0];
+                
+                slideData.title = chart?.title || 'Data Analysis';
+                slideData.subtitle = chart?.subtitle;
+                slideData.chart = chart?.chart || {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        values: [25, 35, 45, 55]
+                    }
+                };
+                slideData.insights = chart?.insights;
+                break;
+                
+            case 'statistics':
+                const statsSlides = presentationData.slides?.filter(s => s.type === 'statistics') || [];
+                const stats = statsSlides[0];
+                
+                slideData.title = stats?.title || 'Key Statistics';
+                slideData.subtitle = stats?.subtitle;
+                slideData.statistics = stats?.statistics || [
+                    { value: '85%', label: 'Success Rate', description: 'Overall performance' },
+                    { value: '2.4x', label: 'Growth', description: 'Year over year' },
+                    { value: '150K+', label: 'Users', description: 'Active monthly users' }
+                ];
+                break;
+                
+            case 'conclusion':
+                slideData.title = 'Conclusion';
+                slideData.subtitle = 'Key takeaways and next steps';
+                slideData.content = presentationData.conclusion || [
+                    'Summary of key points',
+                    'Actionable recommendations',
+                    'Future outlook'
+                ];
+                slideData.callToAction = presentationData.callToAction || 'Thank you for your attention!';
+                break;
+        }
+        
+        return slideData;
+    }
+
+    getTemplateSelectorHTML() {
+        return this.buildTemplateSelector();
+    }
+
+    getThemeSelectorHTML() {
+        return this.buildThemeSelector();
+    }
+
+    initializeEventListeners() {
+        // Template selection events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.template-card')) {
+                const templateCard = e.target.closest('.template-card');
+                const templateId = templateCard.dataset.template;
+                
+                // Remove previous selection
+                document.querySelectorAll('.template-card').forEach(card => 
+                    card.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                templateCard.classList.add('selected');
+                
+                // Dispatch custom event
+                document.dispatchEvent(new CustomEvent('templateSelected', {
+                    detail: { templateId: templateId }
+                }));
+            }
+        });
+        
+        // Theme selection events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.theme-card')) {
+                const themeCard = e.target.closest('.theme-card');
+                const themeId = themeCard.dataset.theme;
+                
+                // Remove previous selection
+                document.querySelectorAll('.theme-card').forEach(card => 
+                    card.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                themeCard.classList.add('selected');
+                
+                // Update current theme
+                this.setCurrentTheme(themeId);
+                
+                // Dispatch custom event
+                document.dispatchEvent(new CustomEvent('themeSelected', {
+                    detail: { themeId: themeId }
+                }));
+            }
+        });
+    }
+
     exportTemplate(templateName) {
         const template = this.getTemplate(templateName);
-        if (!template) return null;
+        const theme = this.getTheme(template.theme);
         
         return {
-            ...template,
+            template: template,
+            theme: theme,
             exportDate: new Date().toISOString(),
             version: '1.0'
         };
     }
-    
-    importTemplate(templateData, name) {
+
+    importTemplate(templateData) {
         try {
-            this.validateTemplate(templateData);
-            this.templates[name] = templateData;
-            return true;
+            if (templateData.template && templateData.theme) {
+                const templateId = `custom-${Date.now()}`;
+                this.templates[templateId] = templateData.template;
+                
+                if (templateData.theme && !this.themes[templateData.theme.id]) {
+                    this.themes[templateData.theme.id] = templateData.theme;
+                }
+                
+                return {
+                    success: true,
+                    templateId: templateId
+                };
+            }
+            throw new Error('Invalid template data');
         } catch (error) {
-            console.error('Template import failed:', error);
-            return false;
+            return {
+                success: false,
+                error: error.message
+            };
         }
     }
-    
-    getTemplateCompatibility(templateName) {
-        const template = this.getTemplate(templateName);
-        if (!template) return null;
-        
-        return {
-            supportsCharts: template.features?.includes('charts') || false,
-            supportsAnimations: template.features?.includes('animations') || false,
-            supportsCustomLayouts: template.features?.includes('custom-layouts') || false,
-            recommendedSlideCount: template.defaultSlideCount,
-            bestForTopics: this.getRecommendedTopics(templateName)
-        };
-    }
-    
-    getRecommendedTopics(templateName) {
-        const recommendations = {
-            business: ['business strategy', 'financial analysis', 'market research', 'company overview'],
-            academic: ['research findings', 'scientific studies', 'academic analysis', 'thesis presentation'],
-            creative: ['product design', 'creative projects', 'innovation', 'artistic concepts'],
-            minimal: ['simple concepts', 'startup pitches', 'executive summaries', 'quick updates']
-        };
-        
-        return recommendations[templateName] || [];
-    }
-    
-    // Event handlers for template switching
-    onTemplateChange(callback) {
-        this.templateChangeCallback = callback;
-    }
-    
-    onColorSchemeChange(callback) {
-        this.colorSchemeChangeCallback = callback;
-    }
-    
-    notifyTemplateChange(templateName) {
-        if (this.templateChangeCallback) {
-            this.templateChangeCallback(templateName, this.getTemplate(templateName));
-        }
-    }
-    
-    notifyColorSchemeChange(schemeName) {
-        if (this.colorSchemeChangeCallback) {
-            this.colorSchemeChangeCallback(schemeName, this.getColorScheme(schemeName));
-        }
-    }
-}
-
-// Export for use in other modules
-if (typeof window !== 'undefined') {
-    window.TemplateManager = TemplateManager;
-}
-
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TemplateManager;
 }

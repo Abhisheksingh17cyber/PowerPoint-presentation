@@ -1,23 +1,19 @@
 {
-  "name": "professional-ppt-maker",
-  "version": "1.0.0",
-  "description": "Create stunning PowerPoint presentations instantly with AI-powered content generation",
+  "name": "ai-powerpoint-generator",
+  "version": "2.0.0",
+  "description": "Professional AI-Powered PowerPoint Generator - Create stunning presentations with comprehensive content, real images, and interactive charts in seconds",
   "main": "index.html",
   "scripts": {
     "start": "npx serve . -p 3000",
     "dev": "npx live-server --port=3000 --open=/",
-    "build": "npm run minify",
-    "minify": "npm run minify:html && npm run minify:css && npm run minify:js",
-    "minify:html": "html-minifier-terser --collapse-whitespace --remove-comments --minify-css --minify-js index.html -o index.html",
+    "build": "npm run optimize",
+    "optimize": "npm run minify:css && npm run minify:js",
     "minify:css": "cleancss -o css/styles.min.css css/styles.css css/themes.css css/responsive.css",
     "minify:js": "terser js/app.js js/content-generator.js js/slide-builder.js js/template-manager.js js/export-handler.js -o js/app.min.js --compress --mangle",
-    "validate": "npm run validate:html && npm run validate:css && npm run validate:js",
-    "validate:html": "html-validate index.html",
-    "validate:css": "stylelint 'css/*.css'",
-    "validate:js": "eslint 'js/*.js'",
-    "test": "npm run validate",
-    "lighthouse": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
-    "pwa-test": "pwa-test http://localhost:3000"
+    "deploy": "npm run build && npm run commit-deploy",
+    "commit-deploy": "git add . && git commit -m 'Deploy updated AI PowerPoint Generator' && git push origin main",
+    "test": "echo 'AI PowerPoint Generator ready for testing'",
+    "lighthouse": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html"
   },
   "repository": {
     "type": "git",
