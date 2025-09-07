@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test JavaScript Classes</title>
+</head>
+<body>
+    <h1>JavaScript Classes Test</h1>
+    <div id="result"></div>
+    
+    <script src="js/content-generator.js"></script>
+    <script>
+        try {
+            console.log('Testing class definitions...');
+            
+            // Test ImageService
+            const imageService = new ImageService();
+            console.log('✅ ImageService created successfully');
+            
+            // Test ChartService
+            const chartService = new ChartService();
+            console.log('✅ ChartService created successfully');
+            
+            // Test ContentGenerator
+            const contentGenerator = new ContentGenerator();
+            console.log('✅ ContentGenerator created successfully');
+            
+            // Test that ContentGenerator has the required method
+            if (typeof contentGenerator.generatePresentation === 'function') {
+                console.log('✅ generatePresentation method found');
+            } else {
+                console.log('❌ generatePresentation method NOT found');
+            }
+            
+            document.getElementById('result').innerHTML = `
+                <div style="color: green; font-family: Arial, sans-serif;">
+                    <h2>✅ All JavaScript classes loaded successfully!</h2>
+                    <p>• ImageService: ${typeof ImageService}</p>
+                    <p>• ChartService: ${typeof ChartService}</p>
+                    <p>• ContentGenerator: ${typeof ContentGenerator}</p>
+                    <p>• generatePresentation method: ${typeof contentGenerator.generatePresentation}</p>
+                </div>
+            `;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerHTML = `
+                <div style="color: red; font-family: Arial, sans-serif;">
+                    <h2>❌ Error loading classes:</h2>
+                    <pre>${error.message}</pre>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

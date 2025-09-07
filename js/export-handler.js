@@ -645,7 +645,7 @@ class ExportHandler {
 
     async addImageShowcaseSlideToPPTX(slide, slideElement) {
         const title = slideElement.querySelector('.slide-title')?.textContent || '';
-            const images = slideElement.querySelectorAll('.slide-image');
+        const images = slideElement.querySelectorAll('.slide-image');
 
         // Add title
         if (title) {
@@ -662,25 +662,24 @@ class ExportHandler {
             });
         }
 
-        // Add images in a grid
-        images.forEach((img, index) => {
+        // Add images in a grid (await all conversions before finishing)
+        const tasks = Array.from(images).map(async (img, index) => {
             const x = 1 + (index % 3) * 3;
             const y = 1.5 + Math.floor(index / 3) * 2;
-            
             try {
-                this.imageToBase64(img.src).then(imgData => {
-                    slide.addImage({
-                        data: imgData,
-                        x: x,
-                        y: y,
-                        w: 2.5,
-                        h: 1.8
-                    });
-                    });
-                } catch (e) {
+                const imgData = await this.imageToBase64(img.src);
+                slide.addImage({
+                    data: imgData,
+                    x: x,
+                    y: y,
+                    w: 2.5,
+                    h: 1.8
+                });
+            } catch (e) {
                 console.warn('Failed to add image:', e);
             }
         });
+        await Promise.all(tasks);
     }
 
     async addDataVisualizationSlideToPPTX(slide, slideElement) {
