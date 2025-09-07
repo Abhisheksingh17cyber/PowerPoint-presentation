@@ -950,7 +950,7 @@ class ContentGenerator {
         };
     }
 
-    async analyzeTopic(topic) {
+    analyzeTopic(topic) {
         const normalizedTopic = topic.toLowerCase();
         
         // Find best matching topic in database
